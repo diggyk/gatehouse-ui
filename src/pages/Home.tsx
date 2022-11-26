@@ -1,12 +1,18 @@
 import React from "react";
-import { Container } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
+import logo from "../logo1.png";
 
 class Home extends React.Component {
-    render() {
-        return (
-            <Container fluid>Overview stats</Container>
-        )
-    }
+  render() {
+    return (
+      <Row fluid className="h-100">
+        <Col lg="2" className="sidePickerNav"></Col>
+        <Col className="mainContent h-100">
+          <img className="d-inline-block" src={logo} height="400px" />
+        </Col>
+      </Row>
+    );
+  }
 }
 
 export default Home;

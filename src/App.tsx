@@ -64,7 +64,7 @@ class App extends React.Component<
 
 function Layout() {
   return (
-    <Container fluid className="bodyClass">
+    <Container fluid className="h-100 p-0">
       <Navbar bg="dark" expand="lg" variant="dark" className="navbar">
         <NavbarBrand>
           <Nav.Link as={NavLink} to="/" eventKey="/">
@@ -87,7 +87,9 @@ function Layout() {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <Outlet />
+      <Container fluid className="mainBody">
+        <Outlet />
+      </Container>
     </Container>
   );
 }

@@ -1,8 +1,26 @@
 @import "~bootstrap/scss/bootstrap";
 
-.bodyClass {
+body, html {
     margin: 0;
     padding: 0;
+    height: 100%;
+}
+
+#root {
+    @extend .container-fluid;
+    @extend .h-100;
+    margin: 0;
+    padding: 0;
+}
+
+.mainBody {
+    height: auto;
+    overflow: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    bottom: 0;
+    top: 50px;
+    position: absolute;
 }
 
 .Logo {
@@ -11,4 +29,33 @@
 
 .navbar {
     padding-left: 10px;
+    margin: 0;
+    height: 50px;
 }
+
+.sidePickerNav {
+    background-color: darken($color: $body-bg, $amount: 80)
+}
+
+.sidePickerNav .header {
+    color: #fff;
+    padding: 10px 10px 6px 10px;
+    border-bottom: rgb(233, 181, 97) 4px solid;
+    font-weight: bold;
+}
+
+.sidePickerNav .itemList {
+    padding-bottom: 10px;
+}
+
+.sidePickerNav .item {
+    padding: 4px 10px;
+    color: rgb(233, 181, 97);
+}
+
+.mainContent {
+    background-color: darken($color: $body-bg, $amount: 20);
+}
+
+
+
