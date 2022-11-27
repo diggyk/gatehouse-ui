@@ -1,8 +1,7 @@
-import { type } from "os";
 import React from "react";
 import { Col, Container, Nav, NavLink, Row } from "react-bootstrap";
-import AccordionBody from "react-bootstrap/esm/AccordionBody";
-import { JsxElement } from "typescript";
+import { useParams } from "react-router";
+import { Link, Outlet } from "react-router-dom";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 
 class EntitiesPage extends React.Component<
@@ -57,11 +56,11 @@ class EntitiesPage extends React.Component<
     typed_entities.forEach((vals, key) => {
       let entity_items: JSX.Element[] = [];
       vals.forEach((val) => {
-        let uid = val.getTypestr() + "/" + val.getName();
+        let uid = val.getTypestr() + "@" + val.getName();
         entity_items.push(
-          <Nav.Link key={uid} as={NavLink} eventKey={uid} className="item">
+          <Link key={uid} className="item" to={uid}>
             {val.getName()}
-          </Nav.Link>
+          </Link>
         );
       });
 
@@ -71,7 +70,11 @@ class EntitiesPage extends React.Component<
         </Container>
       );
 
-      let item = <Container className="itemList">{entity_items}</Container>;
+      let item = (
+        <Container className="itemList" key={key + "_list"}>
+          {entity_items}
+        </Container>
+      );
       type_sections.push(item);
     });
     return <Container>{type_sections}</Container>;
@@ -80,9 +83,12 @@ class EntitiesPage extends React.Component<
   render() {
     const entities = this.state.entities;
     return (
-      <Row className="h-100" fluid>
+      <Row className="h-100">
         <Col lg="2" className="sidePickerNav h-100 p-0">
           {this.entityNav()}
+        </Col>
+        <Col>
+          <Outlet />
         </Col>
       </Row>
     );

@@ -13,6 +13,7 @@ import Home from "./pages/Home";
 import PolicyRulesPage from "./pages/PolicyRulesPage";
 import TargetsPage from "./pages/TargetsPage";
 import EntitiesPage from "./pages/EntitiesPage";
+import Entity from "./pages/Entity";
 
 class App extends React.Component<
   {},
@@ -51,7 +52,9 @@ class App extends React.Component<
           <Route index element={<Home />} />
           <Route path="policyrules" element={<PolicyRulesPage />} />
           <Route path="targets" element={<TargetsPage />} />
-          <Route path="entities" element={<EntitiesPage />} />
+          <Route path="entities" element={<EntitiesPage />}>
+            <Route path=":id" element={<Entity />}></Route>
+          </Route>
           {/* Using path="*"" means "match anything", so this route
                 acts like a catch-all for URLs that we don't have explicit
                 routes for. */}
