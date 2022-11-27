@@ -1,28 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Nav, NavLink, Row } from "react-bootstrap";
-import { useParams } from "react-router";
+import { useOutletContext, useParams } from "react-router";
 import { Link, Outlet } from "react-router-dom";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 
-class EntitiesPage extends React.Component<
-  {},
-  { entities: Map<string, Array<proto.entities.Entity>> }
-> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      entities: new Map<string, Array<proto.entities.Entity>>(),
-    };
-  }
+type ContextType = {
+  entities: Map<string, Map<string, proto.entities.Entity>>;
+};
 
-  componentDidMount(): void {
+export default function EntitiesPage() {
+  let nullMap = new Map<string, Map<string, proto.entities.Entity>>();
+  const [entities, setEntities] = useState(nullMap);
+
+  // load data from API on first render
+  useEffect(() => {
     let request = new proto.entities.GetAllEntitiesRequest();
     let gatehouseSvc = new GatehousePromiseClient(
       "http://localhost:6174",
       null,
       null
     );
-    let ent_map = new Map<string, Array<proto.entities.Entity>>();
+    let ent_map = new Map<string, Map<string, proto.entities.Entity>>();
     let result = gatehouseSvc
       .getEntities(request, null)
       .then((response) => {
@@ -30,36 +28,34 @@ class EntitiesPage extends React.Component<
         entities.forEach((entity: proto.entities.Entity) => {
           let typestr = entity.getTypestr();
           if (!ent_map.has(typestr)) {
-            ent_map.set(typestr, []);
+            ent_map.set(typestr, new Map<string, proto.entities.Entity>());
           }
           let typed_entities = ent_map.get(typestr);
           if (typed_entities !== undefined) {
-            typed_entities.push(entity);
+            typed_entities.set(entity.getName(), entity);
           }
         });
-        this.setState({ entities: ent_map });
+        setEntities(ent_map);
       })
       .catch((err) => {
         console.error("ERROR:");
         console.error(err);
       });
-  }
+  }, []);
 
   /// Prints the nav for keys, organized by types
-  entityNav = () => {
+  const entityNav = () => {
     let type_sections: JSX.Element[] = [];
     const typed_entities = new Map(
-      [...this.state.entities.entries()].sort(([a], [b]) =>
-        String(a).localeCompare(b)
-      )
+      [...entities.entries()].sort(([a], [b]) => String(a).localeCompare(b))
     );
     typed_entities.forEach((vals, key) => {
       let entity_items: JSX.Element[] = [];
-      vals.forEach((val) => {
-        let uid = val.getTypestr() + "@" + val.getName();
+      [...vals.keys()].sort().forEach((val) => {
+        let uid = key + "/" + val;
         entity_items.push(
           <Link key={uid} className="item" to={uid}>
-            {val.getName()}
+            <li key={uid}>{val}</li>
           </Link>
         );
       });
@@ -72,7 +68,7 @@ class EntitiesPage extends React.Component<
 
       let item = (
         <Container className="itemList" key={key + "_list"}>
-          {entity_items}
+          <ul>{entity_items}</ul>
         </Container>
       );
       type_sections.push(item);
@@ -80,19 +76,18 @@ class EntitiesPage extends React.Component<
     return <Container>{type_sections}</Container>;
   };
 
-  render() {
-    const entities = this.state.entities;
-    return (
-      <Row className="h-100">
-        <Col lg="2" className="sidePickerNav h-100 p-0">
-          {this.entityNav()}
-        </Col>
-        <Col>
-          <Outlet />
-        </Col>
-      </Row>
-    );
-  }
+  return (
+    <Row className="h-100">
+      <Col lg="2" className="sidePickerNav h-100 p-0">
+        {entityNav()}
+      </Col>
+      <Col className="mainContent">
+        <Outlet context={{ entities }} />
+      </Col>
+    </Row>
+  );
 }
 
-export default EntitiesPage;
+export function useEntities() {
+  return useOutletContext<ContextType>();
+}

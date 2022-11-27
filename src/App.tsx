@@ -53,7 +53,7 @@ class App extends React.Component<
           <Route path="policyrules" element={<PolicyRulesPage />} />
           <Route path="targets" element={<TargetsPage />} />
           <Route path="entities" element={<EntitiesPage />}>
-            <Route path=":id" element={<Entity />}></Route>
+            <Route path=":typestr/:name" element={<Entity />}></Route>
           </Route>
           {/* Using path="*"" means "match anything", so this route
                 acts like a catch-all for URLs that we don't have explicit

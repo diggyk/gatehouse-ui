@@ -48,14 +48,74 @@ body, html {
     padding-bottom: 10px;
 }
 
-.sidePickerNav .item {
+.sidePickerNav .itemList ul {
+    padding: 0;
+}
+.sidePickerNav .itemList li {
+    display: block;
+    border-radius: .25em;
     padding: 4px 10px;
+    margin: 2px;
+}
+
+.sidePickerNav .item {
     color: rgb(233, 181, 97);
+    text-decoration: none;
+    background-color: none;
+}
+
+.sidePickerNav .itemList li:hover {
+   background-color: darken($color: $body-bg, $amount: 60);
+   cursor: pointer;
 }
 
 .mainContent {
-    background-color: darken($color: $body-bg, $amount: 20);
+    background-color: darken($color: $body-bg, $amount: 25);
+    padding-top: .8em;
 }
 
+// ENTRY PAGE //
+
+.showEntryCard {
+    width: fit-content;
+    border: none;
+    box-shadow: .3rem .3rem .3rem #0005;
+
+    .card-body {
+        padding: 0;
+        border-radius: 0.375rem;
+
+        .card-title {
+            margin: 0;
+            padding: 10px 100px 5px 20px;
+            border-bottom: darken($color: $body-bg, $amount: 80) 2px solid;
+            background-color: rgb(233, 181, 97);
+            border-top-left-radius: 0.375rem;
+            border-top-right-radius: 0.375rem;;
+        }
+
+        .card-subtitle {
+            margin: 0;
+            padding: 5px 20px 5px 20px;
+            border-bottom: darken($color: $body-bg, $amount: 80) 2px solid;
+            background-color: darken($color: rgb(233, 181, 97), $amount: 20)
+        }
+
+        button {
+            margin: 20px;
+            float: right;
+        }
+    }
+}
+
+.showEntryTable {
+    background-color: darken($color: $body-bg, $amount: 15);
+    margin: 0;
+
+    th, td {
+        padding: 5px 20px 5px 20px;
+    }
+
+}
 
 
