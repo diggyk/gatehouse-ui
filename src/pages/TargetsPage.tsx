@@ -1,19 +1,12 @@
-import React from "react";
-import { Container } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import { Outlet } from "react-router";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 
-class TargetsPage extends React.Component<
-  {},
-  { targets: Array<proto.targets.Target> }
-> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      targets: [],
-    };
-  }
+export default function TargetsPage() {
+  const [targets, setTargets] = useState([]);
 
-  componentDidMount(): void {
+  useEffect(() => {
     let request = new proto.targets.GetAllTargetsRequest();
     let gatehouseSvc = new GatehousePromiseClient(
       "http://localhost:6174",
@@ -23,24 +16,24 @@ class TargetsPage extends React.Component<
     let result = gatehouseSvc
       .getTargets(request, null)
       .then((response) => {
-        this.setState({ targets: response.getTargetsList() });
+        setTargets(response.getTargetsList());
       })
       .catch((err) => {
         console.error("ERROR:");
         console.error(err);
       });
-  }
+  }, []);
 
-  render() {
-    const targets = this.state.targets;
-    return (
-      <Container fluid className="h-100">
+  return (
+    <Row className="h-100">
+      <Col lg="2" className="sidePickerNav h-100 p-0">
         {targets.map((target: proto.targets.Target) => (
           <div key={target.getName()}>{target.getName()}</div>
         ))}
-      </Container>
-    );
-  }
+      </Col>
+      <Col className="mainContent">
+        <Outlet context={{ targets }} />
+      </Col>
+    </Row>
+  );
 }
-
-export default TargetsPage;

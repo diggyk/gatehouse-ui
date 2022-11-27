@@ -1,19 +1,12 @@
-import React from "react";
-import { Container } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import { Outlet } from "react-router";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 
-class PolicyRulesPage extends React.Component<
-  {},
-  { rules: Array<proto.policies.PolicyRule> }
-> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      rules: [],
-    };
-  }
+export default function PolicyRulesPage() {
+  const [rules, setRules] = useState([]);
 
-  componentDidMount(): void {
+  useEffect(() => {
     let request = new proto.policies.GetPoliciesRequest();
     let gatehouseSvc = new GatehousePromiseClient(
       "http://localhost:6174",
@@ -23,24 +16,24 @@ class PolicyRulesPage extends React.Component<
     let result = gatehouseSvc
       .getPolicies(request, null)
       .then((response) => {
-        this.setState({ rules: response.getRulesList() });
+        setRules(response.getRulesList());
       })
       .catch((err) => {
         console.error("ERROR:");
         console.error(err);
       });
-  }
+  }, []);
 
-  render() {
-    const rules = this.state.rules;
-    return (
-      <Container fluid>
+  return (
+    <Row className="h-100">
+      <Col lg="2" className="sidePickerNav h-100 p-0">
         {rules.map((rule: proto.policies.PolicyRule) => (
           <div key={rule.getName()}>{rule.getName()}</div>
         ))}
-      </Container>
-    );
-  }
+      </Col>
+      <Col className="mainContent">
+        <Outlet context={{ rules }} />
+      </Col>
+    </Row>
+  );
 }
-
-export default PolicyRulesPage;

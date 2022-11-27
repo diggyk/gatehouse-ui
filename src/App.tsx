@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 import "./App.scss";
-import * as grpcWeb from "grpc-web";
-import {
-  GatehouseClient,
-  GatehousePromiseClient,
-} from "./protos/gatehouse_grpc_web_pb";
+import { GatehousePromiseClient } from "./protos/gatehouse_grpc_web_pb";
 import logo from "./logo1.png";
 import { Col, Container, Nav, Navbar, NavbarBrand, Row } from "react-bootstrap";
 
@@ -14,55 +10,22 @@ import PolicyRulesPage from "./pages/PolicyRulesPage";
 import TargetsPage from "./pages/TargetsPage";
 import EntitiesPage from "./pages/EntitiesPage";
 import Entity from "./pages/Entity";
+import Page404 from "./pages/Page404";
 
-class App extends React.Component<
-  {},
-  { rules: Array<proto.policies.PolicyRule> }
-> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      rules: [],
-    };
-  }
-
-  componentDidMount(): void {
-    let request = new proto.policies.GetPoliciesRequest();
-    let gatehouseSvc = new GatehousePromiseClient(
-      "http://localhost:6174",
-      null,
-      null
-    );
-    let result = gatehouseSvc
-      .getPolicies(request, null)
-      .then((response) => {
-        this.setState({ rules: response.getRulesList() });
-      })
-      .catch((err) => {
-        console.error("ERROR:");
-        console.error(err);
-      });
-  }
-
-  render() {
-    const rules = this.state.rules;
-    return (
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="policyrules" element={<PolicyRulesPage />} />
-          <Route path="targets" element={<TargetsPage />} />
-          <Route path="entities" element={<EntitiesPage />}>
-            <Route path=":typestr/:name" element={<Entity />}></Route>
-          </Route>
-          {/* Using path="*"" means "match anything", so this route
-                acts like a catch-all for URLs that we don't have explicit
-                routes for. */}
-          {/* <Route path="*" element={<NoMatch />} /> */}
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="policyrules" element={<PolicyRulesPage />} />
+        <Route path="targets" element={<TargetsPage />} />
+        <Route path="entities" element={<EntitiesPage />}>
+          <Route path=":typestr/:name" element={<Entity />}></Route>
         </Route>
-      </Routes>
-    );
-  }
+        <Route path="*" element={<Page404 />} />
+      </Route>
+    </Routes>
+  );
 }
 
 function Layout() {
@@ -96,5 +59,3 @@ function Layout() {
     </Container>
   );
 }
-
-export default App;
