@@ -5,6 +5,7 @@ import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 
 export default function PolicyRulesPage() {
   const [rules, setRules] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     let request = new proto.policies.GetPoliciesRequest();
@@ -19,10 +20,16 @@ export default function PolicyRulesPage() {
         setRules(response.getRulesList());
       })
       .catch((err) => {
-        console.error("ERROR:");
-        console.error(err);
+        setError(err.message);
       });
   }, []);
+
+  let mainContent;
+  if (error == null) {
+    mainContent = <Outlet context={{ rules }} />;
+  } else {
+    mainContent = <Container className="errorNote">{error}</Container>;
+  }
 
   return (
     <Row className="h-100">
@@ -31,9 +38,7 @@ export default function PolicyRulesPage() {
           <div key={rule.getName()}>{rule.getName()}</div>
         ))}
       </Col>
-      <Col className="mainContent">
-        <Outlet context={{ rules }} />
-      </Col>
+      <Col className="mainContent">{mainContent}</Col>
     </Row>
   );
 }

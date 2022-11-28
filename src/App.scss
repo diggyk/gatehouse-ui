@@ -33,6 +33,17 @@ body, html {
     height: 50px;
 }
 
+// GENERAL STUFF
+.errorNote {
+    border-radius: .35rem;
+    background-color:rgb(152, 38, 7);
+    padding: 5px 10px;
+    color: antiquewhite;
+
+}
+
+// SIDEBAR
+
 .sidePickerNav {
     background-color: darken($color: $body-bg, $amount: 80)
 }

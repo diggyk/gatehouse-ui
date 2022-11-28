@@ -11,6 +11,7 @@ type ContextType = {
 export default function EntitiesPage() {
   let nullMap = new Map<string, Map<string, proto.entities.Entity>>();
   const [entities, setEntities] = useState(nullMap);
+  const [error, setError] = useState(null);
 
   // load data from API on first render
   useEffect(() => {
@@ -38,8 +39,7 @@ export default function EntitiesPage() {
         setEntities(ent_map);
       })
       .catch((err) => {
-        console.error("ERROR:");
-        console.error(err);
+        setError(err.message);
       });
   }, []);
 
@@ -76,14 +76,19 @@ export default function EntitiesPage() {
     return <Container>{type_sections}</Container>;
   };
 
+  let mainContent;
+  if (error == null) {
+    mainContent = <Outlet context={{ entities }} />;
+  } else {
+    mainContent = <Container className="errorNote">{error}</Container>;
+  }
+
   return (
     <Row className="h-100">
       <Col lg="2" className="sidePickerNav h-100 p-0">
         {entityNav()}
       </Col>
-      <Col className="mainContent">
-        <Outlet context={{ entities }} />
-      </Col>
+      <Col className="mainContent">{mainContent}</Col>
     </Row>
   );
 }
