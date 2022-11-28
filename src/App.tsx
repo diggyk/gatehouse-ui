@@ -11,6 +11,7 @@ import TargetsPage from "./pages/TargetsPage";
 import EntitiesPage from "./pages/EntitiesPage";
 import Entity from "./pages/Entity";
 import Page404 from "./pages/Page404";
+import Target from "./pages/Target";
 
 export default function App() {
   return (
@@ -18,9 +19,11 @@ export default function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="policyrules" element={<PolicyRulesPage />} />
-        <Route path="targets" element={<TargetsPage />} />
+        <Route path="targets" element={<TargetsPage />}>
+          <Route path=":typestr/:name" element={<Target />} />
+        </Route>
         <Route path="entities" element={<EntitiesPage />}>
-          <Route path=":typestr/:name" element={<Entity />}></Route>
+          <Route path=":typestr/:name" element={<Entity />} />
         </Route>
         <Route path="*" element={<Page404 />} />
       </Route>

@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { Outlet } from "react-router";
+import { Outlet, useOutletContext } from "react-router";
 import { Link } from "react-router-dom";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
+
+type ContextType = {
+  targets: Map<string, Map<string, proto.targets.Target>>;
+};
 
 export default function TargetsPage() {
   let nullMap = new Map<string, Map<string, proto.targets.Target>>();
@@ -85,4 +89,8 @@ export default function TargetsPage() {
       <Col className="mainContent">{mainContent}</Col>
     </Row>
   );
+}
+
+export function useTargets() {
+  return useOutletContext<ContextType>();
 }

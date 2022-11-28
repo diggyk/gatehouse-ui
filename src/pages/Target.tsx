@@ -1,26 +1,26 @@
 import { Button, Card, Container, Table } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import { useEntities } from "./EntitiesPage";
+import { useTargets } from "./TargetsPage";
 
 export default function Entity() {
-  const { entities } = useEntities();
+  const { targets } = useTargets();
   const { typestr, name } = useParams();
 
   if (!typestr || !name) {
     return <Container>Error -- type or name not set</Container>;
   }
 
-  const entity = entities.get(typestr)?.get(name);
+  const target = targets.get(typestr)?.get(name);
 
-  if (!entity) {
+  if (!target) {
     return (
       <Card>
-        <Card.Body>ERROR: Entity not found in context</Card.Body>
+        <Card.Body>ERROR: Target not found in context</Card.Body>
       </Card>
     );
   }
 
-  let attributes = entity.getAttributesMap();
+  let attributes = target.getAttributesMap();
 
   let headers: JSX.Element[] = [];
   headers.push(
@@ -55,14 +55,40 @@ export default function Entity() {
     );
   }
 
+  let actions: JSX.Element[] = [];
+  let actions_list = target.getActionsList();
+  if (actions_list.length > 0) {
+    actions_list.forEach((action) => {
+      actions.push(
+        <tr>
+          <td>{action}</td>
+        </tr>
+      );
+    });
+  } else {
+    actions.push(
+      <tr>
+        <td>No actions</td>
+      </tr>
+    );
+  }
+
   return (
     <Card className="showEntryCard">
       <Card.Body>
-        <Card.Title>{entity.getName()}</Card.Title>
-        <Card.Subtitle>{entity.getTypestr()}</Card.Subtitle>
+        <Card.Title>{target.getName()}</Card.Title>
+        <Card.Subtitle>{target.getTypestr()}</Card.Subtitle>
         <Table className="showEntryTable">
           <thead>{headers}</thead>
           <tbody>{attrs}</tbody>
+        </Table>
+        <Table className="showEntryTable">
+          <thead>
+            <tr>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>{actions}</tbody>
         </Table>
         <Button disabled>Edit</Button>
       </Card.Body>

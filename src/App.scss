@@ -89,6 +89,7 @@ body, html {
 
 .showEntryCard {
     width: fit-content;
+    min-width: 20rem;
     border: none;
     box-shadow: .3rem .3rem .3rem #0005;
 
@@ -99,7 +100,7 @@ body, html {
         .card-title {
             margin: 0;
             padding: 10px 100px 5px 20px;
-            border-bottom: darken($color: $body-bg, $amount: 80) 2px solid;
+            // border-bottom: darken($color: $body-bg, $amount: 80) 2px solid;
             background-color: rgb(233, 181, 97);
             border-top-left-radius: 0.375rem;
             border-top-right-radius: 0.375rem;;
@@ -125,6 +126,11 @@ body, html {
 
     th, td {
         padding: 5px 20px 5px 20px;
+    }
+
+    .subheading {
+        font-size: smaller;
+        color: gray;
     }
 
 }
