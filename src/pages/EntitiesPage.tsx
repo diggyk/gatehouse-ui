@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Col, Container, Nav, NavLink, Row } from "react-bootstrap";
-import { useOutletContext, useParams } from "react-router";
+import { useEffect, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import { useOutletContext } from "react-router";
 import { Link, Outlet } from "react-router-dom";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 
@@ -22,7 +22,7 @@ export default function EntitiesPage() {
       null
     );
     let ent_map = new Map<string, Map<string, proto.entities.Entity>>();
-    let result = gatehouseSvc
+    gatehouseSvc
       .getEntities(request, null)
       .then((response) => {
         let entities = response.getEntitiesList();

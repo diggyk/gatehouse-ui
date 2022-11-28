@@ -1,8 +1,6 @@
-import React, { Component } from "react";
 import "./App.scss";
-import { GatehousePromiseClient } from "./protos/gatehouse_grpc_web_pb";
 import logo from "./logo1.png";
-import { Col, Container, Nav, Navbar, NavbarBrand, Row } from "react-bootstrap";
+import { Container, Nav, Navbar, NavbarBrand } from "react-bootstrap";
 
 import { Link as NavLink, Route, Routes, Outlet } from "react-router-dom";
 import Home from "./pages/Home";
@@ -12,13 +10,16 @@ import EntitiesPage from "./pages/EntitiesPage";
 import Entity from "./pages/Entity";
 import Page404 from "./pages/Page404";
 import Target from "./pages/Target";
+import PolicyRule from "./pages/PolicyRule";
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path="policyrules" element={<PolicyRulesPage />} />
+        <Route path="policyrules" element={<PolicyRulesPage />}>
+          <Route path=":name" element={<PolicyRule />} />
+        </Route>
         <Route path="targets" element={<TargetsPage />}>
           <Route path=":typestr/:name" element={<Target />} />
         </Route>
@@ -37,7 +38,12 @@ function Layout() {
       <Navbar bg="dark" expand="lg" variant="dark" className="navbar">
         <NavbarBrand>
           <Nav.Link as={NavLink} to="/" eventKey="/">
-            <img className="d-inline-block align-top" height="30" src={logo} />{" "}
+            <img
+              className="d-inline-block align-top"
+              height="30"
+              src={logo}
+              alt="Logo"
+            />{" "}
             Gatehouse
           </Nav.Link>
         </NavbarBrand>

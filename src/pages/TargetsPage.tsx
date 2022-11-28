@@ -21,7 +21,7 @@ export default function TargetsPage() {
       null
     );
     let tgt_map = new Map<string, Map<string, proto.targets.Target>>();
-    let result = gatehouseSvc
+    gatehouseSvc
       .getTargets(request, null)
       .then((response) => {
         let targets = response.getTargetsList();
