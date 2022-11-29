@@ -644,7 +644,7 @@ proto.groups.Group.prototype.clearRolesList = function() {
  * @private {!Array<number>}
  * @const
  */
-proto.groups.AddGroupRequest.repeatedFields_ = [2,3];
+proto.groups.AddGroupRequest.repeatedFields_ = [3,4];
 
 
 
@@ -678,9 +678,10 @@ proto.groups.AddGroupRequest.prototype.toObject = function(opt_includeInstance) 
 proto.groups.AddGroupRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     name: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    desc: jspb.Message.getFieldWithDefault(msg, 2, ""),
     membersList: jspb.Message.toObjectList(msg.getMembersList(),
     proto.groups.GroupMember.toObject, includeInstance),
-    rolesList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f
+    rolesList: (f = jspb.Message.getRepeatedField(msg, 4)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -722,11 +723,15 @@ proto.groups.AddGroupRequest.deserializeBinaryFromReader = function(msg, reader)
       msg.setName(value);
       break;
     case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDesc(value);
+      break;
+    case 3:
       var value = new proto.groups.GroupMember;
       reader.readMessage(value,proto.groups.GroupMember.deserializeBinaryFromReader);
       msg.addMembers(value);
       break;
-    case 3:
+    case 4:
       var value = /** @type {string} */ (reader.readString());
       msg.addRoles(value);
       break;
@@ -766,10 +771,17 @@ proto.groups.AddGroupRequest.serializeBinaryToWriter = function(message, writer)
       f
     );
   }
+  f = /** @type {string} */ (jspb.Message.getField(message, 2));
+  if (f != null) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
   f = message.getMembersList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      2,
+      3,
       f,
       proto.groups.GroupMember.serializeBinaryToWriter
     );
@@ -777,7 +789,7 @@ proto.groups.AddGroupRequest.serializeBinaryToWriter = function(message, writer)
   f = message.getRolesList();
   if (f.length > 0) {
     writer.writeRepeatedString(
-      3,
+      4,
       f
     );
   }
@@ -803,12 +815,48 @@ proto.groups.AddGroupRequest.prototype.setName = function(value) {
 
 
 /**
- * repeated GroupMember members = 2;
+ * optional string desc = 2;
+ * @return {string}
+ */
+proto.groups.AddGroupRequest.prototype.getDesc = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.groups.AddGroupRequest} returns this
+ */
+proto.groups.AddGroupRequest.prototype.setDesc = function(value) {
+  return jspb.Message.setField(this, 2, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.groups.AddGroupRequest} returns this
+ */
+proto.groups.AddGroupRequest.prototype.clearDesc = function() {
+  return jspb.Message.setField(this, 2, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.groups.AddGroupRequest.prototype.hasDesc = function() {
+  return jspb.Message.getField(this, 2) != null;
+};
+
+
+/**
+ * repeated GroupMember members = 3;
  * @return {!Array<!proto.groups.GroupMember>}
  */
 proto.groups.AddGroupRequest.prototype.getMembersList = function() {
   return /** @type{!Array<!proto.groups.GroupMember>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.groups.GroupMember, 2));
+    jspb.Message.getRepeatedWrapperField(this, proto.groups.GroupMember, 3));
 };
 
 
@@ -817,7 +865,7 @@ proto.groups.AddGroupRequest.prototype.getMembersList = function() {
  * @return {!proto.groups.AddGroupRequest} returns this
 */
 proto.groups.AddGroupRequest.prototype.setMembersList = function(value) {
-  return jspb.Message.setRepeatedWrapperField(this, 2, value);
+  return jspb.Message.setRepeatedWrapperField(this, 3, value);
 };
 
 
@@ -827,7 +875,7 @@ proto.groups.AddGroupRequest.prototype.setMembersList = function(value) {
  * @return {!proto.groups.GroupMember}
  */
 proto.groups.AddGroupRequest.prototype.addMembers = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 2, opt_value, proto.groups.GroupMember, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 3, opt_value, proto.groups.GroupMember, opt_index);
 };
 
 
@@ -841,11 +889,11 @@ proto.groups.AddGroupRequest.prototype.clearMembersList = function() {
 
 
 /**
- * repeated string roles = 3;
+ * repeated string roles = 4;
  * @return {!Array<string>}
  */
 proto.groups.AddGroupRequest.prototype.getRolesList = function() {
-  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 3));
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 4));
 };
 
 
@@ -854,7 +902,7 @@ proto.groups.AddGroupRequest.prototype.getRolesList = function() {
  * @return {!proto.groups.AddGroupRequest} returns this
  */
 proto.groups.AddGroupRequest.prototype.setRolesList = function(value) {
-  return jspb.Message.setField(this, 3, value || []);
+  return jspb.Message.setField(this, 4, value || []);
 };
 
 
@@ -864,7 +912,7 @@ proto.groups.AddGroupRequest.prototype.setRolesList = function(value) {
  * @return {!proto.groups.AddGroupRequest} returns this
  */
 proto.groups.AddGroupRequest.prototype.addRoles = function(value, opt_index) {
-  return jspb.Message.addToRepeatedField(this, 3, value, opt_index);
+  return jspb.Message.addToRepeatedField(this, 4, value, opt_index);
 };
 
 
@@ -883,7 +931,7 @@ proto.groups.AddGroupRequest.prototype.clearRolesList = function() {
  * @private {!Array<number>}
  * @const
  */
-proto.groups.ModifyGroupRequest.repeatedFields_ = [2,3,4,5];
+proto.groups.ModifyGroupRequest.repeatedFields_ = [3,4,5,6];
 
 
 
@@ -917,12 +965,13 @@ proto.groups.ModifyGroupRequest.prototype.toObject = function(opt_includeInstanc
 proto.groups.ModifyGroupRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     name: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    desc: jspb.Message.getFieldWithDefault(msg, 2, ""),
     addMembersList: jspb.Message.toObjectList(msg.getAddMembersList(),
     proto.groups.GroupMember.toObject, includeInstance),
     removeMembersList: jspb.Message.toObjectList(msg.getRemoveMembersList(),
     proto.groups.GroupMember.toObject, includeInstance),
-    addRolesList: (f = jspb.Message.getRepeatedField(msg, 4)) == null ? undefined : f,
-    removeRolesList: (f = jspb.Message.getRepeatedField(msg, 5)) == null ? undefined : f
+    addRolesList: (f = jspb.Message.getRepeatedField(msg, 5)) == null ? undefined : f,
+    removeRolesList: (f = jspb.Message.getRepeatedField(msg, 6)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -964,20 +1013,24 @@ proto.groups.ModifyGroupRequest.deserializeBinaryFromReader = function(msg, read
       msg.setName(value);
       break;
     case 2:
-      var value = new proto.groups.GroupMember;
-      reader.readMessage(value,proto.groups.GroupMember.deserializeBinaryFromReader);
-      msg.addAddMembers(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDesc(value);
       break;
     case 3:
       var value = new proto.groups.GroupMember;
       reader.readMessage(value,proto.groups.GroupMember.deserializeBinaryFromReader);
-      msg.addRemoveMembers(value);
+      msg.addAddMembers(value);
       break;
     case 4:
+      var value = new proto.groups.GroupMember;
+      reader.readMessage(value,proto.groups.GroupMember.deserializeBinaryFromReader);
+      msg.addRemoveMembers(value);
+      break;
+    case 5:
       var value = /** @type {string} */ (reader.readString());
       msg.addAddRoles(value);
       break;
-    case 5:
+    case 6:
       var value = /** @type {string} */ (reader.readString());
       msg.addRemoveRoles(value);
       break;
@@ -1017,15 +1070,14 @@ proto.groups.ModifyGroupRequest.serializeBinaryToWriter = function(message, writ
       f
     );
   }
-  f = message.getAddMembersList();
-  if (f.length > 0) {
-    writer.writeRepeatedMessage(
+  f = /** @type {string} */ (jspb.Message.getField(message, 2));
+  if (f != null) {
+    writer.writeString(
       2,
-      f,
-      proto.groups.GroupMember.serializeBinaryToWriter
+      f
     );
   }
-  f = message.getRemoveMembersList();
+  f = message.getAddMembersList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       3,
@@ -1033,17 +1085,25 @@ proto.groups.ModifyGroupRequest.serializeBinaryToWriter = function(message, writ
       proto.groups.GroupMember.serializeBinaryToWriter
     );
   }
+  f = message.getRemoveMembersList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      4,
+      f,
+      proto.groups.GroupMember.serializeBinaryToWriter
+    );
+  }
   f = message.getAddRolesList();
   if (f.length > 0) {
     writer.writeRepeatedString(
-      4,
+      5,
       f
     );
   }
   f = message.getRemoveRolesList();
   if (f.length > 0) {
     writer.writeRepeatedString(
-      5,
+      6,
       f
     );
   }
@@ -1069,12 +1129,48 @@ proto.groups.ModifyGroupRequest.prototype.setName = function(value) {
 
 
 /**
- * repeated GroupMember add_members = 2;
+ * optional string desc = 2;
+ * @return {string}
+ */
+proto.groups.ModifyGroupRequest.prototype.getDesc = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.groups.ModifyGroupRequest} returns this
+ */
+proto.groups.ModifyGroupRequest.prototype.setDesc = function(value) {
+  return jspb.Message.setField(this, 2, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.groups.ModifyGroupRequest} returns this
+ */
+proto.groups.ModifyGroupRequest.prototype.clearDesc = function() {
+  return jspb.Message.setField(this, 2, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.groups.ModifyGroupRequest.prototype.hasDesc = function() {
+  return jspb.Message.getField(this, 2) != null;
+};
+
+
+/**
+ * repeated GroupMember add_members = 3;
  * @return {!Array<!proto.groups.GroupMember>}
  */
 proto.groups.ModifyGroupRequest.prototype.getAddMembersList = function() {
   return /** @type{!Array<!proto.groups.GroupMember>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.groups.GroupMember, 2));
+    jspb.Message.getRepeatedWrapperField(this, proto.groups.GroupMember, 3));
 };
 
 
@@ -1083,7 +1179,7 @@ proto.groups.ModifyGroupRequest.prototype.getAddMembersList = function() {
  * @return {!proto.groups.ModifyGroupRequest} returns this
 */
 proto.groups.ModifyGroupRequest.prototype.setAddMembersList = function(value) {
-  return jspb.Message.setRepeatedWrapperField(this, 2, value);
+  return jspb.Message.setRepeatedWrapperField(this, 3, value);
 };
 
 
@@ -1093,7 +1189,7 @@ proto.groups.ModifyGroupRequest.prototype.setAddMembersList = function(value) {
  * @return {!proto.groups.GroupMember}
  */
 proto.groups.ModifyGroupRequest.prototype.addAddMembers = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 2, opt_value, proto.groups.GroupMember, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 3, opt_value, proto.groups.GroupMember, opt_index);
 };
 
 
@@ -1107,12 +1203,12 @@ proto.groups.ModifyGroupRequest.prototype.clearAddMembersList = function() {
 
 
 /**
- * repeated GroupMember remove_members = 3;
+ * repeated GroupMember remove_members = 4;
  * @return {!Array<!proto.groups.GroupMember>}
  */
 proto.groups.ModifyGroupRequest.prototype.getRemoveMembersList = function() {
   return /** @type{!Array<!proto.groups.GroupMember>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.groups.GroupMember, 3));
+    jspb.Message.getRepeatedWrapperField(this, proto.groups.GroupMember, 4));
 };
 
 
@@ -1121,7 +1217,7 @@ proto.groups.ModifyGroupRequest.prototype.getRemoveMembersList = function() {
  * @return {!proto.groups.ModifyGroupRequest} returns this
 */
 proto.groups.ModifyGroupRequest.prototype.setRemoveMembersList = function(value) {
-  return jspb.Message.setRepeatedWrapperField(this, 3, value);
+  return jspb.Message.setRepeatedWrapperField(this, 4, value);
 };
 
 
@@ -1131,7 +1227,7 @@ proto.groups.ModifyGroupRequest.prototype.setRemoveMembersList = function(value)
  * @return {!proto.groups.GroupMember}
  */
 proto.groups.ModifyGroupRequest.prototype.addRemoveMembers = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 3, opt_value, proto.groups.GroupMember, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 4, opt_value, proto.groups.GroupMember, opt_index);
 };
 
 
@@ -1145,11 +1241,11 @@ proto.groups.ModifyGroupRequest.prototype.clearRemoveMembersList = function() {
 
 
 /**
- * repeated string add_roles = 4;
+ * repeated string add_roles = 5;
  * @return {!Array<string>}
  */
 proto.groups.ModifyGroupRequest.prototype.getAddRolesList = function() {
-  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 4));
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 5));
 };
 
 
@@ -1158,7 +1254,7 @@ proto.groups.ModifyGroupRequest.prototype.getAddRolesList = function() {
  * @return {!proto.groups.ModifyGroupRequest} returns this
  */
 proto.groups.ModifyGroupRequest.prototype.setAddRolesList = function(value) {
-  return jspb.Message.setField(this, 4, value || []);
+  return jspb.Message.setField(this, 5, value || []);
 };
 
 
@@ -1168,7 +1264,7 @@ proto.groups.ModifyGroupRequest.prototype.setAddRolesList = function(value) {
  * @return {!proto.groups.ModifyGroupRequest} returns this
  */
 proto.groups.ModifyGroupRequest.prototype.addAddRoles = function(value, opt_index) {
-  return jspb.Message.addToRepeatedField(this, 4, value, opt_index);
+  return jspb.Message.addToRepeatedField(this, 5, value, opt_index);
 };
 
 
@@ -1182,11 +1278,11 @@ proto.groups.ModifyGroupRequest.prototype.clearAddRolesList = function() {
 
 
 /**
- * repeated string remove_roles = 5;
+ * repeated string remove_roles = 6;
  * @return {!Array<string>}
  */
 proto.groups.ModifyGroupRequest.prototype.getRemoveRolesList = function() {
-  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 5));
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 6));
 };
 
 
@@ -1195,7 +1291,7 @@ proto.groups.ModifyGroupRequest.prototype.getRemoveRolesList = function() {
  * @return {!proto.groups.ModifyGroupRequest} returns this
  */
 proto.groups.ModifyGroupRequest.prototype.setRemoveRolesList = function(value) {
-  return jspb.Message.setField(this, 5, value || []);
+  return jspb.Message.setField(this, 6, value || []);
 };
 
 
@@ -1205,7 +1301,7 @@ proto.groups.ModifyGroupRequest.prototype.setRemoveRolesList = function(value) {
  * @return {!proto.groups.ModifyGroupRequest} returns this
  */
 proto.groups.ModifyGroupRequest.prototype.addRemoveRoles = function(value, opt_index) {
-  return jspb.Message.addToRepeatedField(this, 5, value, opt_index);
+  return jspb.Message.addToRepeatedField(this, 6, value, opt_index);
 };
 
 

@@ -1163,7 +1163,7 @@ proto.policies.EntityCheck.prototype.hasBucket = function() {
  * @private {!Array<number>}
  * @const
  */
-proto.policies.TargetCheck.repeatedFields_ = [3];
+proto.policies.TargetCheck.repeatedFields_ = [3,4,5];
 
 
 
@@ -1200,6 +1200,8 @@ proto.policies.TargetCheck.toObject = function(includeInstance, msg) {
     typestr: (f = msg.getTypestr()) && proto.policies.StringCheck.toObject(includeInstance, f),
     attributesList: jspb.Message.toObjectList(msg.getAttributesList(),
     proto.policies.KvCheck.toObject, includeInstance),
+    matchInEntityList: (f = jspb.Message.getRepeatedField(msg, 4)) == null ? undefined : f,
+    matchInEnvList: (f = jspb.Message.getRepeatedField(msg, 5)) == null ? undefined : f,
     action: (f = msg.getAction()) && proto.policies.StringCheck.toObject(includeInstance, f)
   };
 
@@ -1253,6 +1255,14 @@ proto.policies.TargetCheck.deserializeBinaryFromReader = function(msg, reader) {
       msg.addAttributes(value);
       break;
     case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addMatchInEntity(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addMatchInEnv(value);
+      break;
+    case 6:
       var value = new proto.policies.StringCheck;
       reader.readMessage(value,proto.policies.StringCheck.deserializeBinaryFromReader);
       msg.setAction(value);
@@ -1310,10 +1320,24 @@ proto.policies.TargetCheck.serializeBinaryToWriter = function(message, writer) {
       proto.policies.KvCheck.serializeBinaryToWriter
     );
   }
+  f = message.getMatchInEntityList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      4,
+      f
+    );
+  }
+  f = message.getMatchInEnvList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      5,
+      f
+    );
+  }
   f = message.getAction();
   if (f != null) {
     writer.writeMessage(
-      4,
+      6,
       f,
       proto.policies.StringCheck.serializeBinaryToWriter
     );
@@ -1434,12 +1458,86 @@ proto.policies.TargetCheck.prototype.clearAttributesList = function() {
 
 
 /**
- * optional StringCheck action = 4;
+ * repeated string match_in_entity = 4;
+ * @return {!Array<string>}
+ */
+proto.policies.TargetCheck.prototype.getMatchInEntityList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 4));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.policies.TargetCheck} returns this
+ */
+proto.policies.TargetCheck.prototype.setMatchInEntityList = function(value) {
+  return jspb.Message.setField(this, 4, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.policies.TargetCheck} returns this
+ */
+proto.policies.TargetCheck.prototype.addMatchInEntity = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 4, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.policies.TargetCheck} returns this
+ */
+proto.policies.TargetCheck.prototype.clearMatchInEntityList = function() {
+  return this.setMatchInEntityList([]);
+};
+
+
+/**
+ * repeated string match_in_env = 5;
+ * @return {!Array<string>}
+ */
+proto.policies.TargetCheck.prototype.getMatchInEnvList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 5));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.policies.TargetCheck} returns this
+ */
+proto.policies.TargetCheck.prototype.setMatchInEnvList = function(value) {
+  return jspb.Message.setField(this, 5, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.policies.TargetCheck} returns this
+ */
+proto.policies.TargetCheck.prototype.addMatchInEnv = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 5, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.policies.TargetCheck} returns this
+ */
+proto.policies.TargetCheck.prototype.clearMatchInEnvList = function() {
+  return this.setMatchInEnvList([]);
+};
+
+
+/**
+ * optional StringCheck action = 6;
  * @return {?proto.policies.StringCheck}
  */
 proto.policies.TargetCheck.prototype.getAction = function() {
   return /** @type{?proto.policies.StringCheck} */ (
-    jspb.Message.getWrapperField(this, proto.policies.StringCheck, 4));
+    jspb.Message.getWrapperField(this, proto.policies.StringCheck, 6));
 };
 
 
@@ -1448,7 +1546,7 @@ proto.policies.TargetCheck.prototype.getAction = function() {
  * @return {!proto.policies.TargetCheck} returns this
 */
 proto.policies.TargetCheck.prototype.setAction = function(value) {
-  return jspb.Message.setWrapperField(this, 4, value);
+  return jspb.Message.setWrapperField(this, 6, value);
 };
 
 
@@ -1466,7 +1564,7 @@ proto.policies.TargetCheck.prototype.clearAction = function() {
  * @return {boolean}
  */
 proto.policies.TargetCheck.prototype.hasAction = function() {
-  return jspb.Message.getField(this, 4) != null;
+  return jspb.Message.getField(this, 6) != null;
 };
 
 

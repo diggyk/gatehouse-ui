@@ -124,6 +124,31 @@ export default function PolicyRule() {
         rule.getTargetCheck()!.getAttributesList()
       );
 
+      let matchAttrs: JSX.Element[] = [];
+      rule
+        .getTargetCheck()!
+        .getMatchInEntityList()
+        .forEach((attr) => {
+          matchAttrs.push(
+            <tr key={"match_ent_" + attr}>
+              <td>attr:{attr}</td>
+              <td colSpan={2}>MATCHS IN ENTITY</td>
+            </tr>
+          );
+        });
+
+      rule
+        .getTargetCheck()!
+        .getMatchInEnvList()
+        .forEach((attr) => {
+          matchAttrs.push(
+            <tr key={"match_env_" + attr}>
+              <td>attr:{attr}</td>
+              <td colSpan={2}>MATCHS IN ENV</td>
+            </tr>
+          );
+        });
+
       let targetAction;
       if (!rule.getTargetCheck()!.getAction()) {
         targetAction = (
@@ -144,6 +169,7 @@ export default function PolicyRule() {
           {targetName}
           {targetType}
           {targetAttribs}
+          {matchAttrs}
           {targetAction}
         </>
       );
@@ -220,25 +246,25 @@ export default function PolicyRule() {
         <Table className="showEntryTable">
           <thead>
             <tr>
-              <th colSpan={3}>Entity must match</th>
+              <th colSpan={3}>When entity matches...</th>
             </tr>
           </thead>
           <tbody>{entityCheckToTable()}</tbody>
           <thead>
             <tr>
-              <th colSpan={3}>Environment must match</th>
+              <th colSpan={3}>When environment matches...</th>
             </tr>
           </thead>
           <tbody>{envCheckToTable()}</tbody>
           <thead>
             <tr>
-              <th colSpan={3}>When target is</th>
+              <th colSpan={3}>When target matches...</th>
             </tr>
           </thead>
           <tbody>{targetCheckToTable()}</tbody>
           <thead>
             <tr>
-              <th colSpan={3}>Then decide</th>
+              <th colSpan={3}>...then decide</th>
             </tr>
           </thead>
           <tbody>
