@@ -112,7 +112,7 @@ body, html {
 
         .card-title {
             margin: 0;
-            padding: 10px 100px 5px 20px;
+            padding: 10px 100px 5px 10px;
             // border-bottom: darken($color: $body-bg, $amount: 80) 2px solid;
             background-color: rgb(233, 181, 97);
             border-top-left-radius: 0.375rem;
@@ -121,7 +121,7 @@ body, html {
 
         .card-subtitle {
             margin: 0;
-            padding: 5px 20px 5px 20px;
+            padding: 5px 20px 5px 10px;
             border-bottom: darken($color: $body-bg, $amount: 60) 1px solid;
             background-color: darken($color: rgb(233, 181, 97), $amount: 20)
         }
@@ -137,7 +137,10 @@ body, html {
     background-color: darken($color: $body-bg, $amount: 15);
     margin: 0;
 
-    th::not(:first-of-type), td {
+    th {
+        padding: 5px 20px 5px 10px;
+    }
+    td {
         padding: 5px 20px 5px 20px;
     }
 
