@@ -2752,8 +2752,8 @@ proto.policies.NUM = {
  * @enum {number}
  */
 proto.policies.DECIDE = {
-  FAIL: 0,
-  PASS: 1
+  DENY: 0,
+  ALLOW: 1
 };
 
 goog.object.extend(exports, proto.policies);

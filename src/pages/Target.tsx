@@ -56,7 +56,7 @@ export default function Entity() {
   }
 
   let actions: JSX.Element[] = [];
-  let actions_list = target.getActionsList();
+  let actions_list = target.getActionsList().sort();
   if (actions_list.length > 0) {
     actions_list.forEach((action) => {
       actions.push(

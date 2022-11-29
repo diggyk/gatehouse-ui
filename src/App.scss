@@ -55,7 +55,7 @@ body, html {
 // SIDEBAR
 
 .sidePickerNav {
-    background-color: darken($color: $body-bg, $amount: 80)
+    background-color: darken($color: $body-bg, $amount: 80);
 }
 
 .sidePickerNav .header {
@@ -67,22 +67,25 @@ body, html {
 
 .sidePickerNav .itemList {
     padding-bottom: 10px;
-}
+    padding-top: 10px;
 
-.sidePickerNav .itemList ul {
-    padding: 0;
-}
-.sidePickerNav .itemList li {
-    display: block;
-    border-radius: .25em;
-    padding: 4px 10px;
-    margin: 2px;
-}
+    .item {
+        color: rgb(233, 181, 97);
+        text-decoration: none;
+        background-color: none;
+    }
 
-.sidePickerNav .item {
-    color: rgb(233, 181, 97);
-    text-decoration: none;
-    background-color: none;
+    ul {
+        padding: 0;
+    
+        li {
+            display: block;
+            border-radius: .25em;
+            padding: 4px 10px;
+            margin: 2px;
+        }
+    }
+    
 }
 
 .sidePickerNav .itemList li:hover {

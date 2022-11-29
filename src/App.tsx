@@ -11,6 +11,8 @@ import Entity from "./pages/Entity";
 import Page404 from "./pages/Page404";
 import Target from "./pages/Target";
 import PolicyRule from "./pages/PolicyRule";
+import GroupsPage from "./pages/GroupsPage";
+import Group from "./pages/Group";
 
 export default function App() {
   return (
@@ -25,6 +27,9 @@ export default function App() {
         </Route>
         <Route path="entities" element={<EntitiesPage />}>
           <Route path=":typestr/:name" element={<Entity />} />
+        </Route>
+        <Route path="groups" element={<GroupsPage />}>
+          <Route path=":name" element={<Group />} />
         </Route>
         <Route path="*" element={<Page404 />} />
       </Route>
@@ -58,6 +63,9 @@ function Layout() {
             </Nav.Link>
             <Nav.Link as={NavLink} to="/entities" eventKey="/entities">
               Entities
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/groups" eventKey="/groups">
+              Groups
             </Nav.Link>
           </Navbar.Collapse>
         </Nav>
