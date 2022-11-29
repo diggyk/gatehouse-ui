@@ -16,7 +16,6 @@ var goog = jspb;
 var global = (function() { return this || window || global || self || Function('return this')(); }).call(null);
 
 goog.exportSymbol('proto.policies.AddPolicyRequest', null, global);
-goog.exportSymbol('proto.policies.CMP', null, global);
 goog.exportSymbol('proto.policies.DECIDE', null, global);
 goog.exportSymbol('proto.policies.EntityCheck', null, global);
 goog.exportSymbol('proto.policies.GetPoliciesRequest', null, global);
@@ -42,7 +41,7 @@ goog.exportSymbol('proto.policies.TargetCheck', null, global);
  * @constructor
  */
 proto.policies.StringCheck = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.policies.StringCheck.repeatedFields_, null);
 };
 goog.inherits(proto.policies.StringCheck, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -63,7 +62,7 @@ if (goog.DEBUG && !COMPILED) {
  * @constructor
  */
 proto.policies.KvCheck = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.policies.KvCheck.repeatedFields_, null);
 };
 goog.inherits(proto.policies.KvCheck, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -231,7 +230,7 @@ if (goog.DEBUG && !COMPILED) {
  * @constructor
  */
 proto.policies.GetPoliciesRequest = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, proto.policies.GetPoliciesRequest.repeatedFields_, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
 goog.inherits(proto.policies.GetPoliciesRequest, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -284,6 +283,13 @@ if (goog.DEBUG && !COMPILED) {
   proto.policies.MultiPolicyResponse.displayName = 'proto.policies.MultiPolicyResponse';
 }
 
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.policies.StringCheck.repeatedFields_ = [2];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -316,7 +322,7 @@ proto.policies.StringCheck.prototype.toObject = function(opt_includeInstance) {
 proto.policies.StringCheck.toObject = function(includeInstance, msg) {
   var f, obj = {
     valCmp: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    val: jspb.Message.getFieldWithDefault(msg, 2, "")
+    valsList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -354,12 +360,12 @@ proto.policies.StringCheck.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {!proto.policies.CMP} */ (reader.readEnum());
+      var value = /** @type {!proto.policies.SET} */ (reader.readEnum());
       msg.setValCmp(value);
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
-      msg.setVal(value);
+      msg.addVals(value);
       break;
     default:
       reader.skipField();
@@ -397,9 +403,9 @@ proto.policies.StringCheck.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getVal();
+  f = message.getValsList();
   if (f.length > 0) {
-    writer.writeString(
+    writer.writeRepeatedString(
       2,
       f
     );
@@ -408,16 +414,16 @@ proto.policies.StringCheck.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional CMP val_cmp = 1;
- * @return {!proto.policies.CMP}
+ * optional SET val_cmp = 1;
+ * @return {!proto.policies.SET}
  */
 proto.policies.StringCheck.prototype.getValCmp = function() {
-  return /** @type {!proto.policies.CMP} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {!proto.policies.SET} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 
 
 /**
- * @param {!proto.policies.CMP} value
+ * @param {!proto.policies.SET} value
  * @return {!proto.policies.StringCheck} returns this
  */
 proto.policies.StringCheck.prototype.setValCmp = function(value) {
@@ -426,23 +432,49 @@ proto.policies.StringCheck.prototype.setValCmp = function(value) {
 
 
 /**
- * optional string val = 2;
- * @return {string}
+ * repeated string vals = 2;
+ * @return {!Array<string>}
  */
-proto.policies.StringCheck.prototype.getVal = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+proto.policies.StringCheck.prototype.getValsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 2));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.policies.StringCheck} returns this
+ */
+proto.policies.StringCheck.prototype.setValsList = function(value) {
+  return jspb.Message.setField(this, 2, value || []);
 };
 
 
 /**
  * @param {string} value
+ * @param {number=} opt_index
  * @return {!proto.policies.StringCheck} returns this
  */
-proto.policies.StringCheck.prototype.setVal = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
+proto.policies.StringCheck.prototype.addVals = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 2, value, opt_index);
 };
 
 
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.policies.StringCheck} returns this
+ */
+proto.policies.StringCheck.prototype.clearValsList = function() {
+  return this.setValsList([]);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.policies.KvCheck.repeatedFields_ = [3];
 
 
 
@@ -477,7 +509,7 @@ proto.policies.KvCheck.toObject = function(includeInstance, msg) {
   var f, obj = {
     key: jspb.Message.getFieldWithDefault(msg, 1, ""),
     op: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    val: jspb.Message.getFieldWithDefault(msg, 3, "")
+    valsList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -524,7 +556,7 @@ proto.policies.KvCheck.deserializeBinaryFromReader = function(msg, reader) {
       break;
     case 3:
       var value = /** @type {string} */ (reader.readString());
-      msg.setVal(value);
+      msg.addVals(value);
       break;
     default:
       reader.skipField();
@@ -569,9 +601,9 @@ proto.policies.KvCheck.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getVal();
+  f = message.getValsList();
   if (f.length > 0) {
-    writer.writeString(
+    writer.writeRepeatedString(
       3,
       f
     );
@@ -616,20 +648,39 @@ proto.policies.KvCheck.prototype.setOp = function(value) {
 
 
 /**
- * optional string val = 3;
- * @return {string}
+ * repeated string vals = 3;
+ * @return {!Array<string>}
  */
-proto.policies.KvCheck.prototype.getVal = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+proto.policies.KvCheck.prototype.getValsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 3));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.policies.KvCheck} returns this
+ */
+proto.policies.KvCheck.prototype.setValsList = function(value) {
+  return jspb.Message.setField(this, 3, value || []);
 };
 
 
 /**
  * @param {string} value
+ * @param {number=} opt_index
  * @return {!proto.policies.KvCheck} returns this
  */
-proto.policies.KvCheck.prototype.setVal = function(value) {
-  return jspb.Message.setProto3StringField(this, 3, value);
+proto.policies.KvCheck.prototype.addVals = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 3, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.policies.KvCheck} returns this
+ */
+proto.policies.KvCheck.prototype.clearValsList = function() {
+  return this.setValsList([]);
 };
 
 
@@ -2222,13 +2273,6 @@ proto.policies.RemovePolicyRequest.prototype.setName = function(value) {
 
 
 
-/**
- * List of repeated fields within this message type.
- * @private {!Array<number>}
- * @const
- */
-proto.policies.GetPoliciesRequest.repeatedFields_ = [3];
-
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -2260,11 +2304,7 @@ proto.policies.GetPoliciesRequest.prototype.toObject = function(opt_includeInsta
  */
 proto.policies.GetPoliciesRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    name: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    entityCheck: (f = msg.getEntityCheck()) && proto.policies.EntityCheck.toObject(includeInstance, f),
-    envAttributesList: jspb.Message.toObjectList(msg.getEnvAttributesList(),
-    proto.policies.KvCheck.toObject, includeInstance),
-    targetCheck: (f = msg.getTargetCheck()) && proto.policies.TargetCheck.toObject(includeInstance, f)
+    name: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -2305,21 +2345,6 @@ proto.policies.GetPoliciesRequest.deserializeBinaryFromReader = function(msg, re
       var value = /** @type {string} */ (reader.readString());
       msg.setName(value);
       break;
-    case 2:
-      var value = new proto.policies.EntityCheck;
-      reader.readMessage(value,proto.policies.EntityCheck.deserializeBinaryFromReader);
-      msg.setEntityCheck(value);
-      break;
-    case 3:
-      var value = new proto.policies.KvCheck;
-      reader.readMessage(value,proto.policies.KvCheck.deserializeBinaryFromReader);
-      msg.addEnvAttributes(value);
-      break;
-    case 4:
-      var value = new proto.policies.TargetCheck;
-      reader.readMessage(value,proto.policies.TargetCheck.deserializeBinaryFromReader);
-      msg.setTargetCheck(value);
-      break;
     default:
       reader.skipField();
       break;
@@ -2354,30 +2379,6 @@ proto.policies.GetPoliciesRequest.serializeBinaryToWriter = function(message, wr
     writer.writeString(
       1,
       f
-    );
-  }
-  f = message.getEntityCheck();
-  if (f != null) {
-    writer.writeMessage(
-      2,
-      f,
-      proto.policies.EntityCheck.serializeBinaryToWriter
-    );
-  }
-  f = message.getEnvAttributesList();
-  if (f.length > 0) {
-    writer.writeRepeatedMessage(
-      3,
-      f,
-      proto.policies.KvCheck.serializeBinaryToWriter
-    );
-  }
-  f = message.getTargetCheck();
-  if (f != null) {
-    writer.writeMessage(
-      4,
-      f,
-      proto.policies.TargetCheck.serializeBinaryToWriter
     );
   }
 };
@@ -2416,118 +2417,6 @@ proto.policies.GetPoliciesRequest.prototype.clearName = function() {
  */
 proto.policies.GetPoliciesRequest.prototype.hasName = function() {
   return jspb.Message.getField(this, 1) != null;
-};
-
-
-/**
- * optional EntityCheck entity_check = 2;
- * @return {?proto.policies.EntityCheck}
- */
-proto.policies.GetPoliciesRequest.prototype.getEntityCheck = function() {
-  return /** @type{?proto.policies.EntityCheck} */ (
-    jspb.Message.getWrapperField(this, proto.policies.EntityCheck, 2));
-};
-
-
-/**
- * @param {?proto.policies.EntityCheck|undefined} value
- * @return {!proto.policies.GetPoliciesRequest} returns this
-*/
-proto.policies.GetPoliciesRequest.prototype.setEntityCheck = function(value) {
-  return jspb.Message.setWrapperField(this, 2, value);
-};
-
-
-/**
- * Clears the message field making it undefined.
- * @return {!proto.policies.GetPoliciesRequest} returns this
- */
-proto.policies.GetPoliciesRequest.prototype.clearEntityCheck = function() {
-  return this.setEntityCheck(undefined);
-};
-
-
-/**
- * Returns whether this field is set.
- * @return {boolean}
- */
-proto.policies.GetPoliciesRequest.prototype.hasEntityCheck = function() {
-  return jspb.Message.getField(this, 2) != null;
-};
-
-
-/**
- * repeated KvCheck env_attributes = 3;
- * @return {!Array<!proto.policies.KvCheck>}
- */
-proto.policies.GetPoliciesRequest.prototype.getEnvAttributesList = function() {
-  return /** @type{!Array<!proto.policies.KvCheck>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.policies.KvCheck, 3));
-};
-
-
-/**
- * @param {!Array<!proto.policies.KvCheck>} value
- * @return {!proto.policies.GetPoliciesRequest} returns this
-*/
-proto.policies.GetPoliciesRequest.prototype.setEnvAttributesList = function(value) {
-  return jspb.Message.setRepeatedWrapperField(this, 3, value);
-};
-
-
-/**
- * @param {!proto.policies.KvCheck=} opt_value
- * @param {number=} opt_index
- * @return {!proto.policies.KvCheck}
- */
-proto.policies.GetPoliciesRequest.prototype.addEnvAttributes = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 3, opt_value, proto.policies.KvCheck, opt_index);
-};
-
-
-/**
- * Clears the list making it empty but non-null.
- * @return {!proto.policies.GetPoliciesRequest} returns this
- */
-proto.policies.GetPoliciesRequest.prototype.clearEnvAttributesList = function() {
-  return this.setEnvAttributesList([]);
-};
-
-
-/**
- * optional TargetCheck target_check = 4;
- * @return {?proto.policies.TargetCheck}
- */
-proto.policies.GetPoliciesRequest.prototype.getTargetCheck = function() {
-  return /** @type{?proto.policies.TargetCheck} */ (
-    jspb.Message.getWrapperField(this, proto.policies.TargetCheck, 4));
-};
-
-
-/**
- * @param {?proto.policies.TargetCheck|undefined} value
- * @return {!proto.policies.GetPoliciesRequest} returns this
-*/
-proto.policies.GetPoliciesRequest.prototype.setTargetCheck = function(value) {
-  return jspb.Message.setWrapperField(this, 4, value);
-};
-
-
-/**
- * Clears the message field making it undefined.
- * @return {!proto.policies.GetPoliciesRequest} returns this
- */
-proto.policies.GetPoliciesRequest.prototype.clearTargetCheck = function() {
-  return this.setTargetCheck(undefined);
-};
-
-
-/**
- * Returns whether this field is set.
- * @return {boolean}
- */
-proto.policies.GetPoliciesRequest.prototype.hasTargetCheck = function() {
-  return jspb.Message.getField(this, 4) != null;
 };
 
 
@@ -2841,14 +2730,6 @@ proto.policies.MultiPolicyResponse.prototype.clearRulesList = function() {
   return this.setRulesList([]);
 };
 
-
-/**
- * @enum {number}
- */
-proto.policies.CMP = {
-  IS: 0,
-  IS_NOT: 1
-};
 
 /**
  * @enum {number}

@@ -36,20 +36,20 @@ function Layout() {
   return (
     <Container fluid className="h-100 p-0">
       <Navbar bg="dark" expand="lg" variant="dark" className="navbar">
-        <NavbarBrand>
-          <Nav.Link as={NavLink} to="/" eventKey="/">
-            <img
-              className="d-inline-block align-top"
-              height="30"
-              src={logo}
-              alt="Logo"
-            />{" "}
-            Gatehouse
-          </Nav.Link>
-        </NavbarBrand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
+        <Nav className="me-auto">
+          <NavbarBrand>
+            <Nav.Link as={NavLink} to="/" eventKey="/">
+              <img
+                className="d-inline-block align-top"
+                height="30"
+                src={logo}
+                alt="Logo"
+              />{" "}
+              Gatehouse
+            </Nav.Link>
+          </NavbarBrand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
             <Nav.Link as={NavLink} to="/policyrules" eventKey="/policyrules">
               Policy Rules
             </Nav.Link>
@@ -59,8 +59,8 @@ function Layout() {
             <Nav.Link as={NavLink} to="/entities" eventKey="/entities">
               Entities
             </Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
+          </Navbar.Collapse>
+        </Nav>
       </Navbar>
       <Container fluid className="mainBody">
         <Outlet />

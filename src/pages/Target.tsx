@@ -81,8 +81,6 @@ export default function Entity() {
         <Table className="showEntryTable">
           <thead>{headers}</thead>
           <tbody>{attrs}</tbody>
-        </Table>
-        <Table className="showEntryTable">
           <thead>
             <tr>
               <th>Actions</th>

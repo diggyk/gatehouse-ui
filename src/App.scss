@@ -31,6 +31,16 @@ body, html {
     padding-left: 20px;
     margin: 0;
     height: 50px;
+    
+    :not(.navbar-brand) > .nav-link {
+        border-radius: 0.25rem;
+        padding: 2px 20px 2px 20px;
+    }
+    :not(.navbar-brand) > .nav-link.active {
+        border-radius: 0.25rem;
+        background-color: lighten($color: $navbar-light-color, $amount: 30);
+        padding: 2px 20px 2px 20px;
+    }
 }
 
 // GENERAL STUFF
@@ -109,7 +119,7 @@ body, html {
         .card-subtitle {
             margin: 0;
             padding: 5px 20px 5px 20px;
-            border-bottom: darken($color: $body-bg, $amount: 80) 2px solid;
+            border-bottom: darken($color: $body-bg, $amount: 60) 1px solid;
             background-color: darken($color: rgb(233, 181, 97), $amount: 20)
         }
 
@@ -124,7 +134,7 @@ body, html {
     background-color: darken($color: $body-bg, $amount: 15);
     margin: 0;
 
-    th, td {
+    th::not(:first-of-type), td {
         padding: 5px 20px 5px 20px;
     }
 
