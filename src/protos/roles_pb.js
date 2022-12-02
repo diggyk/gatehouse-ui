@@ -153,7 +153,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<number>}
  * @const
  */
-proto.roles.Role.repeatedFields_ = [2];
+proto.roles.Role.repeatedFields_ = [3];
 
 
 
@@ -187,7 +187,8 @@ proto.roles.Role.prototype.toObject = function(opt_includeInstance) {
 proto.roles.Role.toObject = function(includeInstance, msg) {
   var f, obj = {
     name: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    grantedToList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f
+    desc: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    grantedToList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f
   };
 
   if (includeInstance) {
@@ -230,6 +231,10 @@ proto.roles.Role.deserializeBinaryFromReader = function(msg, reader) {
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
+      msg.setDesc(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
       msg.addGrantedTo(value);
       break;
     default:
@@ -268,10 +273,17 @@ proto.roles.Role.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = /** @type {string} */ (jspb.Message.getField(message, 2));
+  if (f != null) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
   f = message.getGrantedToList();
   if (f.length > 0) {
     writer.writeRepeatedString(
-      2,
+      3,
       f
     );
   }
@@ -297,11 +309,47 @@ proto.roles.Role.prototype.setName = function(value) {
 
 
 /**
- * repeated string granted_to = 2;
+ * optional string desc = 2;
+ * @return {string}
+ */
+proto.roles.Role.prototype.getDesc = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.roles.Role} returns this
+ */
+proto.roles.Role.prototype.setDesc = function(value) {
+  return jspb.Message.setField(this, 2, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.roles.Role} returns this
+ */
+proto.roles.Role.prototype.clearDesc = function() {
+  return jspb.Message.setField(this, 2, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.roles.Role.prototype.hasDesc = function() {
+  return jspb.Message.getField(this, 2) != null;
+};
+
+
+/**
+ * repeated string granted_to = 3;
  * @return {!Array<string>}
  */
 proto.roles.Role.prototype.getGrantedToList = function() {
-  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 2));
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 3));
 };
 
 
@@ -310,7 +358,7 @@ proto.roles.Role.prototype.getGrantedToList = function() {
  * @return {!proto.roles.Role} returns this
  */
 proto.roles.Role.prototype.setGrantedToList = function(value) {
-  return jspb.Message.setField(this, 2, value || []);
+  return jspb.Message.setField(this, 3, value || []);
 };
 
 
@@ -320,7 +368,7 @@ proto.roles.Role.prototype.setGrantedToList = function(value) {
  * @return {!proto.roles.Role} returns this
  */
 proto.roles.Role.prototype.addGrantedTo = function(value, opt_index) {
-  return jspb.Message.addToRepeatedField(this, 2, value, opt_index);
+  return jspb.Message.addToRepeatedField(this, 3, value, opt_index);
 };
 
 
@@ -365,7 +413,8 @@ proto.roles.AddRoleRequest.prototype.toObject = function(opt_includeInstance) {
  */
 proto.roles.AddRoleRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    name: jspb.Message.getFieldWithDefault(msg, 1, "")
+    name: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    desc: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -406,6 +455,10 @@ proto.roles.AddRoleRequest.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {string} */ (reader.readString());
       msg.setName(value);
       break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDesc(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -442,6 +495,13 @@ proto.roles.AddRoleRequest.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = /** @type {string} */ (jspb.Message.getField(message, 2));
+  if (f != null) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
 };
 
 
@@ -460,6 +520,42 @@ proto.roles.AddRoleRequest.prototype.getName = function() {
  */
 proto.roles.AddRoleRequest.prototype.setName = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string desc = 2;
+ * @return {string}
+ */
+proto.roles.AddRoleRequest.prototype.getDesc = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.roles.AddRoleRequest} returns this
+ */
+proto.roles.AddRoleRequest.prototype.setDesc = function(value) {
+  return jspb.Message.setField(this, 2, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.roles.AddRoleRequest} returns this
+ */
+proto.roles.AddRoleRequest.prototype.clearDesc = function() {
+  return jspb.Message.setField(this, 2, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.roles.AddRoleRequest.prototype.hasDesc = function() {
+  return jspb.Message.getField(this, 2) != null;
 };
 
 

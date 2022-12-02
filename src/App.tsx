@@ -13,6 +13,8 @@ import Target from "./pages/Target";
 import PolicyRule from "./pages/PolicyRule";
 import GroupsPage from "./pages/GroupsPage";
 import Group from "./pages/Group";
+import RolesPage from "./pages/RolesPage";
+import Role from "./pages/Role";
 
 export default function App() {
   return (
@@ -30,6 +32,9 @@ export default function App() {
         </Route>
         <Route path="groups" element={<GroupsPage />}>
           <Route path=":name" element={<Group />} />
+        </Route>
+        <Route path="roles" element={<RolesPage />}>
+          <Route path=":name" element={<Role />} />
         </Route>
         <Route path="*" element={<Page404 />} />
       </Route>
@@ -66,6 +71,9 @@ function Layout() {
             </Nav.Link>
             <Nav.Link as={NavLink} to="/groups" eventKey="/groups">
               Groups
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/roles" eventKey="/roles">
+              Roles
             </Nav.Link>
           </Navbar.Collapse>
         </Nav>
