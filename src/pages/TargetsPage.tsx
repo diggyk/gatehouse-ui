@@ -14,7 +14,7 @@ export default function TargetsPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let request = new proto.targets.GetAllTargetsRequest();
+    let request = new proto.targets.GetTargetsRequest();
     let gatehouseSvc = new GatehousePromiseClient(
       "http://localhost:6174",
       null,
@@ -30,9 +30,9 @@ export default function TargetsPage() {
           if (!tgt_map.has(typestr)) {
             tgt_map.set(typestr, new Map<string, proto.targets.Target>());
           }
-          let typed_entities = tgt_map.get(typestr);
-          if (typed_entities !== undefined) {
-            typed_entities.set(target.getName(), target);
+          let typed_actors = tgt_map.get(typestr);
+          if (typed_actors !== undefined) {
+            typed_actors.set(target.getName(), target);
           }
           setTargets(tgt_map);
         });

@@ -5,38 +5,38 @@ import { Link, Outlet } from "react-router-dom";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 
 type ContextType = {
-  entities: Map<string, Map<string, proto.entities.Entity>>;
+  actors: Map<string, Map<string, proto.actors.Actor>>;
 };
 
-export default function EntitiesPage() {
-  let nullMap = new Map<string, Map<string, proto.entities.Entity>>();
-  const [entities, setEntities] = useState(nullMap);
+export default function ActorsPage() {
+  let nullMap = new Map<string, Map<string, proto.actors.Actor>>();
+  const [actors, setActors] = useState(nullMap);
   const [error, setError] = useState(null);
 
   // load data from API on first render
   useEffect(() => {
-    let request = new proto.entities.GetAllEntitiesRequest();
+    let request = new proto.actors.GetActorsRequest();
     let gatehouseSvc = new GatehousePromiseClient(
       "http://localhost:6174",
       null,
       null
     );
-    let ent_map = new Map<string, Map<string, proto.entities.Entity>>();
+    let ent_map = new Map<string, Map<string, proto.actors.Actor>>();
     gatehouseSvc
-      .getEntities(request, null)
+      .getActors(request, null)
       .then((response) => {
-        let entities = response.getEntitiesList();
-        entities.forEach((entity: proto.entities.Entity) => {
+        let actors = response.getActorsList();
+        actors.forEach((entity: proto.actors.Actor) => {
           let typestr = entity.getTypestr();
           if (!ent_map.has(typestr)) {
-            ent_map.set(typestr, new Map<string, proto.entities.Entity>());
+            ent_map.set(typestr, new Map<string, proto.actors.Actor>());
           }
-          let typed_entities = ent_map.get(typestr);
-          if (typed_entities !== undefined) {
-            typed_entities.set(entity.getName(), entity);
+          let typed_actors = ent_map.get(typestr);
+          if (typed_actors !== undefined) {
+            typed_actors.set(entity.getName(), entity);
           }
         });
-        setEntities(ent_map);
+        setActors(ent_map);
       })
       .catch((err) => {
         setError(err.message);
@@ -46,10 +46,10 @@ export default function EntitiesPage() {
   /// Prints the nav for keys, organized by types
   const entityNav = () => {
     let type_sections: JSX.Element[] = [];
-    const typed_entities = new Map(
-      [...entities.entries()].sort(([a], [b]) => String(a).localeCompare(b))
+    const typed_actors = new Map(
+      [...actors.entries()].sort(([a], [b]) => String(a).localeCompare(b))
     );
-    typed_entities.forEach((vals, key) => {
+    typed_actors.forEach((vals, key) => {
       let entity_items: JSX.Element[] = [];
       [...vals.keys()].sort().forEach((val) => {
         let uid = key + "/" + val;
@@ -78,7 +78,7 @@ export default function EntitiesPage() {
 
   let mainContent;
   if (error == null) {
-    mainContent = <Outlet context={{ entities }} />;
+    mainContent = <Outlet context={{ actors }} />;
   } else {
     mainContent = <Container className="errorNote">{error}</Container>;
   }
@@ -93,6 +93,6 @@ export default function EntitiesPage() {
   );
 }
 
-export function useEntities() {
+export function useActors() {
   return useOutletContext<ContextType>();
 }

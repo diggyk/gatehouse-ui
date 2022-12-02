@@ -6,8 +6,8 @@ import { Link as NavLink, Route, Routes, Outlet } from "react-router-dom";
 import Home from "./pages/Home";
 import PolicyRulesPage from "./pages/PolicyRulesPage";
 import TargetsPage from "./pages/TargetsPage";
-import EntitiesPage from "./pages/EntitiesPage";
-import Entity from "./pages/Entity";
+import ActorsPage from "./pages/ActorsPage";
+import Actor from "./pages/Actor";
 import Page404 from "./pages/Page404";
 import Target from "./pages/Target";
 import PolicyRule from "./pages/PolicyRule";
@@ -25,8 +25,8 @@ export default function App() {
         <Route path="targets" element={<TargetsPage />}>
           <Route path=":typestr/:name" element={<Target />} />
         </Route>
-        <Route path="entities" element={<EntitiesPage />}>
-          <Route path=":typestr/:name" element={<Entity />} />
+        <Route path="actors" element={<ActorsPage />}>
+          <Route path=":typestr/:name" element={<Actor />} />
         </Route>
         <Route path="groups" element={<GroupsPage />}>
           <Route path=":name" element={<Group />} />
@@ -61,8 +61,8 @@ function Layout() {
             <Nav.Link as={NavLink} to="/targets" eventKey="/targets">
               Targets
             </Nav.Link>
-            <Nav.Link as={NavLink} to="/entities" eventKey="/entities">
-              Entities
+            <Nav.Link as={NavLink} to="/actors" eventKey="/actors">
+              Actors
             </Nav.Link>
             <Nav.Link as={NavLink} to="/groups" eventKey="/groups">
               Groups

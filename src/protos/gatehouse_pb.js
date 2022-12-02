@@ -17,8 +17,8 @@ var global = (function() { return this || window || global || self || Function('
 
 var common_pb = require('./common_pb.js');
 goog.object.extend(proto, common_pb);
-var entities_pb = require('./entities_pb.js');
-goog.object.extend(proto, entities_pb);
+var actors_pb = require('./actors_pb.js');
+goog.object.extend(proto, actors_pb);
 var groups_pb = require('./groups_pb.js');
 goog.object.extend(proto, groups_pb);
 var policies_pb = require('./policies_pb.js');
@@ -103,7 +103,7 @@ proto.gatehouse.CheckRequest.prototype.toObject = function(opt_includeInstance) 
  */
 proto.gatehouse.CheckRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    entity: (f = msg.getEntity()) && entities_pb.Entity.toObject(includeInstance, f),
+    actor: (f = msg.getActor()) && actors_pb.Actor.toObject(includeInstance, f),
     envAttributesMap: (f = msg.getEnvAttributesMap()) ? f.toObject(includeInstance, proto.common.AttributeValues.toObject) : [],
     targetName: jspb.Message.getFieldWithDefault(msg, 3, ""),
     targetType: jspb.Message.getFieldWithDefault(msg, 4, ""),
@@ -145,9 +145,9 @@ proto.gatehouse.CheckRequest.deserializeBinaryFromReader = function(msg, reader)
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new entities_pb.Entity;
-      reader.readMessage(value,entities_pb.Entity.deserializeBinaryFromReader);
-      msg.setEntity(value);
+      var value = new actors_pb.Actor;
+      reader.readMessage(value,actors_pb.Actor.deserializeBinaryFromReader);
+      msg.setActor(value);
       break;
     case 2:
       var value = msg.getEnvAttributesMap();
@@ -196,12 +196,12 @@ proto.gatehouse.CheckRequest.prototype.serializeBinary = function() {
  */
 proto.gatehouse.CheckRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getEntity();
+  f = message.getActor();
   if (f != null) {
     writer.writeMessage(
       1,
       f,
-      entities_pb.Entity.serializeBinaryToWriter
+      actors_pb.Actor.serializeBinaryToWriter
     );
   }
   f = message.getEnvAttributesMap(true);
@@ -233,20 +233,20 @@ proto.gatehouse.CheckRequest.serializeBinaryToWriter = function(message, writer)
 
 
 /**
- * optional entities.Entity entity = 1;
- * @return {?proto.entities.Entity}
+ * optional actors.Actor actor = 1;
+ * @return {?proto.actors.Actor}
  */
-proto.gatehouse.CheckRequest.prototype.getEntity = function() {
-  return /** @type{?proto.entities.Entity} */ (
-    jspb.Message.getWrapperField(this, entities_pb.Entity, 1));
+proto.gatehouse.CheckRequest.prototype.getActor = function() {
+  return /** @type{?proto.actors.Actor} */ (
+    jspb.Message.getWrapperField(this, actors_pb.Actor, 1));
 };
 
 
 /**
- * @param {?proto.entities.Entity|undefined} value
+ * @param {?proto.actors.Actor|undefined} value
  * @return {!proto.gatehouse.CheckRequest} returns this
 */
-proto.gatehouse.CheckRequest.prototype.setEntity = function(value) {
+proto.gatehouse.CheckRequest.prototype.setActor = function(value) {
   return jspb.Message.setWrapperField(this, 1, value);
 };
 
@@ -255,8 +255,8 @@ proto.gatehouse.CheckRequest.prototype.setEntity = function(value) {
  * Clears the message field making it undefined.
  * @return {!proto.gatehouse.CheckRequest} returns this
  */
-proto.gatehouse.CheckRequest.prototype.clearEntity = function() {
-  return this.setEntity(undefined);
+proto.gatehouse.CheckRequest.prototype.clearActor = function() {
+  return this.setActor(undefined);
 };
 
 
@@ -264,7 +264,7 @@ proto.gatehouse.CheckRequest.prototype.clearEntity = function() {
  * Returns whether this field is set.
  * @return {boolean}
  */
-proto.gatehouse.CheckRequest.prototype.hasEntity = function() {
+proto.gatehouse.CheckRequest.prototype.hasActor = function() {
   return jspb.Message.getField(this, 1) != null;
 };
 

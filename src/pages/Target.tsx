@@ -2,7 +2,7 @@ import { Button, Card, Container, Table } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { useTargets } from "./TargetsPage";
 
-export default function Entity() {
+export default function Actor() {
   const { targets } = useTargets();
   const { typestr, name } = useParams();
 

@@ -1,21 +1,21 @@
 import { Button, Card, Container, Table } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import { useEntities } from "./EntitiesPage";
+import { useActors } from "./ActorsPage";
 
-export default function Entity() {
-  const { entities } = useEntities();
+export default function Actor() {
+  const { actors } = useActors();
   const { typestr, name } = useParams();
 
   if (!typestr || !name) {
     return <Container>Error -- type or name not set</Container>;
   }
 
-  const entity = entities.get(typestr)?.get(name);
+  const entity = actors.get(typestr)?.get(name);
 
   if (!entity) {
     return (
       <Card>
-        <Card.Body>ERROR: Entity not found in context</Card.Body>
+        <Card.Body>ERROR: Actor not found in context</Card.Body>
       </Card>
     );
   }

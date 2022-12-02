@@ -14,7 +14,7 @@ export default function GroupsPage() {
 
   // load data from API on first render
   useEffect(() => {
-    let request = new proto.groups.GetAllGroupsRequest();
+    let request = new proto.groups.GetGroupsRequest();
     let gatehouseSvc = new GatehousePromiseClient(
       "http://localhost:6174",
       null,

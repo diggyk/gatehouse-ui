@@ -75,7 +75,7 @@ export default function PolicyRule() {
   };
 
   const entityCheckToTable = () => {
-    if (!rule.hasEntityCheck()) {
+    if (!rule.hasActorCheck()) {
       return (
         <tr>
           <td colSpan={3}>Match any entity</td>
@@ -84,21 +84,21 @@ export default function PolicyRule() {
     } else {
       let entityName = stringCheckToTable(
         "name",
-        rule.getEntityCheck()!.getName()
+        rule.getActorCheck()!.getName()
       );
       let entityType = stringCheckToTable(
         "type",
-        rule.getEntityCheck()!.getTypestr()
+        rule.getActorCheck()!.getTypestr()
       );
       let entityAttribs = attrCheckToTable(
-        rule.getEntityCheck()!.getAttributesList()
+        rule.getActorCheck()!.getAttributesList()
       );
       return (
         <>
           {entityName}
           {entityType}
           {entityAttribs}
-          {numCheckToTable("bucket", rule.getEntityCheck()!.getBucket())}
+          {numCheckToTable("bucket", rule.getActorCheck()!.getBucket())}
         </>
       );
     }
@@ -127,7 +127,7 @@ export default function PolicyRule() {
       let matchAttrs: JSX.Element[] = [];
       rule
         .getTargetCheck()!
-        .getMatchInEntityList()
+        .getMatchInActorList()
         .forEach((attr) => {
           matchAttrs.push(
             <tr key={"match_ent_" + attr}>
