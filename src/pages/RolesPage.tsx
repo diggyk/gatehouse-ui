@@ -1,16 +1,23 @@
+import { faSquarePlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Alert, CloseButton, Col, Container, Row } from "react-bootstrap";
 import { useOutletContext } from "react-router";
 import { Link, Outlet } from "react-router-dom";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 
 type ContextType = {
+  setErrorMsg: Function;
+  setStatusMsg: Function;
   roles: Map<string, proto.roles.Role>;
+  setRoles: Function;
 };
 
 export default function RolesPage() {
+  const [errorMsg, setErrorMsg]: [string | null, any] = useState(null);
+  const [statusMsg, setStatusMsg]: [string | null, any] = useState(null);
+
   const [roles, setRoles] = useState(new Map<string, proto.roles.Role>());
-  const [error, setError] = useState(null);
 
   // load data from API on first render
   useEffect(() => {
@@ -32,7 +39,7 @@ export default function RolesPage() {
         setRoles(roles);
       })
       .catch((err) => {
-        setError(err.message);
+        setErrorMsg(err.message);
       });
   }, []);
 
@@ -44,7 +51,7 @@ export default function RolesPage() {
       .forEach((val, _) => {
         let name = val.getName();
         role_items.push(
-          <Link key={name} className="item" to={name}>
+          <Link key={name} className="item" to={"view/" + name}>
             <li key={name}>{name}</li>
           </Link>
         );
@@ -53,7 +60,17 @@ export default function RolesPage() {
     return (
       <Container>
         <Container className="header" key={"header"}>
-          Roles
+          <span>Roles</span>
+          <span style={{ float: "right" }}>
+            <Link key="addbutton" to="add">
+              <FontAwesomeIcon
+                icon={faSquarePlus}
+                className="plusButton"
+                inverse
+                // onClick={() => handleRemoveAddedGrant(granted_name)}
+              />
+            </Link>
+          </span>
         </Container>
         <Container className="itemList">
           <ul>{role_items}</ul>
@@ -62,23 +79,26 @@ export default function RolesPage() {
     );
   };
 
-  let mainContent;
-  if (error == null) {
-    mainContent = <Outlet context={{ roles }} />;
-  } else {
-    mainContent = <Container className="errorNote">{error}</Container>;
-  }
-
   return (
     <Row className="h-100">
       <Col lg="2" className="sidePickerNav h-100 p-0">
         {rolesNav()}
       </Col>
-      <Col className="mainContent">{mainContent}</Col>
+      <Col className="mainContent">
+        <Alert variant="danger" show={errorMsg !== null}>
+          {errorMsg}
+          <CloseButton variant="white" onClick={() => setErrorMsg(null)} />
+        </Alert>
+        <Alert variant="success" show={statusMsg !== null}>
+          {statusMsg}
+          <CloseButton variant="white" onClick={() => setStatusMsg(null)} />
+        </Alert>
+        <Outlet context={{ roles, setErrorMsg, setStatusMsg, setRoles }} />
+      </Col>
     </Row>
   );
 }
 
-export function useRoles() {
+export function usePageContext() {
   return useOutletContext<ContextType>();
 }

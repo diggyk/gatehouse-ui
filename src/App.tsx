@@ -16,6 +16,7 @@ import Group from "./pages/Group";
 import RolesPage from "./pages/RolesPage";
 import Role from "./pages/Role";
 import EditRole from "./pages/EditRole";
+import AddRole from "./pages/AddRole";
 
 export default function App() {
   return (
@@ -35,8 +36,9 @@ export default function App() {
           <Route path=":name" element={<Group />} />
         </Route>
         <Route path="roles" element={<RolesPage />}>
-          <Route path=":name" element={<Role />} />
+          <Route path="view/:name" element={<Role />} />
           <Route path="edit/:name" element={<EditRole />} />
+          <Route path="add" element={<AddRole />} />
         </Route>
         <Route path="*" element={<Page404 />} />
       </Route>

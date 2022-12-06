@@ -1,31 +1,32 @@
 import { faSquareXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChangeEvent, useEffect, useState } from "react";
-import { Alert, Button, Card, Container, Form, Table } from "react-bootstrap";
+import { Alert, Button, Card, Form, Table } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 import { usePageContext } from "./RolesPage";
 
-export default function EditRole() {
+export default function Role() {
   const navigate = useNavigate();
-  const { name } = useParams();
-  const { setErrorMsg, setStatusMsg, roles, setRoles } = usePageContext();
-  const { register, handleSubmit } = useForm({ mode: "all" });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ mode: "all" });
   const onError = (errors: any) => {};
+  const { setErrorMsg, setStatusMsg, roles, setRoles } = usePageContext();
 
   const [groups, setGroups]: [string[], any] = useState([]);
   const [addGranted, setAddGranted]: [string[], any] = useState([]);
-  const [removeGranted, setRemoveGranted]: [string[], any] = useState([]);
 
   // update the role
-  const handleUpdate = (data: any) => {
-    console.log("Updating...");
-    let req = new proto.roles.ModifyRoleRequest()
-      .setAddGrantedToList(addGranted)
-      .setRemoveGrantedToList(removeGranted)
+  const handleAdd = (data: any) => {
+    console.log("Adding...");
+    let req = new proto.roles.AddRoleRequest()
+      .setGrantedToList(addGranted)
       .setDesc(data.desc)
-      .setName(name || "");
+      .setName(data.name);
 
     let gatehouseSvc = new GatehousePromiseClient(
       "http://localhost:6174",
@@ -34,21 +35,21 @@ export default function EditRole() {
     );
 
     gatehouseSvc
-      .modifyRole(req, null)
+      .addRole(req, null)
       .then((response: proto.roles.RoleResponse) => {
-        let updated_role = response.getRole();
+        let added_role = response.getRole();
 
-        if (!updated_role) {
+        if (!added_role) {
           setErrorMsg("No update role returned from server");
           return;
         }
 
-        console.log("Updated!");
-        setStatusMsg("Role " + updated_role.getName() + " updated!");
-        setRoles(roles.set(updated_role.getName(), updated_role));
-        setAddGranted([]);
-        setRemoveGranted([]);
-        navigate("/roles/view/" + updated_role.getName());
+        console.log("Added!");
+        setStatusMsg("Role " + added_role.getName() + " added!");
+
+        setRoles(roles.set(added_role.getName(), added_role));
+
+        navigate("/roles/view/" + added_role.getName());
       })
       .catch((err: Error) => {
         setErrorMsg(err.message);
@@ -80,20 +81,6 @@ export default function EditRole() {
       });
   }, []);
 
-  if (!name) {
-    return <Container>Error -- name not set</Container>;
-  }
-
-  const role = roles.get(name);
-
-  if (!role) {
-    return (
-      <Card>
-        <Card.Body>ERROR: Role not found in context</Card.Body>
-      </Card>
-    );
-  }
-
   // called when the selectors are changed for the adding of new granted groups
   const handleAddGrantedChange = (event: ChangeEvent<HTMLSelectElement>) => {
     event.preventDefault();
@@ -114,49 +101,6 @@ export default function EditRole() {
     setAddGranted(new_list);
   };
 
-  // toggle to remove an existing grant
-  const toggleExistingGrant = (grant_name: string) => {
-    if (removeGranted.includes(grant_name)) {
-      setRemoveGranted(
-        [...removeGranted].filter((item) => item !== grant_name)
-      );
-    } else {
-      setRemoveGranted([...removeGranted, grant_name]);
-    }
-  };
-
-  const existing_grants = () => {
-    /// All our elements for managing group removals
-    let elements: JSX.Element[] = [];
-    role
-      .getGrantedToList()
-      .sort()
-      .forEach((granted_name: string, index) => {
-        elements.push(
-          <tr key={granted_name + "_del"}>
-            <td key={granted_name + "_del"}>
-              <Form.Switch
-                type="switch"
-                id={granted_name + "_del"}
-                key={granted_name + "_del"}
-              >
-                <Form.Switch.Input
-                  className="remove-switch"
-                  checked={removeGranted.includes(granted_name)}
-                  onChange={() => toggleExistingGrant(granted_name)}
-                ></Form.Switch.Input>
-                <Form.Switch.Label className="remove-switch-label">
-                  {granted_name}
-                </Form.Switch.Label>
-              </Form.Switch>
-            </td>
-          </tr>
-        );
-      });
-
-    return elements;
-  };
-
   let new_grants = () => {
     let elements: JSX.Element[] = [];
     let group_options: JSX.Element[] = [];
@@ -166,10 +110,7 @@ export default function EditRole() {
       </option>
     );
     groups.sort().forEach((name) => {
-      if (
-        !role.getGrantedToList().includes(name) &&
-        !addGranted.includes(name)
-      ) {
+      if (!addGranted.includes(name)) {
         group_options.push(
           <option key={"option_" + name} value={name}>
             {name}
@@ -212,15 +153,31 @@ export default function EditRole() {
   };
 
   return (
-    <Form onSubmit={handleSubmit(handleUpdate, onError)}>
+    <Form onSubmit={handleSubmit(handleAdd, onError)}>
       <Card className="showEntryCard">
         <Card.Body>
-          <Card.Title>{role.getName()}</Card.Title>
+          <Card.Title>
+            <Form.Control
+              className="name"
+              id="name"
+              placeholder="Role name"
+              {...register("name", {
+                required: false,
+                pattern: {
+                  value: /^[a-z0-9-_@]+$/i,
+                  message:
+                    "Invalid characters (alphanum, dashes, underscores, and at-sign only)",
+                },
+              })}
+            />
+            {errors && errors.name && errors.name.message && (
+              <p className="formError">{errors.name.message.toString()}</p>
+            )}
+          </Card.Title>
           <Card.Subtitle>
             <Form.Control
               className="desc"
               id="desc"
-              defaultValue={role.getDesc()}
               placeholder="Optional description"
               {...register("desc", {
                 required: false,
@@ -228,12 +185,6 @@ export default function EditRole() {
             />
           </Card.Subtitle>
           <Table className="showEntryTable">
-            <thead>
-              <tr>
-                <th>Granted To</th>
-              </tr>
-            </thead>
-            <tbody>{existing_grants()}</tbody>
             <thead>
               <tr>
                 <th>Grant to</th>
