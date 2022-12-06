@@ -4,7 +4,7 @@ import { useGroups } from "./GroupsPage";
 
 export default function Group() {
   const { groups } = useGroups();
-  const { typestr, name } = useParams();
+  const { name } = useParams();
 
   if (!name) {
     return <Container>Error -- name not set</Container>;
@@ -37,7 +37,7 @@ export default function Group() {
     .getMembersList()
     .sort((a, b) => {
       let type_cmp = a.getTypestr().localeCompare(b.getTypestr());
-      if (type_cmp == 0) {
+      if (type_cmp === 0) {
         return a.getName().localeCompare(b.getName());
       } else {
         return type_cmp;

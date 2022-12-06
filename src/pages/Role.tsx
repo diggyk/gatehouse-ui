@@ -1,11 +1,10 @@
 import { Button, Card, Container, Table } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
-import { useGroups } from "./GroupsPage";
 import { useRoles } from "./RolesPage";
 
 export default function Role() {
   const { roles } = useRoles();
-  const { typestr, name } = useParams();
+  const { name } = useParams();
 
   if (!name) {
     return <Container>Error -- name not set</Container>;

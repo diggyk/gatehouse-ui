@@ -1,26 +1,16 @@
 import { faSquareXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  ChangeEvent,
-  FormEvent,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Alert, Button, Card, Container, Form, Table } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 import { useRoles } from "./RolesPage";
 
-export default function Role() {
+export default function EditRole() {
   const { roles } = useRoles();
   const { name } = useParams();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ mode: "all" });
+  const { register, handleSubmit } = useForm({ mode: "all" });
   const onError = (errors: any) => {};
   const [errorMsg, setErrorMsg]: [string | null, any] = useState(null);
   const [statusMsg, setStatusMsg]: [string | null, any] = useState(null);
@@ -150,8 +140,6 @@ export default function Role() {
       .getGrantedToList()
       .sort()
       .forEach((granted_name: string, index) => {
-        let options: JSX.Element[] = [];
-
         elements.push(
           <tr key={granted_name + "_del"}>
             <td key={granted_name + "_del"}>
