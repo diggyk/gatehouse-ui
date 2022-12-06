@@ -87,11 +87,19 @@ export default function RolesPage() {
       <Col className="mainContent">
         <Alert variant="danger" show={errorMsg !== null}>
           {errorMsg}
-          <CloseButton variant="white" onClick={() => setErrorMsg(null)} />
+          <CloseButton
+            style={{ float: "right" }}
+            variant="dark"
+            onClick={() => setErrorMsg(null)}
+          />
         </Alert>
         <Alert variant="success" show={statusMsg !== null}>
           {statusMsg}
-          <CloseButton variant="white" onClick={() => setStatusMsg(null)} />
+          <CloseButton
+            style={{ float: "right" }}
+            variant="dark"
+            onClick={() => setStatusMsg(null)}
+          />
         </Alert>
         <Outlet context={{ roles, setErrorMsg, setStatusMsg, setRoles }} />
       </Col>
