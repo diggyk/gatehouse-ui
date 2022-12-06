@@ -53,7 +53,7 @@ export default function RolesPage() {
     return (
       <Container>
         <Container className="header" key={"header"}>
-          Groups
+          Roles
         </Container>
         <Container className="itemList">
           <ul>{role_items}</ul>

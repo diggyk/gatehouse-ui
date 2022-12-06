@@ -1,5 +1,9 @@
 @import "~bootstrap/scss/bootstrap";
 
+$highlight-color: rgb(174, 185, 213);
+$subtle-highlight: darken($highlight-color, $amount: 10);
+$brite-light: lighten($highlight-color, $amount: 10);
+
 body, html {
     margin: 0;
     padding: 0;
@@ -59,9 +63,9 @@ body, html {
 }
 
 .sidePickerNav .header {
-    color: #fff;
+    color: $brite-light;
     padding: 10px 10px 6px 10px;
-    border-bottom: rgb(233, 181, 97) 4px solid;
+    border-bottom: $highlight-color 4px solid;
     font-weight: bold;
 }
 
@@ -70,7 +74,7 @@ body, html {
     padding-top: 10px;
 
     .item {
-        color: rgb(233, 181, 97);
+        color: $brite-light;
         text-decoration: none;
         background-color: none;
     }
@@ -98,6 +102,19 @@ body, html {
     padding-top: .8em;
 }
 
+.small-button-entity {
+    .icon {
+        vertical-align: middle;
+        margin: 0px 10px 0px 4px;
+        padding: 4px;
+        cursor: pointer;
+        color: $brite-light;
+    }
+    .icon:hover {
+        color: #dd1111
+    }
+} 
+
 // ENTRY PAGE //
 
 .showEntryCard {
@@ -105,6 +122,7 @@ body, html {
     min-width: 20rem;
     border: none;
     box-shadow: .3rem .3rem .3rem #0005;
+    // background-color: darken($color: $body-bg, $amount: 5);
 
     .card-body {
         padding: 0;
@@ -113,8 +131,7 @@ body, html {
         .card-title {
             margin: 0;
             padding: 10px 100px 5px 20px;
-            // border-bottom: darken($color: $body-bg, $amount: 80) 2px solid;
-            background-color: rgb(233, 181, 97);
+            background-color: $highlight-color;
             border-top-left-radius: 0.375rem;
             border-top-right-radius: 0.375rem;;
         }
@@ -123,18 +140,27 @@ body, html {
             margin: 0;
             padding: 5px 20px 5px 20px;
             border-bottom: darken($color: $body-bg, $amount: 60) 1px solid;
-            background-color: darken($color: rgb(233, 181, 97), $amount: 20)
+            background-color: $subtle-highlight;
         }
 
         button {
             margin: 20px;
             float: right;
         }
+
+        .remove-switch:checked {
+            background-color: #ff3333;
+            border-color: #dd1111;
+        }
+
+        .remove-switch:checked + .remove-switch-label {
+            text-decoration: line-through;
+        } 
+
     }
 }
 
 .showEntryTable {
-    background-color: darken($color: $body-bg, $amount: 15);
     margin: 0;
 
     th {
@@ -150,5 +176,3 @@ body, html {
     }
 
 }
-
-

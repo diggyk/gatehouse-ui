@@ -1,5 +1,5 @@
 import { Button, Card, Container, Table } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useGroups } from "./GroupsPage";
 import { useRoles } from "./RolesPage";
 
@@ -46,7 +46,9 @@ export default function Role() {
           </thead>
           <tbody>{groups}</tbody>
         </Table>
-        <Button disabled>Edit</Button>
+        <Link to={"../edit/" + name}>
+          <Button>Edit</Button>
+        </Link>
       </Card.Body>
     </Card>
   );

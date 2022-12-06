@@ -10,25 +10,29 @@
 // 	protoc              v3.20.3
 // source: gatehouse.proto
 
+
 /* eslint-disable */
 // @ts-nocheck
 
+
+
 const grpc = {};
-grpc.web = require("grpc-web");
+grpc.web = require('grpc-web');
 
-var common_pb = require("./common_pb.js");
 
-var actors_pb = require("./actors_pb.js");
+var common_pb = require('./common_pb.js')
 
-var groups_pb = require("./groups_pb.js");
+var actors_pb = require('./actors_pb.js')
 
-var policies_pb = require("./policies_pb.js");
+var groups_pb = require('./groups_pb.js')
 
-var roles_pb = require("./roles_pb.js");
+var policies_pb = require('./policies_pb.js')
 
-var targets_pb = require("./targets_pb.js");
+var roles_pb = require('./roles_pb.js')
+
+var targets_pb = require('./targets_pb.js')
 const proto = {};
-proto.gatehouse = require("./gatehouse_pb.js");
+proto.gatehouse = require('./gatehouse_pb.js');
 
 /**
  * @param {string} hostname
@@ -38,9 +42,10 @@ proto.gatehouse = require("./gatehouse_pb.js");
  * @struct
  * @final
  */
-proto.gatehouse.GatehouseClient = function (hostname, credentials, options) {
+proto.gatehouse.GatehouseClient =
+    function(hostname, credentials, options) {
   if (!options) options = {};
-  options.format = "text";
+  options.format = 'binary';
 
   /**
    * @private @const {!grpc.web.GrpcWebClientBase} The client
@@ -50,8 +55,10 @@ proto.gatehouse.GatehouseClient = function (hostname, credentials, options) {
   /**
    * @private @const {string} The hostname
    */
-  this.hostname_ = hostname.replace(/\/+$/, "");
+  this.hostname_ = hostname.replace(/\/+$/, '');
+
 };
+
 
 /**
  * @param {string} hostname
@@ -61,13 +68,10 @@ proto.gatehouse.GatehouseClient = function (hostname, credentials, options) {
  * @struct
  * @final
  */
-proto.gatehouse.GatehousePromiseClient = function (
-  hostname,
-  credentials,
-  options
-) {
+proto.gatehouse.GatehousePromiseClient =
+    function(hostname, credentials, options) {
   if (!options) options = {};
-  options.format = "text";
+  options.format = 'binary';
 
   /**
    * @private @const {!grpc.web.GrpcWebClientBase} The client
@@ -77,8 +81,10 @@ proto.gatehouse.GatehousePromiseClient = function (
   /**
    * @private @const {string} The hostname
    */
-  this.hostname_ = hostname.replace(/\/+$/, "");
+  this.hostname_ = hostname.replace(/\/+$/, '');
+
 };
+
 
 /**
  * @const
@@ -87,7 +93,7 @@ proto.gatehouse.GatehousePromiseClient = function (
  *   !proto.targets.TargetResponse>}
  */
 const methodDescriptor_Gatehouse_AddTarget = new grpc.web.MethodDescriptor(
-  "/gatehouse.Gatehouse/AddTarget",
+  '/gatehouse.Gatehouse/AddTarget',
   grpc.web.MethodType.UNARY,
   targets_pb.AddTargetRequest,
   targets_pb.TargetResponse,
@@ -95,11 +101,12 @@ const methodDescriptor_Gatehouse_AddTarget = new grpc.web.MethodDescriptor(
    * @param {!proto.targets.AddTargetRequest} request
    * @return {!Uint8Array}
    */
-  function (request) {
+  function(request) {
     return request.serializeBinary();
   },
   targets_pb.TargetResponse.deserializeBinary
 );
+
 
 /**
  * @param {!proto.targets.AddTargetRequest} request The
@@ -111,19 +118,16 @@ const methodDescriptor_Gatehouse_AddTarget = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.targets.TargetResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.gatehouse.GatehouseClient.prototype.addTarget = function (
-  request,
-  metadata,
-  callback
-) {
-  return this.client_.rpcCall(
-    this.hostname_ + "/gatehouse.Gatehouse/AddTarget",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_AddTarget,
-    callback
-  );
+proto.gatehouse.GatehouseClient.prototype.addTarget =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/AddTarget',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_AddTarget,
+      callback);
 };
+
 
 /**
  * @param {!proto.targets.AddTargetRequest} request The
@@ -133,17 +137,15 @@ proto.gatehouse.GatehouseClient.prototype.addTarget = function (
  * @return {!Promise<!proto.targets.TargetResponse>}
  *     Promise that resolves to the response
  */
-proto.gatehouse.GatehousePromiseClient.prototype.addTarget = function (
-  request,
-  metadata
-) {
-  return this.client_.unaryCall(
-    this.hostname_ + "/gatehouse.Gatehouse/AddTarget",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_AddTarget
-  );
+proto.gatehouse.GatehousePromiseClient.prototype.addTarget =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/AddTarget',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_AddTarget);
 };
+
 
 /**
  * @const
@@ -152,7 +154,7 @@ proto.gatehouse.GatehousePromiseClient.prototype.addTarget = function (
  *   !proto.targets.TargetResponse>}
  */
 const methodDescriptor_Gatehouse_ModifyTarget = new grpc.web.MethodDescriptor(
-  "/gatehouse.Gatehouse/ModifyTarget",
+  '/gatehouse.Gatehouse/ModifyTarget',
   grpc.web.MethodType.UNARY,
   targets_pb.ModifyTargetRequest,
   targets_pb.TargetResponse,
@@ -160,11 +162,12 @@ const methodDescriptor_Gatehouse_ModifyTarget = new grpc.web.MethodDescriptor(
    * @param {!proto.targets.ModifyTargetRequest} request
    * @return {!Uint8Array}
    */
-  function (request) {
+  function(request) {
     return request.serializeBinary();
   },
   targets_pb.TargetResponse.deserializeBinary
 );
+
 
 /**
  * @param {!proto.targets.ModifyTargetRequest} request The
@@ -176,19 +179,16 @@ const methodDescriptor_Gatehouse_ModifyTarget = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.targets.TargetResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.gatehouse.GatehouseClient.prototype.modifyTarget = function (
-  request,
-  metadata,
-  callback
-) {
-  return this.client_.rpcCall(
-    this.hostname_ + "/gatehouse.Gatehouse/ModifyTarget",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_ModifyTarget,
-    callback
-  );
+proto.gatehouse.GatehouseClient.prototype.modifyTarget =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/ModifyTarget',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_ModifyTarget,
+      callback);
 };
+
 
 /**
  * @param {!proto.targets.ModifyTargetRequest} request The
@@ -198,17 +198,15 @@ proto.gatehouse.GatehouseClient.prototype.modifyTarget = function (
  * @return {!Promise<!proto.targets.TargetResponse>}
  *     Promise that resolves to the response
  */
-proto.gatehouse.GatehousePromiseClient.prototype.modifyTarget = function (
-  request,
-  metadata
-) {
-  return this.client_.unaryCall(
-    this.hostname_ + "/gatehouse.Gatehouse/ModifyTarget",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_ModifyTarget
-  );
+proto.gatehouse.GatehousePromiseClient.prototype.modifyTarget =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/ModifyTarget',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_ModifyTarget);
 };
+
 
 /**
  * @const
@@ -217,7 +215,7 @@ proto.gatehouse.GatehousePromiseClient.prototype.modifyTarget = function (
  *   !proto.targets.TargetResponse>}
  */
 const methodDescriptor_Gatehouse_RemoveTarget = new grpc.web.MethodDescriptor(
-  "/gatehouse.Gatehouse/RemoveTarget",
+  '/gatehouse.Gatehouse/RemoveTarget',
   grpc.web.MethodType.UNARY,
   targets_pb.RemoveTargetRequest,
   targets_pb.TargetResponse,
@@ -225,11 +223,12 @@ const methodDescriptor_Gatehouse_RemoveTarget = new grpc.web.MethodDescriptor(
    * @param {!proto.targets.RemoveTargetRequest} request
    * @return {!Uint8Array}
    */
-  function (request) {
+  function(request) {
     return request.serializeBinary();
   },
   targets_pb.TargetResponse.deserializeBinary
 );
+
 
 /**
  * @param {!proto.targets.RemoveTargetRequest} request The
@@ -241,19 +240,16 @@ const methodDescriptor_Gatehouse_RemoveTarget = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.targets.TargetResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.gatehouse.GatehouseClient.prototype.removeTarget = function (
-  request,
-  metadata,
-  callback
-) {
-  return this.client_.rpcCall(
-    this.hostname_ + "/gatehouse.Gatehouse/RemoveTarget",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_RemoveTarget,
-    callback
-  );
+proto.gatehouse.GatehouseClient.prototype.removeTarget =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/RemoveTarget',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_RemoveTarget,
+      callback);
 };
+
 
 /**
  * @param {!proto.targets.RemoveTargetRequest} request The
@@ -263,41 +259,40 @@ proto.gatehouse.GatehouseClient.prototype.removeTarget = function (
  * @return {!Promise<!proto.targets.TargetResponse>}
  *     Promise that resolves to the response
  */
-proto.gatehouse.GatehousePromiseClient.prototype.removeTarget = function (
-  request,
-  metadata
-) {
-  return this.client_.unaryCall(
-    this.hostname_ + "/gatehouse.Gatehouse/RemoveTarget",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_RemoveTarget
-  );
+proto.gatehouse.GatehousePromiseClient.prototype.removeTarget =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/RemoveTarget',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_RemoveTarget);
 };
+
 
 /**
  * @const
  * @type {!grpc.web.MethodDescriptor<
- *   !proto.targets.GetAllTargetsRequest,
+ *   !proto.targets.GetTargetsRequest,
  *   !proto.targets.MultiTargetResponse>}
  */
 const methodDescriptor_Gatehouse_GetTargets = new grpc.web.MethodDescriptor(
-  "/gatehouse.Gatehouse/GetTargets",
+  '/gatehouse.Gatehouse/GetTargets',
   grpc.web.MethodType.UNARY,
-  targets_pb.GetAllTargetsRequest,
+  targets_pb.GetTargetsRequest,
   targets_pb.MultiTargetResponse,
   /**
-   * @param {!proto.targets.GetAllTargetsRequest} request
+   * @param {!proto.targets.GetTargetsRequest} request
    * @return {!Uint8Array}
    */
-  function (request) {
+  function(request) {
     return request.serializeBinary();
   },
   targets_pb.MultiTargetResponse.deserializeBinary
 );
 
+
 /**
- * @param {!proto.targets.GetAllTargetsRequest} request The
+ * @param {!proto.targets.GetTargetsRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
@@ -306,39 +301,34 @@ const methodDescriptor_Gatehouse_GetTargets = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.targets.MultiTargetResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.gatehouse.GatehouseClient.prototype.getTargets = function (
-  request,
-  metadata,
-  callback
-) {
-  return this.client_.rpcCall(
-    this.hostname_ + "/gatehouse.Gatehouse/GetTargets",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_GetTargets,
-    callback
-  );
+proto.gatehouse.GatehouseClient.prototype.getTargets =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/GetTargets',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_GetTargets,
+      callback);
 };
 
+
 /**
- * @param {!proto.targets.GetAllTargetsRequest} request The
+ * @param {!proto.targets.GetTargetsRequest} request The
  *     request proto
  * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.targets.MultiTargetResponse>}
  *     Promise that resolves to the response
  */
-proto.gatehouse.GatehousePromiseClient.prototype.getTargets = function (
-  request,
-  metadata
-) {
-  return this.client_.unaryCall(
-    this.hostname_ + "/gatehouse.Gatehouse/GetTargets",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_GetTargets
-  );
+proto.gatehouse.GatehousePromiseClient.prototype.getTargets =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/GetTargets',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_GetTargets);
 };
+
 
 /**
  * @const
@@ -347,7 +337,7 @@ proto.gatehouse.GatehousePromiseClient.prototype.getTargets = function (
  *   !proto.actors.ActorResponse>}
  */
 const methodDescriptor_Gatehouse_AddActor = new grpc.web.MethodDescriptor(
-  "/gatehouse.Gatehouse/AddActor",
+  '/gatehouse.Gatehouse/AddActor',
   grpc.web.MethodType.UNARY,
   actors_pb.AddActorRequest,
   actors_pb.ActorResponse,
@@ -355,11 +345,12 @@ const methodDescriptor_Gatehouse_AddActor = new grpc.web.MethodDescriptor(
    * @param {!proto.actors.AddActorRequest} request
    * @return {!Uint8Array}
    */
-  function (request) {
+  function(request) {
     return request.serializeBinary();
   },
   actors_pb.ActorResponse.deserializeBinary
 );
+
 
 /**
  * @param {!proto.actors.AddActorRequest} request The
@@ -371,19 +362,16 @@ const methodDescriptor_Gatehouse_AddActor = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.actors.ActorResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.gatehouse.GatehouseClient.prototype.addActor = function (
-  request,
-  metadata,
-  callback
-) {
-  return this.client_.rpcCall(
-    this.hostname_ + "/gatehouse.Gatehouse/AddActor",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_AddActor,
-    callback
-  );
+proto.gatehouse.GatehouseClient.prototype.addActor =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/AddActor',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_AddActor,
+      callback);
 };
+
 
 /**
  * @param {!proto.actors.AddActorRequest} request The
@@ -393,17 +381,15 @@ proto.gatehouse.GatehouseClient.prototype.addActor = function (
  * @return {!Promise<!proto.actors.ActorResponse>}
  *     Promise that resolves to the response
  */
-proto.gatehouse.GatehousePromiseClient.prototype.addActor = function (
-  request,
-  metadata
-) {
-  return this.client_.unaryCall(
-    this.hostname_ + "/gatehouse.Gatehouse/AddActor",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_AddActor
-  );
+proto.gatehouse.GatehousePromiseClient.prototype.addActor =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/AddActor',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_AddActor);
 };
+
 
 /**
  * @const
@@ -412,7 +398,7 @@ proto.gatehouse.GatehousePromiseClient.prototype.addActor = function (
  *   !proto.actors.ActorResponse>}
  */
 const methodDescriptor_Gatehouse_ModifyActor = new grpc.web.MethodDescriptor(
-  "/gatehouse.Gatehouse/ModifyActor",
+  '/gatehouse.Gatehouse/ModifyActor',
   grpc.web.MethodType.UNARY,
   actors_pb.ModifyActorRequest,
   actors_pb.ActorResponse,
@@ -420,11 +406,12 @@ const methodDescriptor_Gatehouse_ModifyActor = new grpc.web.MethodDescriptor(
    * @param {!proto.actors.ModifyActorRequest} request
    * @return {!Uint8Array}
    */
-  function (request) {
+  function(request) {
     return request.serializeBinary();
   },
   actors_pb.ActorResponse.deserializeBinary
 );
+
 
 /**
  * @param {!proto.actors.ModifyActorRequest} request The
@@ -436,19 +423,16 @@ const methodDescriptor_Gatehouse_ModifyActor = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.actors.ActorResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.gatehouse.GatehouseClient.prototype.modifyActor = function (
-  request,
-  metadata,
-  callback
-) {
-  return this.client_.rpcCall(
-    this.hostname_ + "/gatehouse.Gatehouse/ModifyActor",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_ModifyActor,
-    callback
-  );
+proto.gatehouse.GatehouseClient.prototype.modifyActor =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/ModifyActor',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_ModifyActor,
+      callback);
 };
+
 
 /**
  * @param {!proto.actors.ModifyActorRequest} request The
@@ -458,17 +442,15 @@ proto.gatehouse.GatehouseClient.prototype.modifyActor = function (
  * @return {!Promise<!proto.actors.ActorResponse>}
  *     Promise that resolves to the response
  */
-proto.gatehouse.GatehousePromiseClient.prototype.modifyActor = function (
-  request,
-  metadata
-) {
-  return this.client_.unaryCall(
-    this.hostname_ + "/gatehouse.Gatehouse/ModifyActor",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_ModifyActor
-  );
+proto.gatehouse.GatehousePromiseClient.prototype.modifyActor =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/ModifyActor',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_ModifyActor);
 };
+
 
 /**
  * @const
@@ -477,7 +459,7 @@ proto.gatehouse.GatehousePromiseClient.prototype.modifyActor = function (
  *   !proto.actors.ActorResponse>}
  */
 const methodDescriptor_Gatehouse_RemoveActor = new grpc.web.MethodDescriptor(
-  "/gatehouse.Gatehouse/RemoveActor",
+  '/gatehouse.Gatehouse/RemoveActor',
   grpc.web.MethodType.UNARY,
   actors_pb.RemoveActorRequest,
   actors_pb.ActorResponse,
@@ -485,11 +467,12 @@ const methodDescriptor_Gatehouse_RemoveActor = new grpc.web.MethodDescriptor(
    * @param {!proto.actors.RemoveActorRequest} request
    * @return {!Uint8Array}
    */
-  function (request) {
+  function(request) {
     return request.serializeBinary();
   },
   actors_pb.ActorResponse.deserializeBinary
 );
+
 
 /**
  * @param {!proto.actors.RemoveActorRequest} request The
@@ -501,19 +484,16 @@ const methodDescriptor_Gatehouse_RemoveActor = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.actors.ActorResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.gatehouse.GatehouseClient.prototype.removeActor = function (
-  request,
-  metadata,
-  callback
-) {
-  return this.client_.rpcCall(
-    this.hostname_ + "/gatehouse.Gatehouse/RemoveActor",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_RemoveActor,
-    callback
-  );
+proto.gatehouse.GatehouseClient.prototype.removeActor =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/RemoveActor',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_RemoveActor,
+      callback);
 };
+
 
 /**
  * @param {!proto.actors.RemoveActorRequest} request The
@@ -523,41 +503,40 @@ proto.gatehouse.GatehouseClient.prototype.removeActor = function (
  * @return {!Promise<!proto.actors.ActorResponse>}
  *     Promise that resolves to the response
  */
-proto.gatehouse.GatehousePromiseClient.prototype.removeActor = function (
-  request,
-  metadata
-) {
-  return this.client_.unaryCall(
-    this.hostname_ + "/gatehouse.Gatehouse/RemoveActor",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_RemoveActor
-  );
+proto.gatehouse.GatehousePromiseClient.prototype.removeActor =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/RemoveActor',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_RemoveActor);
 };
+
 
 /**
  * @const
  * @type {!grpc.web.MethodDescriptor<
- *   !proto.actors.GetAllActorsRequest,
+ *   !proto.actors.GetActorsRequest,
  *   !proto.actors.MultiActorResponse>}
  */
 const methodDescriptor_Gatehouse_GetActors = new grpc.web.MethodDescriptor(
-  "/gatehouse.Gatehouse/GetActors",
+  '/gatehouse.Gatehouse/GetActors',
   grpc.web.MethodType.UNARY,
-  actors_pb.GetAllActorsRequest,
+  actors_pb.GetActorsRequest,
   actors_pb.MultiActorResponse,
   /**
-   * @param {!proto.actors.GetAllActorsRequest} request
+   * @param {!proto.actors.GetActorsRequest} request
    * @return {!Uint8Array}
    */
-  function (request) {
+  function(request) {
     return request.serializeBinary();
   },
   actors_pb.MultiActorResponse.deserializeBinary
 );
 
+
 /**
- * @param {!proto.actors.GetAllActorsRequest} request The
+ * @param {!proto.actors.GetActorsRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
@@ -566,39 +545,34 @@ const methodDescriptor_Gatehouse_GetActors = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.actors.MultiActorResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.gatehouse.GatehouseClient.prototype.getActors = function (
-  request,
-  metadata,
-  callback
-) {
-  return this.client_.rpcCall(
-    this.hostname_ + "/gatehouse.Gatehouse/GetActors",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_GetActors,
-    callback
-  );
+proto.gatehouse.GatehouseClient.prototype.getActors =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/GetActors',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_GetActors,
+      callback);
 };
 
+
 /**
- * @param {!proto.actors.GetAllActorsRequest} request The
+ * @param {!proto.actors.GetActorsRequest} request The
  *     request proto
  * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.actors.MultiActorResponse>}
  *     Promise that resolves to the response
  */
-proto.gatehouse.GatehousePromiseClient.prototype.getActors = function (
-  request,
-  metadata
-) {
-  return this.client_.unaryCall(
-    this.hostname_ + "/gatehouse.Gatehouse/GetActors",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_GetActors
-  );
+proto.gatehouse.GatehousePromiseClient.prototype.getActors =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/GetActors',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_GetActors);
 };
+
 
 /**
  * @const
@@ -607,7 +581,7 @@ proto.gatehouse.GatehousePromiseClient.prototype.getActors = function (
  *   !proto.roles.RoleResponse>}
  */
 const methodDescriptor_Gatehouse_AddRole = new grpc.web.MethodDescriptor(
-  "/gatehouse.Gatehouse/AddRole",
+  '/gatehouse.Gatehouse/AddRole',
   grpc.web.MethodType.UNARY,
   roles_pb.AddRoleRequest,
   roles_pb.RoleResponse,
@@ -615,11 +589,12 @@ const methodDescriptor_Gatehouse_AddRole = new grpc.web.MethodDescriptor(
    * @param {!proto.roles.AddRoleRequest} request
    * @return {!Uint8Array}
    */
-  function (request) {
+  function(request) {
     return request.serializeBinary();
   },
   roles_pb.RoleResponse.deserializeBinary
 );
+
 
 /**
  * @param {!proto.roles.AddRoleRequest} request The
@@ -631,19 +606,16 @@ const methodDescriptor_Gatehouse_AddRole = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.roles.RoleResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.gatehouse.GatehouseClient.prototype.addRole = function (
-  request,
-  metadata,
-  callback
-) {
-  return this.client_.rpcCall(
-    this.hostname_ + "/gatehouse.Gatehouse/AddRole",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_AddRole,
-    callback
-  );
+proto.gatehouse.GatehouseClient.prototype.addRole =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/AddRole',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_AddRole,
+      callback);
 };
+
 
 /**
  * @param {!proto.roles.AddRoleRequest} request The
@@ -653,17 +625,76 @@ proto.gatehouse.GatehouseClient.prototype.addRole = function (
  * @return {!Promise<!proto.roles.RoleResponse>}
  *     Promise that resolves to the response
  */
-proto.gatehouse.GatehousePromiseClient.prototype.addRole = function (
-  request,
-  metadata
-) {
-  return this.client_.unaryCall(
-    this.hostname_ + "/gatehouse.Gatehouse/AddRole",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_AddRole
-  );
+proto.gatehouse.GatehousePromiseClient.prototype.addRole =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/AddRole',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_AddRole);
 };
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
+ *   !proto.roles.ModifyRoleRequest,
+ *   !proto.roles.RoleResponse>}
+ */
+const methodDescriptor_Gatehouse_ModifyRole = new grpc.web.MethodDescriptor(
+  '/gatehouse.Gatehouse/ModifyRole',
+  grpc.web.MethodType.UNARY,
+  roles_pb.ModifyRoleRequest,
+  roles_pb.RoleResponse,
+  /**
+   * @param {!proto.roles.ModifyRoleRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  roles_pb.RoleResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.roles.ModifyRoleRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.roles.RoleResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.roles.RoleResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.gatehouse.GatehouseClient.prototype.modifyRole =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/ModifyRole',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_ModifyRole,
+      callback);
+};
+
+
+/**
+ * @param {!proto.roles.ModifyRoleRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.roles.RoleResponse>}
+ *     Promise that resolves to the response
+ */
+proto.gatehouse.GatehousePromiseClient.prototype.modifyRole =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/ModifyRole',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_ModifyRole);
+};
+
 
 /**
  * @const
@@ -672,7 +703,7 @@ proto.gatehouse.GatehousePromiseClient.prototype.addRole = function (
  *   !proto.roles.RoleResponse>}
  */
 const methodDescriptor_Gatehouse_RemoveRole = new grpc.web.MethodDescriptor(
-  "/gatehouse.Gatehouse/RemoveRole",
+  '/gatehouse.Gatehouse/RemoveRole',
   grpc.web.MethodType.UNARY,
   roles_pb.RemoveRoleRequest,
   roles_pb.RoleResponse,
@@ -680,11 +711,12 @@ const methodDescriptor_Gatehouse_RemoveRole = new grpc.web.MethodDescriptor(
    * @param {!proto.roles.RemoveRoleRequest} request
    * @return {!Uint8Array}
    */
-  function (request) {
+  function(request) {
     return request.serializeBinary();
   },
   roles_pb.RoleResponse.deserializeBinary
 );
+
 
 /**
  * @param {!proto.roles.RemoveRoleRequest} request The
@@ -696,19 +728,16 @@ const methodDescriptor_Gatehouse_RemoveRole = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.roles.RoleResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.gatehouse.GatehouseClient.prototype.removeRole = function (
-  request,
-  metadata,
-  callback
-) {
-  return this.client_.rpcCall(
-    this.hostname_ + "/gatehouse.Gatehouse/RemoveRole",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_RemoveRole,
-    callback
-  );
+proto.gatehouse.GatehouseClient.prototype.removeRole =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/RemoveRole',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_RemoveRole,
+      callback);
 };
+
 
 /**
  * @param {!proto.roles.RemoveRoleRequest} request The
@@ -718,41 +747,40 @@ proto.gatehouse.GatehouseClient.prototype.removeRole = function (
  * @return {!Promise<!proto.roles.RoleResponse>}
  *     Promise that resolves to the response
  */
-proto.gatehouse.GatehousePromiseClient.prototype.removeRole = function (
-  request,
-  metadata
-) {
-  return this.client_.unaryCall(
-    this.hostname_ + "/gatehouse.Gatehouse/RemoveRole",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_RemoveRole
-  );
+proto.gatehouse.GatehousePromiseClient.prototype.removeRole =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/RemoveRole',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_RemoveRole);
 };
+
 
 /**
  * @const
  * @type {!grpc.web.MethodDescriptor<
- *   !proto.roles.GetAllRolesRequest,
+ *   !proto.roles.GetRolesRequest,
  *   !proto.roles.MultiRoleResponse>}
  */
 const methodDescriptor_Gatehouse_GetRoles = new grpc.web.MethodDescriptor(
-  "/gatehouse.Gatehouse/GetRoles",
+  '/gatehouse.Gatehouse/GetRoles',
   grpc.web.MethodType.UNARY,
-  roles_pb.GetAllRolesRequest,
+  roles_pb.GetRolesRequest,
   roles_pb.MultiRoleResponse,
   /**
-   * @param {!proto.roles.GetAllRolesRequest} request
+   * @param {!proto.roles.GetRolesRequest} request
    * @return {!Uint8Array}
    */
-  function (request) {
+  function(request) {
     return request.serializeBinary();
   },
   roles_pb.MultiRoleResponse.deserializeBinary
 );
 
+
 /**
- * @param {!proto.roles.GetAllRolesRequest} request The
+ * @param {!proto.roles.GetRolesRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
@@ -761,39 +789,34 @@ const methodDescriptor_Gatehouse_GetRoles = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.roles.MultiRoleResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.gatehouse.GatehouseClient.prototype.getRoles = function (
-  request,
-  metadata,
-  callback
-) {
-  return this.client_.rpcCall(
-    this.hostname_ + "/gatehouse.Gatehouse/GetRoles",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_GetRoles,
-    callback
-  );
+proto.gatehouse.GatehouseClient.prototype.getRoles =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/GetRoles',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_GetRoles,
+      callback);
 };
 
+
 /**
- * @param {!proto.roles.GetAllRolesRequest} request The
+ * @param {!proto.roles.GetRolesRequest} request The
  *     request proto
  * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.roles.MultiRoleResponse>}
  *     Promise that resolves to the response
  */
-proto.gatehouse.GatehousePromiseClient.prototype.getRoles = function (
-  request,
-  metadata
-) {
-  return this.client_.unaryCall(
-    this.hostname_ + "/gatehouse.Gatehouse/GetRoles",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_GetRoles
-  );
+proto.gatehouse.GatehousePromiseClient.prototype.getRoles =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/GetRoles',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_GetRoles);
 };
+
 
 /**
  * @const
@@ -802,7 +825,7 @@ proto.gatehouse.GatehousePromiseClient.prototype.getRoles = function (
  *   !proto.groups.GroupResponse>}
  */
 const methodDescriptor_Gatehouse_AddGroup = new grpc.web.MethodDescriptor(
-  "/gatehouse.Gatehouse/AddGroup",
+  '/gatehouse.Gatehouse/AddGroup',
   grpc.web.MethodType.UNARY,
   groups_pb.AddGroupRequest,
   groups_pb.GroupResponse,
@@ -810,11 +833,12 @@ const methodDescriptor_Gatehouse_AddGroup = new grpc.web.MethodDescriptor(
    * @param {!proto.groups.AddGroupRequest} request
    * @return {!Uint8Array}
    */
-  function (request) {
+  function(request) {
     return request.serializeBinary();
   },
   groups_pb.GroupResponse.deserializeBinary
 );
+
 
 /**
  * @param {!proto.groups.AddGroupRequest} request The
@@ -826,19 +850,16 @@ const methodDescriptor_Gatehouse_AddGroup = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.groups.GroupResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.gatehouse.GatehouseClient.prototype.addGroup = function (
-  request,
-  metadata,
-  callback
-) {
-  return this.client_.rpcCall(
-    this.hostname_ + "/gatehouse.Gatehouse/AddGroup",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_AddGroup,
-    callback
-  );
+proto.gatehouse.GatehouseClient.prototype.addGroup =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/AddGroup',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_AddGroup,
+      callback);
 };
+
 
 /**
  * @param {!proto.groups.AddGroupRequest} request The
@@ -848,17 +869,15 @@ proto.gatehouse.GatehouseClient.prototype.addGroup = function (
  * @return {!Promise<!proto.groups.GroupResponse>}
  *     Promise that resolves to the response
  */
-proto.gatehouse.GatehousePromiseClient.prototype.addGroup = function (
-  request,
-  metadata
-) {
-  return this.client_.unaryCall(
-    this.hostname_ + "/gatehouse.Gatehouse/AddGroup",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_AddGroup
-  );
+proto.gatehouse.GatehousePromiseClient.prototype.addGroup =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/AddGroup',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_AddGroup);
 };
+
 
 /**
  * @const
@@ -867,7 +886,7 @@ proto.gatehouse.GatehousePromiseClient.prototype.addGroup = function (
  *   !proto.groups.GroupResponse>}
  */
 const methodDescriptor_Gatehouse_ModifyGroup = new grpc.web.MethodDescriptor(
-  "/gatehouse.Gatehouse/ModifyGroup",
+  '/gatehouse.Gatehouse/ModifyGroup',
   grpc.web.MethodType.UNARY,
   groups_pb.ModifyGroupRequest,
   groups_pb.GroupResponse,
@@ -875,11 +894,12 @@ const methodDescriptor_Gatehouse_ModifyGroup = new grpc.web.MethodDescriptor(
    * @param {!proto.groups.ModifyGroupRequest} request
    * @return {!Uint8Array}
    */
-  function (request) {
+  function(request) {
     return request.serializeBinary();
   },
   groups_pb.GroupResponse.deserializeBinary
 );
+
 
 /**
  * @param {!proto.groups.ModifyGroupRequest} request The
@@ -891,19 +911,16 @@ const methodDescriptor_Gatehouse_ModifyGroup = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.groups.GroupResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.gatehouse.GatehouseClient.prototype.modifyGroup = function (
-  request,
-  metadata,
-  callback
-) {
-  return this.client_.rpcCall(
-    this.hostname_ + "/gatehouse.Gatehouse/ModifyGroup",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_ModifyGroup,
-    callback
-  );
+proto.gatehouse.GatehouseClient.prototype.modifyGroup =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/ModifyGroup',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_ModifyGroup,
+      callback);
 };
+
 
 /**
  * @param {!proto.groups.ModifyGroupRequest} request The
@@ -913,17 +930,15 @@ proto.gatehouse.GatehouseClient.prototype.modifyGroup = function (
  * @return {!Promise<!proto.groups.GroupResponse>}
  *     Promise that resolves to the response
  */
-proto.gatehouse.GatehousePromiseClient.prototype.modifyGroup = function (
-  request,
-  metadata
-) {
-  return this.client_.unaryCall(
-    this.hostname_ + "/gatehouse.Gatehouse/ModifyGroup",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_ModifyGroup
-  );
+proto.gatehouse.GatehousePromiseClient.prototype.modifyGroup =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/ModifyGroup',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_ModifyGroup);
 };
+
 
 /**
  * @const
@@ -932,7 +947,7 @@ proto.gatehouse.GatehousePromiseClient.prototype.modifyGroup = function (
  *   !proto.groups.GroupResponse>}
  */
 const methodDescriptor_Gatehouse_RemoveGroup = new grpc.web.MethodDescriptor(
-  "/gatehouse.Gatehouse/RemoveGroup",
+  '/gatehouse.Gatehouse/RemoveGroup',
   grpc.web.MethodType.UNARY,
   groups_pb.RemoveGroupRequest,
   groups_pb.GroupResponse,
@@ -940,11 +955,12 @@ const methodDescriptor_Gatehouse_RemoveGroup = new grpc.web.MethodDescriptor(
    * @param {!proto.groups.RemoveGroupRequest} request
    * @return {!Uint8Array}
    */
-  function (request) {
+  function(request) {
     return request.serializeBinary();
   },
   groups_pb.GroupResponse.deserializeBinary
 );
+
 
 /**
  * @param {!proto.groups.RemoveGroupRequest} request The
@@ -956,19 +972,16 @@ const methodDescriptor_Gatehouse_RemoveGroup = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.groups.GroupResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.gatehouse.GatehouseClient.prototype.removeGroup = function (
-  request,
-  metadata,
-  callback
-) {
-  return this.client_.rpcCall(
-    this.hostname_ + "/gatehouse.Gatehouse/RemoveGroup",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_RemoveGroup,
-    callback
-  );
+proto.gatehouse.GatehouseClient.prototype.removeGroup =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/RemoveGroup',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_RemoveGroup,
+      callback);
 };
+
 
 /**
  * @param {!proto.groups.RemoveGroupRequest} request The
@@ -978,41 +991,40 @@ proto.gatehouse.GatehouseClient.prototype.removeGroup = function (
  * @return {!Promise<!proto.groups.GroupResponse>}
  *     Promise that resolves to the response
  */
-proto.gatehouse.GatehousePromiseClient.prototype.removeGroup = function (
-  request,
-  metadata
-) {
-  return this.client_.unaryCall(
-    this.hostname_ + "/gatehouse.Gatehouse/RemoveGroup",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_RemoveGroup
-  );
+proto.gatehouse.GatehousePromiseClient.prototype.removeGroup =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/RemoveGroup',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_RemoveGroup);
 };
+
 
 /**
  * @const
  * @type {!grpc.web.MethodDescriptor<
- *   !proto.groups.GetAllGroupsRequest,
+ *   !proto.groups.GetGroupsRequest,
  *   !proto.groups.MultiGroupResponse>}
  */
 const methodDescriptor_Gatehouse_GetGroups = new grpc.web.MethodDescriptor(
-  "/gatehouse.Gatehouse/GetGroups",
+  '/gatehouse.Gatehouse/GetGroups',
   grpc.web.MethodType.UNARY,
-  groups_pb.GetAllGroupsRequest,
+  groups_pb.GetGroupsRequest,
   groups_pb.MultiGroupResponse,
   /**
-   * @param {!proto.groups.GetAllGroupsRequest} request
+   * @param {!proto.groups.GetGroupsRequest} request
    * @return {!Uint8Array}
    */
-  function (request) {
+  function(request) {
     return request.serializeBinary();
   },
   groups_pb.MultiGroupResponse.deserializeBinary
 );
 
+
 /**
- * @param {!proto.groups.GetAllGroupsRequest} request The
+ * @param {!proto.groups.GetGroupsRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
@@ -1021,39 +1033,34 @@ const methodDescriptor_Gatehouse_GetGroups = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.groups.MultiGroupResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.gatehouse.GatehouseClient.prototype.getGroups = function (
-  request,
-  metadata,
-  callback
-) {
-  return this.client_.rpcCall(
-    this.hostname_ + "/gatehouse.Gatehouse/GetGroups",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_GetGroups,
-    callback
-  );
+proto.gatehouse.GatehouseClient.prototype.getGroups =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/GetGroups',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_GetGroups,
+      callback);
 };
 
+
 /**
- * @param {!proto.groups.GetAllGroupsRequest} request The
+ * @param {!proto.groups.GetGroupsRequest} request The
  *     request proto
  * @param {?Object<string, string>=} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.groups.MultiGroupResponse>}
  *     Promise that resolves to the response
  */
-proto.gatehouse.GatehousePromiseClient.prototype.getGroups = function (
-  request,
-  metadata
-) {
-  return this.client_.unaryCall(
-    this.hostname_ + "/gatehouse.Gatehouse/GetGroups",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_GetGroups
-  );
+proto.gatehouse.GatehousePromiseClient.prototype.getGroups =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/GetGroups',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_GetGroups);
 };
+
 
 /**
  * @const
@@ -1062,7 +1069,7 @@ proto.gatehouse.GatehousePromiseClient.prototype.getGroups = function (
  *   !proto.policies.PolicyResponse>}
  */
 const methodDescriptor_Gatehouse_AddPolicy = new grpc.web.MethodDescriptor(
-  "/gatehouse.Gatehouse/AddPolicy",
+  '/gatehouse.Gatehouse/AddPolicy',
   grpc.web.MethodType.UNARY,
   policies_pb.AddPolicyRequest,
   policies_pb.PolicyResponse,
@@ -1070,11 +1077,12 @@ const methodDescriptor_Gatehouse_AddPolicy = new grpc.web.MethodDescriptor(
    * @param {!proto.policies.AddPolicyRequest} request
    * @return {!Uint8Array}
    */
-  function (request) {
+  function(request) {
     return request.serializeBinary();
   },
   policies_pb.PolicyResponse.deserializeBinary
 );
+
 
 /**
  * @param {!proto.policies.AddPolicyRequest} request The
@@ -1086,19 +1094,16 @@ const methodDescriptor_Gatehouse_AddPolicy = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.policies.PolicyResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.gatehouse.GatehouseClient.prototype.addPolicy = function (
-  request,
-  metadata,
-  callback
-) {
-  return this.client_.rpcCall(
-    this.hostname_ + "/gatehouse.Gatehouse/AddPolicy",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_AddPolicy,
-    callback
-  );
+proto.gatehouse.GatehouseClient.prototype.addPolicy =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/AddPolicy',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_AddPolicy,
+      callback);
 };
+
 
 /**
  * @param {!proto.policies.AddPolicyRequest} request The
@@ -1108,17 +1113,15 @@ proto.gatehouse.GatehouseClient.prototype.addPolicy = function (
  * @return {!Promise<!proto.policies.PolicyResponse>}
  *     Promise that resolves to the response
  */
-proto.gatehouse.GatehousePromiseClient.prototype.addPolicy = function (
-  request,
-  metadata
-) {
-  return this.client_.unaryCall(
-    this.hostname_ + "/gatehouse.Gatehouse/AddPolicy",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_AddPolicy
-  );
+proto.gatehouse.GatehousePromiseClient.prototype.addPolicy =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/AddPolicy',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_AddPolicy);
 };
+
 
 /**
  * @const
@@ -1127,7 +1130,7 @@ proto.gatehouse.GatehousePromiseClient.prototype.addPolicy = function (
  *   !proto.policies.PolicyResponse>}
  */
 const methodDescriptor_Gatehouse_ModifyPolicy = new grpc.web.MethodDescriptor(
-  "/gatehouse.Gatehouse/ModifyPolicy",
+  '/gatehouse.Gatehouse/ModifyPolicy',
   grpc.web.MethodType.UNARY,
   policies_pb.ModifyPolicyRequest,
   policies_pb.PolicyResponse,
@@ -1135,11 +1138,12 @@ const methodDescriptor_Gatehouse_ModifyPolicy = new grpc.web.MethodDescriptor(
    * @param {!proto.policies.ModifyPolicyRequest} request
    * @return {!Uint8Array}
    */
-  function (request) {
+  function(request) {
     return request.serializeBinary();
   },
   policies_pb.PolicyResponse.deserializeBinary
 );
+
 
 /**
  * @param {!proto.policies.ModifyPolicyRequest} request The
@@ -1151,19 +1155,16 @@ const methodDescriptor_Gatehouse_ModifyPolicy = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.policies.PolicyResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.gatehouse.GatehouseClient.prototype.modifyPolicy = function (
-  request,
-  metadata,
-  callback
-) {
-  return this.client_.rpcCall(
-    this.hostname_ + "/gatehouse.Gatehouse/ModifyPolicy",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_ModifyPolicy,
-    callback
-  );
+proto.gatehouse.GatehouseClient.prototype.modifyPolicy =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/ModifyPolicy',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_ModifyPolicy,
+      callback);
 };
+
 
 /**
  * @param {!proto.policies.ModifyPolicyRequest} request The
@@ -1173,17 +1174,15 @@ proto.gatehouse.GatehouseClient.prototype.modifyPolicy = function (
  * @return {!Promise<!proto.policies.PolicyResponse>}
  *     Promise that resolves to the response
  */
-proto.gatehouse.GatehousePromiseClient.prototype.modifyPolicy = function (
-  request,
-  metadata
-) {
-  return this.client_.unaryCall(
-    this.hostname_ + "/gatehouse.Gatehouse/ModifyPolicy",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_ModifyPolicy
-  );
+proto.gatehouse.GatehousePromiseClient.prototype.modifyPolicy =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/ModifyPolicy',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_ModifyPolicy);
 };
+
 
 /**
  * @const
@@ -1192,7 +1191,7 @@ proto.gatehouse.GatehousePromiseClient.prototype.modifyPolicy = function (
  *   !proto.policies.PolicyResponse>}
  */
 const methodDescriptor_Gatehouse_RemovePolicy = new grpc.web.MethodDescriptor(
-  "/gatehouse.Gatehouse/RemovePolicy",
+  '/gatehouse.Gatehouse/RemovePolicy',
   grpc.web.MethodType.UNARY,
   policies_pb.RemovePolicyRequest,
   policies_pb.PolicyResponse,
@@ -1200,11 +1199,12 @@ const methodDescriptor_Gatehouse_RemovePolicy = new grpc.web.MethodDescriptor(
    * @param {!proto.policies.RemovePolicyRequest} request
    * @return {!Uint8Array}
    */
-  function (request) {
+  function(request) {
     return request.serializeBinary();
   },
   policies_pb.PolicyResponse.deserializeBinary
 );
+
 
 /**
  * @param {!proto.policies.RemovePolicyRequest} request The
@@ -1216,19 +1216,16 @@ const methodDescriptor_Gatehouse_RemovePolicy = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.policies.PolicyResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.gatehouse.GatehouseClient.prototype.removePolicy = function (
-  request,
-  metadata,
-  callback
-) {
-  return this.client_.rpcCall(
-    this.hostname_ + "/gatehouse.Gatehouse/RemovePolicy",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_RemovePolicy,
-    callback
-  );
+proto.gatehouse.GatehouseClient.prototype.removePolicy =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/RemovePolicy',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_RemovePolicy,
+      callback);
 };
+
 
 /**
  * @param {!proto.policies.RemovePolicyRequest} request The
@@ -1238,17 +1235,15 @@ proto.gatehouse.GatehouseClient.prototype.removePolicy = function (
  * @return {!Promise<!proto.policies.PolicyResponse>}
  *     Promise that resolves to the response
  */
-proto.gatehouse.GatehousePromiseClient.prototype.removePolicy = function (
-  request,
-  metadata
-) {
-  return this.client_.unaryCall(
-    this.hostname_ + "/gatehouse.Gatehouse/RemovePolicy",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_RemovePolicy
-  );
+proto.gatehouse.GatehousePromiseClient.prototype.removePolicy =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/RemovePolicy',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_RemovePolicy);
 };
+
 
 /**
  * @const
@@ -1257,7 +1252,7 @@ proto.gatehouse.GatehousePromiseClient.prototype.removePolicy = function (
  *   !proto.policies.MultiPolicyResponse>}
  */
 const methodDescriptor_Gatehouse_GetPolicies = new grpc.web.MethodDescriptor(
-  "/gatehouse.Gatehouse/GetPolicies",
+  '/gatehouse.Gatehouse/GetPolicies',
   grpc.web.MethodType.UNARY,
   policies_pb.GetPoliciesRequest,
   policies_pb.MultiPolicyResponse,
@@ -1265,11 +1260,12 @@ const methodDescriptor_Gatehouse_GetPolicies = new grpc.web.MethodDescriptor(
    * @param {!proto.policies.GetPoliciesRequest} request
    * @return {!Uint8Array}
    */
-  function (request) {
+  function(request) {
     return request.serializeBinary();
   },
   policies_pb.MultiPolicyResponse.deserializeBinary
 );
+
 
 /**
  * @param {!proto.policies.GetPoliciesRequest} request The
@@ -1281,19 +1277,16 @@ const methodDescriptor_Gatehouse_GetPolicies = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.policies.MultiPolicyResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.gatehouse.GatehouseClient.prototype.getPolicies = function (
-  request,
-  metadata,
-  callback
-) {
-  return this.client_.rpcCall(
-    this.hostname_ + "/gatehouse.Gatehouse/GetPolicies",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_GetPolicies,
-    callback
-  );
+proto.gatehouse.GatehouseClient.prototype.getPolicies =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/GetPolicies',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_GetPolicies,
+      callback);
 };
+
 
 /**
  * @param {!proto.policies.GetPoliciesRequest} request The
@@ -1303,17 +1296,15 @@ proto.gatehouse.GatehouseClient.prototype.getPolicies = function (
  * @return {!Promise<!proto.policies.MultiPolicyResponse>}
  *     Promise that resolves to the response
  */
-proto.gatehouse.GatehousePromiseClient.prototype.getPolicies = function (
-  request,
-  metadata
-) {
-  return this.client_.unaryCall(
-    this.hostname_ + "/gatehouse.Gatehouse/GetPolicies",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_GetPolicies
-  );
+proto.gatehouse.GatehousePromiseClient.prototype.getPolicies =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/GetPolicies',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_GetPolicies);
 };
+
 
 /**
  * @const
@@ -1322,7 +1313,7 @@ proto.gatehouse.GatehousePromiseClient.prototype.getPolicies = function (
  *   !proto.gatehouse.CheckResponse>}
  */
 const methodDescriptor_Gatehouse_check = new grpc.web.MethodDescriptor(
-  "/gatehouse.Gatehouse/check",
+  '/gatehouse.Gatehouse/check',
   grpc.web.MethodType.UNARY,
   proto.gatehouse.CheckRequest,
   proto.gatehouse.CheckResponse,
@@ -1330,11 +1321,12 @@ const methodDescriptor_Gatehouse_check = new grpc.web.MethodDescriptor(
    * @param {!proto.gatehouse.CheckRequest} request
    * @return {!Uint8Array}
    */
-  function (request) {
+  function(request) {
     return request.serializeBinary();
   },
   proto.gatehouse.CheckResponse.deserializeBinary
 );
+
 
 /**
  * @param {!proto.gatehouse.CheckRequest} request The
@@ -1346,19 +1338,16 @@ const methodDescriptor_Gatehouse_check = new grpc.web.MethodDescriptor(
  * @return {!grpc.web.ClientReadableStream<!proto.gatehouse.CheckResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.gatehouse.GatehouseClient.prototype.check = function (
-  request,
-  metadata,
-  callback
-) {
-  return this.client_.rpcCall(
-    this.hostname_ + "/gatehouse.Gatehouse/check",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_check,
-    callback
-  );
+proto.gatehouse.GatehouseClient.prototype.check =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/gatehouse.Gatehouse/check',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_check,
+      callback);
 };
+
 
 /**
  * @param {!proto.gatehouse.CheckRequest} request The
@@ -1368,16 +1357,15 @@ proto.gatehouse.GatehouseClient.prototype.check = function (
  * @return {!Promise<!proto.gatehouse.CheckResponse>}
  *     Promise that resolves to the response
  */
-proto.gatehouse.GatehousePromiseClient.prototype.check = function (
-  request,
-  metadata
-) {
-  return this.client_.unaryCall(
-    this.hostname_ + "/gatehouse.Gatehouse/check",
-    request,
-    metadata || {},
-    methodDescriptor_Gatehouse_check
-  );
+proto.gatehouse.GatehousePromiseClient.prototype.check =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/gatehouse.Gatehouse/check',
+      request,
+      metadata || {},
+      methodDescriptor_Gatehouse_check);
 };
 
+
 module.exports = proto.gatehouse;
+

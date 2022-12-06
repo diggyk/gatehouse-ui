@@ -63,7 +63,7 @@ export default function PolicyRule() {
   }
 
   const envCheckToTable = () => {
-    if (rule.getEnvAttributesList().length == 0) {
+    if (rule.getEnvAttributesList().length === 0) {
       return (
         <tr>
           <td colSpan={3}>Match any environment attributes</td>
