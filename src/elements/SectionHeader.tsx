@@ -1,5 +1,16 @@
 import { PropsWithChildren } from "react";
 
-export default function SectionHeader(props: PropsWithChildren) {
-  return <span className="section-header">{props.children}</span>;
+interface Props {
+  rightIcon?: JSX.Element;
+}
+
+export default function SectionHeader(props: PropsWithChildren<Props>) {
+  return (
+    <span className="section-header">
+      {props.children}
+      {props.rightIcon && (
+        <span style={{ float: "right" }}>{props.rightIcon}</span>
+      )}
+    </span>
+  );
 }

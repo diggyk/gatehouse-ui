@@ -2,9 +2,11 @@ import {
   faChevronRight,
   faSquareCaretLeft,
   faSquareCaretRight,
+  faSquarePlus,
   faSquareXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { type } from "os";
 import { ChangeEvent, useEffect, useState } from "react";
 import {
   Alert,
@@ -13,6 +15,7 @@ import {
   Col,
   Container,
   Form,
+  Modal,
   Row,
 } from "react-bootstrap";
 import { useForm } from "react-hook-form";
@@ -31,20 +34,27 @@ export default function EditGroup() {
   const { client, setErrorMsg, setStatusMsg, groups, setGroups } =
     usePageContext();
   const { register, handleSubmit } = useForm({ mode: "all" });
+  const {
+    register: reg2,
+    handleSubmit: hs2,
+    formState: { errors: e2 },
+  } = useForm({ mode: "all" });
   const onError = (errors: any) => {};
 
   const [registeredActors, setRegisteredActors]: [Set<string>, any] = useState(
     new Set()
   );
+
   const [roles, setRoles]: [string[], any] = useState([]);
+  const [addRolesList, setAddRolesList]: [string[], any] = useState([]);
+  const [removeRolesList, setRemoveRolesList]: [string[], any] = useState([]);
 
   const [activeMembers, setActiveMembers]: [Map<string, Set<string>>, any] =
     useState(new Map());
   const [inactiveMembers, setInactiveMembers]: [Map<string, Set<string>>, any] =
     useState(new Map());
 
-  const [addRolesList, setAddRolesList]: [string[], any] = useState([]);
-  const [removeRolesList, setRemoveRolesList]: [string[], any] = useState([]);
+  const [showAddMember, setShowAddMember] = useState(false);
 
   // check if a member is in a member map
   const inMap = (
@@ -404,53 +414,129 @@ export default function EditGroup() {
     return <>{elements}</>;
   };
 
+  const addAdhocMember = (data: any) => {
+    let typestr = data.typestr;
+    let name = data.name;
+
+    if (!typestr || !name) {
+      setErrorMsg("Cannot add adhoc member with incorrect name or type");
+    }
+
+    if (!activeMembers.has(typestr)) activeMembers.set(typestr, new Set());
+    activeMembers.get(typestr)!.add(name);
+
+    setStatusMsg("Added " + typestr + ":" + name + " adhoc member");
+    setShowAddMember(false);
+  };
+
   return (
-    <Form onSubmit={handleSubmit(handleUpdate, onError)}>
-      <Card className="showEntryCard wide">
-        <Card.Body>
-          <Card.Title>{group.getName()}</Card.Title>
-          <Card.Subtitle>
+    <>
+      <Modal show={showAddMember} onHide={() => setShowAddMember(false)}>
+        <Form onSubmit={hs2(addAdhocMember)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add an adhoc member</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
             <Form.Control
-              className="desc"
-              id="desc"
-              defaultValue={group.getDesc()}
-              placeholder="Optional description"
-              {...register("desc", {
-                required: false,
+              id="typestr"
+              placeholder="Type"
+              {...reg2("typestr", {
+                required: true,
+                pattern: {
+                  value: /^[a-z0-9-_@]+$/i,
+                  message:
+                    "Invalid characters (alphanum, dashes, underscores, and at-sign only)",
+                },
               })}
-            />
-          </Card.Subtitle>
-          <Row lg="auto">
-            <Col>
-              <SectionHeader>Granted roles</SectionHeader>
-              {existing_roles()}
-              <SectionHeader>Grant roles</SectionHeader>
-              {new_roles_section()}
-            </Col>
-            <Col>
-              <Row>
-                <Col>
-                  <SectionHeader>Members</SectionHeader>
-                  {members_sections()}
-                </Col>
-                <Col>
-                  <SectionHeader>Available actors</SectionHeader>
-                  {possible_members_sections()}
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-          <Row>
-            <Col className="footnote">
-              * denotes adhoc group members not found in list of registered
-              actors
-            </Col>
-          </Row>
-          <Card.Footer>
-            <Button type="submit">Save</Button>
-          </Card.Footer>
-        </Card.Body>
-      </Card>
-    </Form>
+            ></Form.Control>
+            {e2 && e2.typestr && e2.typestr.message && (
+              <p className="formError">{e2.typestr.message.toString()}</p>
+            )}
+            <Form.Control
+              id="name"
+              placeholder="Name"
+              style={{ marginTop: "10px" }}
+              {...reg2("name", {
+                required: true,
+                pattern: {
+                  value: /^[a-z0-9-_@]+$/i,
+                  message:
+                    "Invalid characters (alphanum, dashes, underscores, and at-sign only)",
+                },
+              })}
+            ></Form.Control>
+            {e2 && e2.name && e2.name.message && (
+              <p className="formError">{e2.name.message.toString()}</p>
+            )}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowAddMember(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" type="submit">
+              Add
+            </Button>
+          </Modal.Footer>
+        </Form>
+      </Modal>
+      <Form onSubmit={handleSubmit(handleUpdate, onError)}>
+        <Card className="showEntryCard wide">
+          <Card.Body>
+            <Card.Title>{group.getName()}</Card.Title>
+            <Card.Subtitle>
+              <Form.Control
+                className="desc"
+                id="desc"
+                defaultValue={group.getDesc()}
+                placeholder="Optional description"
+                {...register("desc", {
+                  required: false,
+                })}
+              />
+            </Card.Subtitle>
+            <Row lg="auto">
+              <Col>
+                <SectionHeader>Granted roles</SectionHeader>
+                {existing_roles()}
+                <SectionHeader>Grant roles</SectionHeader>
+                {new_roles_section()}
+              </Col>
+              <Col>
+                <Row>
+                  <Col>
+                    <SectionHeader
+                      rightIcon={
+                        <FontAwesomeIcon
+                          icon={faSquarePlus}
+                          className="plusButton"
+                          inverse
+                          onClick={() => setShowAddMember(true)}
+                        />
+                      }
+                    >
+                      Members
+                    </SectionHeader>
+                    {members_sections()}
+                  </Col>
+                  <Col>
+                    <SectionHeader>Available actors</SectionHeader>
+                    {possible_members_sections()}
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+            <Row>
+              <Col className="footnote">
+                * denotes adhoc group members not found in list of registered
+                actors
+              </Col>
+            </Row>
+            <Card.Footer>
+              <Button type="submit">Save</Button>
+            </Card.Footer>
+          </Card.Body>
+        </Card>
+      </Form>
+    </>
   );
 }
