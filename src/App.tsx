@@ -2,7 +2,13 @@ import "./App.scss";
 import logo from "./logo1.png";
 import { Container, Nav, Navbar, NavbarBrand } from "react-bootstrap";
 
-import { Link as NavLink, Route, Routes, Outlet } from "react-router-dom";
+import {
+  Link as NavLink,
+  Route,
+  Routes,
+  Outlet,
+  useOutletContext,
+} from "react-router-dom";
 import Home from "./pages/Home";
 import PolicyRulesPage from "./pages/PolicyRulesPage";
 import TargetsPage from "./pages/TargetsPage";
@@ -17,6 +23,12 @@ import RolesPage from "./pages/RolesPage";
 import Role from "./pages/Role";
 import EditRole from "./pages/EditRole";
 import AddRole from "./pages/AddRole";
+import EditGroup from "./pages/EditGroup";
+import { GatehousePromiseClient } from "./protos/gatehouse_grpc_web_pb";
+
+type ContextType = {
+  client: GatehousePromiseClient;
+};
 
 export default function App() {
   return (
@@ -33,7 +45,8 @@ export default function App() {
           <Route path=":typestr/:name" element={<Actor />} />
         </Route>
         <Route path="groups" element={<GroupsPage />}>
-          <Route path=":name" element={<Group />} />
+          <Route path="view/:name" element={<Group />} />
+          <Route path="edit/:name" element={<EditGroup />} />
         </Route>
         <Route path="roles" element={<RolesPage />}>
           <Route path="view/:name" element={<Role />} />
@@ -47,6 +60,12 @@ export default function App() {
 }
 
 function Layout() {
+  const client = new GatehousePromiseClient(
+    "http://localhost:6174",
+    null,
+    null
+  );
+
   return (
     <Container fluid className="h-100 p-0">
       <Navbar bg="dark" expand="lg" variant="dark" className="navbar">
@@ -83,8 +102,12 @@ function Layout() {
         </Nav>
       </Navbar>
       <Container fluid className="mainBody">
-        <Outlet />
+        <Outlet context={{ client }} />
       </Container>
     </Container>
   );
+}
+
+export function useAppContext() {
+  return useOutletContext<ContextType>();
 }

@@ -1,10 +1,11 @@
 import { faSquareXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChangeEvent, useEffect, useState } from "react";
-import { Alert, Button, Card, Form, Table } from "react-bootstrap";
+import { Button, Card, Form, Table } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
+import SectionHeader from "../elements/SectionHeader";
+import SectionItem from "../elements/SectionItem";
 import { usePageContext } from "./RolesPage";
 
 export default function Role() {
@@ -15,7 +16,8 @@ export default function Role() {
     formState: { errors },
   } = useForm({ mode: "all" });
   const onError = (errors: any) => {};
-  const { setErrorMsg, setStatusMsg, roles, setRoles } = usePageContext();
+  const { client, setErrorMsg, setStatusMsg, roles, setRoles } =
+    usePageContext();
 
   const [groups, setGroups]: [string[], any] = useState([]);
   const [addGranted, setAddGranted]: [string[], any] = useState([]);
@@ -28,13 +30,7 @@ export default function Role() {
       .setDesc(data.desc)
       .setName(data.name);
 
-    let gatehouseSvc = new GatehousePromiseClient(
-      "http://localhost:6174",
-      null,
-      null
-    );
-
-    gatehouseSvc
+    client
       .addRole(req, null)
       .then((response: proto.roles.RoleResponse) => {
         let added_role = response.getRole();
@@ -59,13 +55,8 @@ export default function Role() {
   /// load the group names
   useEffect(() => {
     let request = new proto.groups.GetGroupsRequest();
-    let gatehouseSvc = new GatehousePromiseClient(
-      "http://localhost:6174",
-      null,
-      null
-    );
 
-    gatehouseSvc
+    client
       .getGroups(request, null)
       .then((response: proto.groups.MultiGroupResponse) => {
         console.log("Loading groups...");
@@ -79,6 +70,7 @@ export default function Role() {
       .catch((err: Error) => {
         setErrorMsg(err.message);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // called when the selectors are changed for the adding of new granted groups
@@ -121,32 +113,28 @@ export default function Role() {
 
     [...addGranted].sort().forEach((granted_name, index) => {
       elements.push(
-        <tr key={"add_" + index}>
-          <td key={"add_" + index} className="small-button-entity">
-            <FontAwesomeIcon
-              icon={faSquareXmark}
-              className="icon"
-              inverse
-              onClick={() => handleRemoveAddedGrant(granted_name)}
-            />
-            {granted_name}
-          </td>
-        </tr>
+        <SectionItem key={"add_" + index}>
+          <FontAwesomeIcon
+            icon={faSquareXmark}
+            className="delete-icon-btn"
+            inverse
+            onClick={() => handleRemoveAddedGrant(granted_name)}
+          />
+          {granted_name}
+        </SectionItem>
       );
     });
 
     elements.push(
-      <tr key={"add_new"}>
-        <td key={"add_new"}>
-          <Form.Select
-            key={"add_new"}
-            id={"add_new"}
-            onChange={handleAddGrantedChange}
-          >
-            {group_options}
-          </Form.Select>
-        </td>
-      </tr>
+      <SectionItem key={"add_new"}>
+        <Form.Select
+          key={"add_new"}
+          id={"add_new"}
+          onChange={handleAddGrantedChange}
+        >
+          {group_options}
+        </Form.Select>
+      </SectionItem>
     );
 
     return elements;
@@ -176,6 +164,7 @@ export default function Role() {
           </Card.Title>
           <Card.Subtitle>
             <Form.Control
+              as="textarea"
               className="desc"
               id="desc"
               placeholder="Optional description"
@@ -184,14 +173,8 @@ export default function Role() {
               })}
             />
           </Card.Subtitle>
-          <Table className="showEntryTable">
-            <thead>
-              <tr>
-                <th>Grant to</th>
-              </tr>
-            </thead>
-            <tbody>{new_grants()}</tbody>
-          </Table>
+          <SectionHeader>Grant to</SectionHeader>
+          {new_grants()}
           <Card.Footer>
             <Button type="submit">Save</Button>
           </Card.Footer>

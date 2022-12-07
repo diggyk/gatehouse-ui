@@ -1,25 +1,21 @@
 import { useState } from "react";
-import { Alert, Button, Card, Container, Modal, Table } from "react-bootstrap";
+import { Alert, Button, Card, Modal, Table } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
+import SectionHeader from "../elements/SectionHeader";
+import SectionItem from "../elements/SectionItem";
 import { usePageContext } from "./RolesPage";
 
 export default function Role() {
+  const { client, setErrorMsg, setStatusMsg, roles, setRoles } =
+    usePageContext();
   const navigate = useNavigate();
   const { name } = useParams();
-  const { setErrorMsg, setStatusMsg, roles, setRoles } = usePageContext();
   const [deleteConfirm, setDeleteConfirm] = useState(false);
 
   const handleDelete = (name: string) => {
     let req = new proto.roles.RemoveRoleRequest().setName(name);
 
-    let gatehouseSvc = new GatehousePromiseClient(
-      "http://localhost:6174",
-      null,
-      null
-    );
-
-    gatehouseSvc
+    client
       .removeRole(req, null)
       .then((response: proto.roles.RoleResponse) => {
         setStatusMsg("Role " + name + " deleted!");
@@ -47,11 +43,7 @@ export default function Role() {
     .getGrantedToList()
     .sort()
     .forEach((group: string) => {
-      groups.push(
-        <tr key={"group_" + group}>
-          <td>{group}</td>
-        </tr>
-      );
+      groups.push(<SectionItem key={"group_" + group}>{group}</SectionItem>);
     });
 
   return (
@@ -76,14 +68,8 @@ export default function Role() {
         <Card.Body>
           <Card.Title>{role.getName()}</Card.Title>
           <Card.Subtitle>{role.getDesc()}</Card.Subtitle>
-          <Table className="showEntryTable">
-            <thead>
-              <tr>
-                <th>Granted To</th>
-              </tr>
-            </thead>
-            <tbody>{groups}</tbody>
-          </Table>
+          <SectionHeader>Granted to</SectionHeader>
+          {groups}
           <Card.Footer>
             <Link to={"../edit/" + name}>
               <Button>Edit</Button>

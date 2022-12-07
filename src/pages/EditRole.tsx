@@ -1,16 +1,19 @@
 import { faSquareXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChangeEvent, useEffect, useState } from "react";
-import { Alert, Button, Card, Container, Form, Table } from "react-bootstrap";
+import { Button, Card, Container, Form, Table } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
+import SectionHeader from "../elements/SectionHeader";
+import SectionItem from "../elements/SectionItem";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 import { usePageContext } from "./RolesPage";
 
 export default function EditRole() {
   const navigate = useNavigate();
   const { name } = useParams();
-  const { setErrorMsg, setStatusMsg, roles, setRoles } = usePageContext();
+  const { client, setErrorMsg, setStatusMsg, roles, setRoles } =
+    usePageContext();
   const { register, handleSubmit } = useForm({ mode: "all" });
   const onError = (errors: any) => {};
 
@@ -27,13 +30,7 @@ export default function EditRole() {
       .setDesc(data.desc)
       .setName(name || "");
 
-    let gatehouseSvc = new GatehousePromiseClient(
-      "http://localhost:6174",
-      null,
-      null
-    );
-
-    gatehouseSvc
+    client
       .modifyRole(req, null)
       .then((response: proto.roles.RoleResponse) => {
         let updated_role = response.getRole();
@@ -58,13 +55,8 @@ export default function EditRole() {
   /// load the group names
   useEffect(() => {
     let request = new proto.groups.GetGroupsRequest();
-    let gatehouseSvc = new GatehousePromiseClient(
-      "http://localhost:6174",
-      null,
-      null
-    );
 
-    gatehouseSvc
+    client
       .getGroups(request, null)
       .then((response: proto.groups.MultiGroupResponse) => {
         console.log("Loading groups...");
@@ -78,6 +70,7 @@ export default function EditRole() {
       .catch((err: Error) => {
         setErrorMsg(err.message);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!name) {
@@ -133,24 +126,22 @@ export default function EditRole() {
       .sort()
       .forEach((granted_name: string, index) => {
         elements.push(
-          <tr key={granted_name + "_del"}>
-            <td key={granted_name + "_del"}>
-              <Form.Switch
-                type="switch"
-                id={granted_name + "_del"}
-                key={granted_name + "_del"}
-              >
-                <Form.Switch.Input
-                  className="remove-switch"
-                  checked={removeGranted.includes(granted_name)}
-                  onChange={() => toggleExistingGrant(granted_name)}
-                ></Form.Switch.Input>
-                <Form.Switch.Label className="remove-switch-label">
-                  {granted_name}
-                </Form.Switch.Label>
-              </Form.Switch>
-            </td>
-          </tr>
+          <SectionItem key={granted_name + "_del"}>
+            <Form.Switch
+              type="switch"
+              id={granted_name + "_del"}
+              key={granted_name + "_del"}
+            >
+              <Form.Switch.Input
+                className="remove-switch"
+                checked={removeGranted.includes(granted_name)}
+                onChange={() => toggleExistingGrant(granted_name)}
+              ></Form.Switch.Input>
+              <Form.Switch.Label className="remove-switch-label">
+                {granted_name}
+              </Form.Switch.Label>
+            </Form.Switch>
+          </SectionItem>
         );
       });
 
@@ -180,32 +171,29 @@ export default function EditRole() {
 
     [...addGranted].sort().forEach((granted_name, index) => {
       elements.push(
-        <tr key={"add_" + index}>
-          <td key={"add_" + index} className="small-button-entity">
-            <FontAwesomeIcon
-              icon={faSquareXmark}
-              className="icon"
-              inverse
-              onClick={() => handleRemoveAddedGrant(granted_name)}
-            />
-            {granted_name}
-          </td>
-        </tr>
+        <SectionItem key={"add_" + index}>
+          <FontAwesomeIcon
+            icon={faSquareXmark}
+            className="delete-icon-btn"
+            inverse
+            onClick={() => handleRemoveAddedGrant(granted_name)}
+          />
+          {granted_name}
+        </SectionItem>
       );
     });
 
     elements.push(
-      <tr key={"add_new"}>
-        <td key={"add_new"}>
-          <Form.Select
-            key={"add_new"}
-            id={"add_new"}
-            onChange={handleAddGrantedChange}
-          >
-            {group_options}
-          </Form.Select>
-        </td>
-      </tr>
+      <SectionItem key={"add_new"}>
+        <Form.Select
+          style={{ padding: "0px 20px" }}
+          key={"add_new"}
+          id={"add_new"}
+          onChange={handleAddGrantedChange}
+        >
+          {group_options}
+        </Form.Select>
+      </SectionItem>
     );
 
     return elements;
@@ -221,26 +209,17 @@ export default function EditRole() {
               className="desc"
               id="desc"
               defaultValue={role.getDesc()}
+              as="textarea"
               placeholder="Optional description"
               {...register("desc", {
                 required: false,
               })}
             />
           </Card.Subtitle>
-          <Table className="showEntryTable">
-            <thead>
-              <tr>
-                <th>Granted To</th>
-              </tr>
-            </thead>
-            <tbody>{existing_grants()}</tbody>
-            <thead>
-              <tr>
-                <th>Grant to</th>
-              </tr>
-            </thead>
-            <tbody>{new_grants()}</tbody>
-          </Table>
+          <SectionHeader>Granted to</SectionHeader>
+          {existing_grants()}
+          <SectionHeader>Grant to</SectionHeader>
+          {new_grants()}
           <Card.Footer>
             <Button type="submit">Save</Button>
           </Card.Footer>

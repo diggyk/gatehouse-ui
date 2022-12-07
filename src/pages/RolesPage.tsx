@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import { Alert, CloseButton, Col, Container, Row } from "react-bootstrap";
 import { useOutletContext } from "react-router";
 import { Link, Outlet } from "react-router-dom";
+import { useAppContext } from "../App";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 
 type ContextType = {
+  client: GatehousePromiseClient;
   setErrorMsg: Function;
   setStatusMsg: Function;
   roles: Map<string, proto.roles.Role>;
@@ -14,6 +16,7 @@ type ContextType = {
 };
 
 export default function RolesPage() {
+  const { client } = useAppContext();
   const [errorMsg, setErrorMsg]: [string | null, any] = useState(null);
   const [statusMsg, setStatusMsg]: [string | null, any] = useState(null);
 
@@ -22,13 +25,8 @@ export default function RolesPage() {
   // load data from API on first render
   useEffect(() => {
     let request = new proto.roles.GetRolesRequest();
-    let gatehouseSvc = new GatehousePromiseClient(
-      "http://localhost:6174",
-      null,
-      null
-    );
 
-    gatehouseSvc
+    client
       .getRoles(request, null)
       .then((response) => {
         let roles = new Map<string, proto.roles.Role>();
@@ -67,7 +65,6 @@ export default function RolesPage() {
                 icon={faSquarePlus}
                 className="plusButton"
                 inverse
-                // onClick={() => handleRemoveAddedGrant(granted_name)}
               />
             </Link>
           </span>
@@ -89,7 +86,6 @@ export default function RolesPage() {
           {errorMsg}
           <CloseButton
             style={{ float: "right" }}
-            variant="dark"
             onClick={() => setErrorMsg(null)}
           />
         </Alert>
@@ -97,11 +93,12 @@ export default function RolesPage() {
           {statusMsg}
           <CloseButton
             style={{ float: "right" }}
-            variant="dark"
             onClick={() => setStatusMsg(null)}
           />
         </Alert>
-        <Outlet context={{ roles, setErrorMsg, setStatusMsg, setRoles }} />
+        <Outlet
+          context={{ client, roles, setErrorMsg, setStatusMsg, setRoles }}
+        />
       </Col>
     </Row>
   );

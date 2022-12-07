@@ -102,18 +102,16 @@ body, html {
     padding-top: .8em;
 }
 
-.small-button-entity {
-    .icon {
+    .delete-icon-btn {
         vertical-align: middle;
         margin: 0px 10px 0px 4px;
         padding: 4px;
         cursor: pointer;
         color: $brite-light;
     }
-    .icon:hover {
+    .delete-icon-btn:hover {
         color: #dd1111
     }
-}
 
 .plusButton {
     vertical-align: middle;
@@ -133,14 +131,16 @@ body, html {
     font-size: small;
 }
 
-// ENTRY PAGE //
-
 .showEntryCard {
     width: fit-content;
     min-width: 20rem;
     border: none;
     box-shadow: .3rem .3rem .3rem #0005;
     // background-color: darken($color: $body-bg, $amount: 5);
+
+    .col {
+        width: fit-content;
+    }
 
     .card-body {
         padding: 0;
@@ -170,17 +170,41 @@ body, html {
             text-decoration: line-through;
         } 
 
+        .section-header {
+            display: block;
+            padding: 5px 10px 5px 10px;
+            margin: 0px 10px;
+            white-space: nowrap;
+            font-weight: bold;
+            border-bottom: darken($color: $body-bg, $amount: 60) 1px solid;
+        }
+
+        .section-item {
+            display: block;
+            padding: 5px 10px 5px 10px;
+            margin: 0px 10px;
+            white-space: nowrap;
+
+            select {
+                padding: 0px 20px;
+                margin-bottom: 10px;
+            }
+        }
+
     }
 }
 
 .showEntryTable {
     margin: 0;
+    border-radius: 0px !important;
 
     th {
         padding: 5px 20px 5px 20px;
+        white-space: nowrap;
     }
     td {
         padding: 5px 20px 5px 30px;
+        white-space: nowrap;
     }
 
     .subheading {
@@ -188,4 +212,8 @@ body, html {
         color: gray;
     }
 
+}
+
+.left-column-item {
+    display: block;
 }
