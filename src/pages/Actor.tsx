@@ -1,5 +1,7 @@
 import { Button, Card, Container, Table } from "react-bootstrap";
 import { useParams } from "react-router-dom";
+import SectionHeader from "../elements/SectionHeader";
+import SectionItem from "../elements/SectionItem";
 import { useActors } from "./ActorsPage";
 
 export default function Actor() {
@@ -23,11 +25,6 @@ export default function Actor() {
   let attributes = entity.getAttributesMap();
 
   let headers: JSX.Element[] = [];
-  headers.push(
-    <tr>
-      <th colSpan={2}>Attributes</th>
-    </tr>
-  );
   if (attributes.getLength() > 0) {
     headers.push(
       <tr className="subheading">
@@ -60,11 +57,16 @@ export default function Actor() {
       <Card.Body>
         <Card.Title>{entity.getName()}</Card.Title>
         <Card.Subtitle>{entity.getTypestr()}</Card.Subtitle>
-        <Table className="showEntryTable">
-          <thead>{headers}</thead>
-          <tbody>{attrs}</tbody>
-        </Table>
-        <Button disabled>Edit</Button>
+        <SectionHeader>Attributes</SectionHeader>
+        <SectionItem>
+          <Table className="showEntryTable">
+            <thead>{headers}</thead>
+            <tbody>{attrs}</tbody>
+          </Table>
+        </SectionItem>
+        <Card.Footer>
+          <Button disabled>Edit</Button>
+        </Card.Footer>
       </Card.Body>
     </Card>
   );

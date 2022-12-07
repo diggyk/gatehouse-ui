@@ -1,5 +1,7 @@
 import { Button, Card, Container, Table } from "react-bootstrap";
 import { useParams } from "react-router-dom";
+import SectionHeader from "../elements/SectionHeader";
+import SectionItem from "../elements/SectionItem";
 import { useTargets } from "./TargetsPage";
 
 export default function Actor() {
@@ -23,11 +25,6 @@ export default function Actor() {
   let attributes = target.getAttributesMap();
 
   let headers: JSX.Element[] = [];
-  headers.push(
-    <tr>
-      <th colSpan={2}>Attributes</th>
-    </tr>
-  );
   if (attributes.getLength() > 0) {
     headers.push(
       <tr className="subheading">
@@ -60,16 +57,16 @@ export default function Actor() {
   if (actions_list.length > 0) {
     actions_list.forEach((action) => {
       actions.push(
-        <tr>
+        <SectionItem>
           <td>{action}</td>
-        </tr>
+        </SectionItem>
       );
     });
   } else {
     actions.push(
-      <tr>
+      <SectionItem>
         <td>No actions</td>
-      </tr>
+      </SectionItem>
     );
   }
 
@@ -78,17 +75,18 @@ export default function Actor() {
       <Card.Body>
         <Card.Title>{target.getName()}</Card.Title>
         <Card.Subtitle>{target.getTypestr()}</Card.Subtitle>
-        <Table className="showEntryTable">
-          <thead>{headers}</thead>
-          <tbody>{attrs}</tbody>
-          <thead>
-            <tr>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>{actions}</tbody>
-        </Table>
-        <Button disabled>Edit</Button>
+        <SectionHeader>Attributes</SectionHeader>
+        <SectionItem>
+          <Table className="showEntryTable">
+            <thead>{headers}</thead>
+            <tbody>{attrs}</tbody>
+          </Table>
+        </SectionItem>
+        <SectionHeader>Actions</SectionHeader>
+        {actions}
+        <Card.Footer>
+          <Button disabled>Edit</Button>
+        </Card.Footer>
       </Card.Body>
     </Card>
   );

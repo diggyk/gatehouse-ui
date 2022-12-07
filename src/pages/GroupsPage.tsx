@@ -1,38 +1,44 @@
+import { faSquarePlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Alert, CloseButton, Col, Container, Row } from "react-bootstrap";
 import { useOutletContext } from "react-router";
 import { Link, Outlet } from "react-router-dom";
+import { useAppContext } from "../App";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 
 type ContextType = {
+  client: GatehousePromiseClient;
+  setErrorMsg: Function;
+  setStatusMsg: Function;
   groups: Map<string, proto.groups.Group>;
+  setGroups: Function;
 };
 
 export default function GroupsPage() {
+  const { client } = useAppContext();
+  const [loading, setLoading]: [boolean, Function] = useState(true);
+  const [errorMsg, setErrorMsg]: [string | null, any] = useState(null);
+  const [statusMsg, setStatusMsg]: [string | null, any] = useState(null);
+
   const [groups, setGroups] = useState(new Map<string, proto.groups.Group>());
-  const [error, setError] = useState(null);
 
   // load data from API on first render
   useEffect(() => {
     let request = new proto.groups.GetGroupsRequest();
-    let gatehouseSvc = new GatehousePromiseClient(
-      "http://localhost:6174",
-      null,
-      null
-    );
-
     let grp_map = new Map<string, proto.groups.Group>();
 
-    gatehouseSvc
+    client
       .getGroups(request, null)
       .then((response) => {
         response.getGroupsList().forEach((group: proto.groups.Group) => {
           grp_map.set(group.getName(), group);
         });
         setGroups(grp_map);
+        setLoading(false);
       })
       .catch((err) => {
-        setError(err.message);
+        setErrorMsg(err.message);
       });
   }, []);
 
@@ -44,7 +50,7 @@ export default function GroupsPage() {
       .forEach((val, _) => {
         let name = val.getName();
         group_items.push(
-          <Link key={name} className="item" to={name}>
+          <Link key={name} className="item" to={"view/" + name}>
             <li key={name}>{name}</li>
           </Link>
         );
@@ -53,7 +59,16 @@ export default function GroupsPage() {
     return (
       <Container>
         <Container className="header" key={"header"}>
-          Groups
+          <span>Groups</span>
+          <span style={{ float: "right" }}>
+            <Link key="addbutton" to="add">
+              <FontAwesomeIcon
+                icon={faSquarePlus}
+                className="plusButton"
+                inverse
+              />
+            </Link>
+          </span>
         </Container>
         <Container className="itemList">
           <ul>{group_items}</ul>
@@ -62,23 +77,36 @@ export default function GroupsPage() {
     );
   };
 
-  let mainContent;
-  if (error == null) {
-    mainContent = <Outlet context={{ groups }} />;
-  } else {
-    mainContent = <Container className="errorNote">{error}</Container>;
-  }
-
   return (
     <Row className="h-100">
       <Col lg="2" className="sidePickerNav h-100 p-0">
         {groupNav()}
       </Col>
-      <Col className="mainContent">{mainContent}</Col>
+      <Col className="mainContent">
+        <Alert variant="danger" show={errorMsg !== null}>
+          {errorMsg}
+          <CloseButton
+            style={{ float: "right" }}
+            onClick={() => setErrorMsg(null)}
+          />
+        </Alert>
+        <Alert variant="success" show={statusMsg !== null}>
+          {statusMsg}
+          <CloseButton
+            style={{ float: "right" }}
+            onClick={() => setStatusMsg(null)}
+          />
+        </Alert>
+        {!loading && (
+          <Outlet
+            context={{ client, groups, setErrorMsg, setStatusMsg, setGroups }}
+          />
+        )}
+      </Col>
     </Row>
   );
 }
 
-export function useGroups() {
+export function usePageContext() {
   return useOutletContext<ContextType>();
 }
