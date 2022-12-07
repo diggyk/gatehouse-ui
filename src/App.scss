@@ -136,14 +136,14 @@ html {
 }
 
 .showEntryCard {
-    width: fit-content;
+    width: max-content;
     min-width: 20rem;
     border: none;
     box-shadow: .3rem .3rem .3rem #0005;
     // background-color: darken($color: $body-bg, $amount: 5);
 
     .col {
-        width: fit-content;
+        width: max-content;
     }
 
     .card-body {
@@ -186,7 +186,7 @@ html {
 
         .section-item {
             display: block;
-            padding: 5px 0px 5px 10px;
+            padding: 5px 10px 5px 10px;
             margin: 0px 0px 0px 10px;
             white-space: nowrap;
 
@@ -194,6 +194,12 @@ html {
                 padding: 0px 20px;
                 margin-bottom: 10px;
             }
+        }
+
+        .footnote {
+            padding: 20px 30px;
+            font-size: small;
+            color: adjust-color($color: $body-color, $alpha: -0.5);
         }
     }
 }
@@ -209,6 +215,7 @@ html {
         svg {
             @extend .default-icon-btn;
             float: right;
+            margin: 0px 0px 0px 10px;
         }
     }
 
@@ -252,6 +259,7 @@ html {
             @extend .default-icon-btn;
             float: right;
             color: $brite-light;
+            margin: 0px 0px 0px 10px;
         }
 
         &:hover .red-right-btn {
@@ -263,6 +271,7 @@ html {
             float: left;
             position: relative;
             color: $brite-light;
+            margin: 0px 10px 0px 0px;
         }
 
         &:hover .green-left-btn {

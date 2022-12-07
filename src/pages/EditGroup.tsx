@@ -33,6 +33,9 @@ export default function EditGroup() {
   const { register, handleSubmit } = useForm({ mode: "all" });
   const onError = (errors: any) => {};
 
+  const [registeredActors, setRegisteredActors]: [Set<string>, any] = useState(
+    new Set()
+  );
   const [roles, setRoles]: [string[], any] = useState([]);
 
   const [activeMembers, setActiveMembers]: [Map<string, Set<string>>, any] =
@@ -185,6 +188,7 @@ export default function EditGroup() {
     client
       .getActors(request, null)
       .then((response) => {
+        let known_actors_set = new Set<string>();
         let inactive_map = new Map<string, Set<string>>();
         let actors = response.getActorsList();
 
@@ -194,11 +198,14 @@ export default function EditGroup() {
           let typestr = entity.getTypestr();
           let name = entity.getName();
 
+          known_actors_set.add(typestr + ":" + name);
+
           if (!inactive_map.has(typestr)) {
             inactive_map.set(typestr, new Set());
           }
           inactive_map.get(typestr)?.add(name);
         });
+        setRegisteredActors(known_actors_set);
         setInactiveMembers(inactive_map);
       })
       .catch((err) => {
@@ -334,6 +341,11 @@ export default function EditGroup() {
       .forEach((typestr) => {
         let items: JSX.Element[] = [];
         [...activeMembers.get(typestr)!.values()].sort().forEach((name) => {
+          // if the actor isn't a registered actor, we need to denote that
+          if (!registeredActors.has(typestr + ":" + name)) {
+            name += " *";
+          }
+
           items.push(
             <ExpandoItem
               onClick={() => {
@@ -394,7 +406,7 @@ export default function EditGroup() {
 
   return (
     <Form onSubmit={handleSubmit(handleUpdate, onError)}>
-      <Card className="showEntryCard">
+      <Card className="showEntryCard wide">
         <Card.Body>
           <Card.Title>{group.getName()}</Card.Title>
           <Card.Subtitle>
@@ -408,7 +420,7 @@ export default function EditGroup() {
               })}
             />
           </Card.Subtitle>
-          <Row>
+          <Row lg="auto">
             <Col>
               <SectionHeader>Granted roles</SectionHeader>
               {existing_roles()}
@@ -416,12 +428,22 @@ export default function EditGroup() {
               {new_roles_section()}
             </Col>
             <Col>
-              <SectionHeader>Members</SectionHeader>
-              {members_sections()}
+              <Row>
+                <Col>
+                  <SectionHeader>Members</SectionHeader>
+                  {members_sections()}
+                </Col>
+                <Col>
+                  <SectionHeader>Available actors</SectionHeader>
+                  {possible_members_sections()}
+                </Col>
+              </Row>
             </Col>
-            <Col>
-              <SectionHeader>Possible members</SectionHeader>
-              {possible_members_sections()}
+          </Row>
+          <Row>
+            <Col className="footnote">
+              * denotes adhoc group members not found in list of registered
+              actors
             </Col>
           </Row>
           <Card.Footer>
