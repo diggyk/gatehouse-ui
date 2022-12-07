@@ -9,7 +9,15 @@ export default function SectionHeader(props: PropsWithChildren<Props>) {
     <span className="section-header">
       {props.children}
       {props.rightIcon && (
-        <span style={{ float: "right" }}>{props.rightIcon}</span>
+        <span
+          style={{
+            float: "right",
+            position: "relative",
+            left: "20px",
+          }}
+        >
+          {props.rightIcon}
+        </span>
       )}
     </span>
   );

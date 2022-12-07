@@ -105,8 +105,6 @@ export default function EditGroup() {
       });
     });
 
-    console.log(data);
-
     let req = new proto.groups.ModifyGroupRequest()
       .setName(name || "")
       .setDesc(data.desc)
