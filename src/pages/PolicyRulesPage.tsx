@@ -69,7 +69,7 @@ export default function PolicyRulesPage() {
 
   return (
     <Row className="h-100">
-      <Col lg="2" className="sidePickerNav h-100 p-0">
+      <Col lg="2" className="sidePickerNav p-0">
         {rulesNav()}
       </Col>
       <Col className="mainContent">{mainContent}</Col>

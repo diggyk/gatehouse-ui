@@ -136,14 +136,14 @@ html {
 }
 
 .showEntryCard {
-    width: max-content;
+    width: fit-content;
     min-width: 20rem;
     border: none;
     box-shadow: .3rem .3rem .3rem #0005;
-    // background-color: darken($color: $body-bg, $amount: 5);
+    margin-bottom: 10px;
 
     .col {
-        width: max-content;
+        width: fit-content;
     }
 
     .card-body {
@@ -177,7 +177,6 @@ html {
 
         .section-header {
             display: block;
-            width: 100%;
             padding: 5px 10px 5px 10px;
             margin: 0px 10px;
             white-space: nowrap;

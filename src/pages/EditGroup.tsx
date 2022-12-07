@@ -105,6 +105,8 @@ export default function EditGroup() {
       });
     });
 
+    console.log(data);
+
     let req = new proto.groups.ModifyGroupRequest()
       .setName(name || "")
       .setDesc(data.desc)
@@ -153,8 +155,11 @@ export default function EditGroup() {
       activeMembers.delete(typestr);
     }
 
-    if (!inactiveMembers.has(typestr)) inactiveMembers.set(typestr, new Set());
-    inactiveMembers.get(typestr)?.add(name);
+    if (registeredActors.has(typestr + ":" + name)) {
+      if (!inactiveMembers.has(typestr))
+        inactiveMembers.set(typestr, new Set());
+      inactiveMembers.get(typestr)?.add(name);
+    }
 
     setActiveMembers(new Map(activeMembers));
     setInactiveMembers(new Map(inactiveMembers));
@@ -210,13 +215,16 @@ export default function EditGroup() {
 
           known_actors_set.add(typestr + ":" + name);
 
-          if (!inactive_map.has(typestr)) {
-            inactive_map.set(typestr, new Set());
+          if (!active_map.get(typestr)?.has(name)) {
+            console.log("No " + typestr + ":" + name);
+            if (!inactive_map.has(typestr)) {
+              inactive_map.set(typestr, new Set());
+            }
+            inactive_map.get(typestr)?.add(name);
           }
-          inactive_map.get(typestr)?.add(name);
         });
         setRegisteredActors(known_actors_set);
-        setInactiveMembers(inactive_map);
+        setInactiveMembers(new Map(inactive_map));
       })
       .catch((err) => {
         setErrorMsg(err.message);
@@ -352,9 +360,8 @@ export default function EditGroup() {
         let items: JSX.Element[] = [];
         [...activeMembers.get(typestr)!.values()].sort().forEach((name) => {
           // if the actor isn't a registered actor, we need to denote that
-          if (!registeredActors.has(typestr + ":" + name)) {
-            name += " *";
-          }
+          let registered = registeredActors.has(typestr + ":" + name);
+          let display_name = !registered ? name + " *" : name;
 
           items.push(
             <ExpandoItem
@@ -363,9 +370,9 @@ export default function EditGroup() {
               }}
               key={typestr + ":" + name}
             >
-              {name}
+              {display_name}
               <FontAwesomeIcon
-                icon={faSquareCaretRight}
+                icon={registered ? faSquareCaretRight : faSquareXmark}
                 className="red-right-btn"
               />
             </ExpandoItem>

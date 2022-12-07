@@ -79,7 +79,7 @@ export default function GroupsPage() {
 
   return (
     <Row className="h-100">
-      <Col lg="2" className="sidePickerNav h-100 p-0">
+      <Col lg="2" className="sidePickerNav p-0">
         {groupNav()}
       </Col>
       <Col className="mainContent">

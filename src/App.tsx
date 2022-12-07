@@ -67,7 +67,7 @@ function Layout() {
   );
 
   return (
-    <Container fluid className="h-100 p-0">
+    <Container fluid className="p-0">
       <Navbar bg="dark" expand="lg" variant="dark" className="navbar">
         <Nav className="me-auto">
           <NavbarBrand>
