@@ -4,7 +4,8 @@ $highlight-color: rgb(174, 185, 213);
 $subtle-highlight: darken($highlight-color, $amount: 10);
 $brite-light: lighten($highlight-color, $amount: 10);
 
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
     height: 100%;
@@ -35,12 +36,13 @@ body, html {
     padding-left: 20px;
     margin: 0;
     height: 50px;
-    
-    :not(.navbar-brand) > .nav-link {
+
+    :not(.navbar-brand)>.nav-link {
         border-radius: 0.25rem;
         padding: 2px 20px 2px 20px;
     }
-    :not(.navbar-brand) > .nav-link.active {
+
+    :not(.navbar-brand)>.nav-link.active {
         border-radius: 0.25rem;
         background-color: lighten($color: $navbar-light-color, $amount: 30);
         padding: 2px 20px 2px 20px;
@@ -50,7 +52,7 @@ body, html {
 // GENERAL STUFF
 .errorNote {
     border-radius: .35rem;
-    background-color:rgb(152, 38, 7);
+    background-color: rgb(152, 38, 7);
     padding: 5px 10px;
     color: antiquewhite;
 
@@ -81,7 +83,7 @@ body, html {
 
     ul {
         padding: 0;
-    
+
         li {
             display: block;
             border-radius: .25em;
@@ -89,12 +91,12 @@ body, html {
             margin: 2px;
         }
     }
-    
+
 }
 
 .sidePickerNav .itemList li:hover {
-   background-color: darken($color: $body-bg, $amount: 60);
-   cursor: pointer;
+    background-color: darken($color: $body-bg, $amount: 60);
+    cursor: pointer;
 }
 
 .mainContent {
@@ -102,24 +104,26 @@ body, html {
     padding-top: .8em;
 }
 
-    .delete-icon-btn {
-        vertical-align: middle;
-        margin: 0px 10px 0px 4px;
-        padding: 4px;
-        cursor: pointer;
-        color: $brite-light;
-    }
-    .delete-icon-btn:hover {
-        color: #dd1111
-    }
-
-.plusButton {
+.default-icon-btn {
     vertical-align: middle;
-    margin: 0px 4px 0px 4px;
+    margin: 0px 10px 0px 4px;
     padding: 4px;
     cursor: pointer;
+}
+
+.delete-icon-btn {
+    @extend .default-icon-btn;
+    color: $brite-light;
+}
+
+.delete-icon-btn:hover {
+    color: #dd1111
+}
+
+.plusButton {
+    @extend .default-icon-btn;
     color: $highlight-color;
-    
+
     :hover {
         color: $brite-light;
     }
@@ -151,7 +155,8 @@ body, html {
             padding: 10px 100px 5px 20px;
             background-color: $highlight-color;
             border-top-left-radius: 0.375rem;
-            border-top-right-radius: 0.375rem;;
+            border-top-right-radius: 0.375rem;
+            ;
         }
 
         .card-subtitle {
@@ -166,9 +171,9 @@ body, html {
             border-color: #dd1111;
         }
 
-        .remove-switch:checked + .remove-switch-label {
+        .remove-switch:checked+.remove-switch-label {
             text-decoration: line-through;
-        } 
+        }
 
         .section-header {
             display: block;
@@ -181,8 +186,48 @@ body, html {
 
         .section-item {
             display: block;
-            padding: 5px 10px 5px 10px;
-            margin: 0px 10px;
+            padding: 5px 0px 5px 10px;
+            margin: 0px 0px 0px 10px;
+            white-space: nowrap;
+
+            select {
+                padding: 0px 20px;
+                margin-bottom: 10px;
+            }
+        }
+    }
+}
+
+.expando {
+    .expando-header {
+        display: block;
+        padding: 5px 0px 5px 10px;
+        margin: 0px 10px;
+        white-space: nowrap;
+        cursor: pointer;
+
+        svg {
+            @extend .default-icon-btn;
+            float: right;
+        }
+    }
+
+    .expando-body {
+        border-top: darken($color: $body-bg, $amount: 60) 1px dashed;
+        display: block;
+        margin: 0px 10px;
+        white-space: nowrap;
+    }
+
+    .expando-item {
+        &.clickable {
+            cursor: pointer;
+        }
+
+        &.right-button {
+            display: block;
+            padding: 5px 0px 5px 10px;
+            margin: 0px 0px 0px 10px;
             white-space: nowrap;
 
             select {
@@ -191,6 +236,38 @@ body, html {
             }
         }
 
+        &.left-button {
+            display: block;
+            padding: 5px 0px 5px 10px;
+            margin: 0px 0px 0px 0px;
+            white-space: nowrap;
+
+            select {
+                padding: 0px 20px;
+                margin-bottom: 10px;
+            }
+        }
+
+        .red-right-btn {
+            @extend .default-icon-btn;
+            float: right;
+            color: $brite-light;
+        }
+
+        &:hover .red-right-btn {
+            color: #dd1111
+        }
+
+        .green-left-btn {
+            @extend .default-icon-btn;
+            float: left;
+            position: relative;
+            color: $brite-light;
+        }
+
+        &:hover .green-left-btn {
+            color: #11dd11
+        }
     }
 }
 
@@ -202,6 +279,7 @@ body, html {
         padding: 5px 20px 5px 20px;
         white-space: nowrap;
     }
+
     td {
         padding: 5px 20px 5px 30px;
         white-space: nowrap;
