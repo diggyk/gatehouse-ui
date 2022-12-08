@@ -24,6 +24,8 @@ import Expando from "../elements/Expando";
 import ExpandoItem from "../elements/ExpandoItem";
 import SectionHeader from "../elements/SectionHeader";
 import SectionItem from "../elements/SectionItem";
+import useActors from "../hooks/useActors";
+import useRoles from "../hooks/useRoles";
 import { usePageContext } from "./GroupsPage";
 
 export default function EditGroup() {
@@ -41,18 +43,17 @@ export default function EditGroup() {
   } = useForm({ mode: "all" });
   const onError = (errors: any) => {};
 
-  const [registeredActors, setRegisteredActors]: [Set<string>, any] = useState(
-    new Set()
-  );
-
-  const [roles, setRoles]: [string[], any] = useState([]);
+  const { roles } = useRoles(client, setErrorMsg);
   const [addRolesList, setAddRolesList]: [string[], any] = useState([]);
   const [removeRolesList, setRemoveRolesList]: [string[], any] = useState([]);
 
-  const [activeMembers, setActiveMembers]: [Map<string, Set<string>>, any] =
-    useState(new Map());
-  const [inactiveMembers, setInactiveMembers]: [Map<string, Set<string>>, any] =
-    useState(new Map());
+  const {
+    actorsAbbr,
+    activeMembers,
+    setActiveMembers,
+    inactiveMembers,
+    setInactiveMembers,
+  } = useActors(client, { setErrorMsg, group: groups.get(name || "") });
 
   const [showAddMember, setShowAddMember] = useState(false);
 
@@ -153,7 +154,7 @@ export default function EditGroup() {
       activeMembers.delete(typestr);
     }
 
-    if (registeredActors.has(typestr + ":" + name)) {
+    if (actorsAbbr.has(typestr + ":" + name)) {
       if (!inactiveMembers.has(typestr))
         inactiveMembers.set(typestr, new Set());
       inactiveMembers.get(typestr)?.add(name);
@@ -162,74 +163,6 @@ export default function EditGroup() {
     setActiveMembers(new Map(activeMembers));
     setInactiveMembers(new Map(inactiveMembers));
   };
-
-  /// load the role names and known actors
-  useEffect(() => {
-    let request = new proto.roles.GetRolesRequest();
-
-    // Get all existing roles
-    client
-      .getRoles(request, null)
-      .then((response: proto.roles.MultiRoleResponse) => {
-        console.log("Loading roles...");
-        let role_names: string[] = [];
-        response.getRolesList().forEach((role: proto.roles.Role) => {
-          role_names.push(role.getName());
-        });
-        setRoles(role_names);
-        console.log("Loaded " + role_names.length + " roles");
-      })
-      .catch((err: Error) => {
-        setErrorMsg(err.message);
-      });
-
-    // Sort the existing actors
-    let active_map = new Map<string, Set<string>>();
-
-    group.getMembersList().forEach((member) => {
-      let typestr = member.getTypestr();
-      let name = member.getName();
-
-      if (!active_map.has(typestr)) {
-        active_map.set(typestr, new Set());
-      }
-      active_map.get(typestr)?.add(name);
-    });
-    setActiveMembers(active_map);
-
-    // Get all existing known actors
-    client
-      .getActors(request, null)
-      .then((response) => {
-        let known_actors_set = new Set<string>();
-        let inactive_map = new Map<string, Set<string>>();
-        let actors = response.getActorsList();
-
-        console.log("Loaded " + actors.length + " actors");
-
-        actors.forEach((entity: proto.actors.Actor) => {
-          let typestr = entity.getTypestr();
-          let name = entity.getName();
-
-          known_actors_set.add(typestr + ":" + name);
-
-          if (!active_map.get(typestr)?.has(name)) {
-            console.log("No " + typestr + ":" + name);
-            if (!inactive_map.has(typestr)) {
-              inactive_map.set(typestr, new Set());
-            }
-            inactive_map.get(typestr)?.add(name);
-          }
-        });
-        setRegisteredActors(known_actors_set);
-        setInactiveMembers(new Map(inactive_map));
-      })
-      .catch((err) => {
-        setErrorMsg(err.message);
-      });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   if (!name) {
     return <Container>Error -- name not set</Container>;
@@ -358,7 +291,7 @@ export default function EditGroup() {
         let items: JSX.Element[] = [];
         [...activeMembers.get(typestr)!.values()].sort().forEach((name) => {
           // if the actor isn't a registered actor, we need to denote that
-          let registered = registeredActors.has(typestr + ":" + name);
+          let registered = actorsAbbr.has(typestr + ":" + name);
           let display_name = !registered ? name + " *" : name;
 
           items.push(
