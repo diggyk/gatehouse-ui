@@ -43,7 +43,7 @@ export default function EditGroup() {
   } = useForm({ mode: "all" });
   const onError = (errors: any) => {};
 
-  const { roles } = useRoles(client, setErrorMsg);
+  const { rolesAbbr } = useRoles(client, { setErrorMsg });
   const [addRolesList, setAddRolesList]: [string[], any] = useState([]);
   const [removeRolesList, setRemoveRolesList]: [string[], any] = useState([]);
 
@@ -243,7 +243,7 @@ export default function EditGroup() {
         ---
       </option>
     );
-    roles.sort().forEach((name) => {
+    rolesAbbr.sort().forEach((name) => {
       if (
         !group.getRolesList().includes(name) &&
         !addRolesList.includes(name)

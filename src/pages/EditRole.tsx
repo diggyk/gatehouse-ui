@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import SectionHeader from "../elements/SectionHeader";
 import SectionItem from "../elements/SectionItem";
+import useGroups from "../hooks/useGroups";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 import { usePageContext } from "./RolesPage";
 
@@ -17,7 +18,7 @@ export default function EditRole() {
   const { register, handleSubmit } = useForm({ mode: "all" });
   const onError = (errors: any) => {};
 
-  const [groups, setGroups]: [string[], any] = useState([]);
+  const { groupsAbbr } = useGroups(client, { setErrorMsg });
   const [addGranted, setAddGranted]: [string[], any] = useState([]);
   const [removeGranted, setRemoveGranted]: [string[], any] = useState([]);
 
@@ -51,27 +52,6 @@ export default function EditRole() {
         setErrorMsg(err.message);
       });
   };
-
-  /// load the group names
-  useEffect(() => {
-    let request = new proto.groups.GetGroupsRequest();
-
-    client
-      .getGroups(request, null)
-      .then((response: proto.groups.MultiGroupResponse) => {
-        console.log("Loading groups...");
-        let grp_names: string[] = [];
-        response.getGroupsList().forEach((group: proto.groups.Group) => {
-          grp_names.push(group.getName());
-        });
-        setGroups(grp_names);
-        console.log("Loaded " + grp_names.length + " groups");
-      })
-      .catch((err: Error) => {
-        setErrorMsg(err.message);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   if (!name) {
     return <Container>Error -- name not set</Container>;
@@ -156,7 +136,7 @@ export default function EditRole() {
         ---
       </option>
     );
-    groups.sort().forEach((name) => {
+    groupsAbbr.sort().forEach((name) => {
       if (
         !role.getGrantedToList().includes(name) &&
         !addGranted.includes(name)

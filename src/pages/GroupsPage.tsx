@@ -5,6 +5,7 @@ import { Alert, CloseButton, Col, Container, Row } from "react-bootstrap";
 import { useOutletContext } from "react-router";
 import { Link, Outlet } from "react-router-dom";
 import { useAppContext } from "../App";
+import useGroups from "../hooks/useGroups";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 
 type ContextType = {
@@ -21,26 +22,7 @@ export default function GroupsPage() {
   const [errorMsg, setErrorMsg]: [string | null, any] = useState(null);
   const [statusMsg, setStatusMsg]: [string | null, any] = useState(null);
 
-  const [groups, setGroups] = useState(new Map<string, proto.groups.Group>());
-
-  // load data from API on first render
-  useEffect(() => {
-    let request = new proto.groups.GetGroupsRequest();
-    let grp_map = new Map<string, proto.groups.Group>();
-
-    client
-      .getGroups(request, null)
-      .then((response) => {
-        response.getGroupsList().forEach((group: proto.groups.Group) => {
-          grp_map.set(group.getName(), group);
-        });
-        setGroups(grp_map);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setErrorMsg(err.message);
-      });
-  }, []);
+  const { groups, setGroups } = useGroups(client, { setErrorMsg, setLoading });
 
   /// Prints the nav
   const groupNav = () => {

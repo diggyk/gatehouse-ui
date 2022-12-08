@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import SectionHeader from "../elements/SectionHeader";
 import SectionItem from "../elements/SectionItem";
+import useGroups from "../hooks/useGroups";
 import { usePageContext } from "./RolesPage";
 
 export default function Role() {
@@ -19,7 +20,7 @@ export default function Role() {
   const { client, setErrorMsg, setStatusMsg, roles, setRoles } =
     usePageContext();
 
-  const [groups, setGroups]: [string[], any] = useState([]);
+  const { groupsAbbr, setGroups } = useGroups(client, { setErrorMsg });
   const [addGranted, setAddGranted]: [string[], any] = useState([]);
 
   // update the role
@@ -52,27 +53,6 @@ export default function Role() {
       });
   };
 
-  /// load the group names
-  useEffect(() => {
-    let request = new proto.groups.GetGroupsRequest();
-
-    client
-      .getGroups(request, null)
-      .then((response: proto.groups.MultiGroupResponse) => {
-        console.log("Loading groups...");
-        let grp_names: string[] = [];
-        response.getGroupsList().forEach((group: proto.groups.Group) => {
-          grp_names.push(group.getName());
-        });
-        setGroups(grp_names);
-        console.log("Loaded " + grp_names.length + " groups");
-      })
-      .catch((err: Error) => {
-        setErrorMsg(err.message);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   // called when the selectors are changed for the adding of new granted groups
   const handleAddGrantedChange = (event: ChangeEvent<HTMLSelectElement>) => {
     event.preventDefault();
@@ -101,7 +81,7 @@ export default function Role() {
         ---
       </option>
     );
-    groups.sort().forEach((name) => {
+    groupsAbbr.sort().forEach((name) => {
       if (!addGranted.includes(name)) {
         group_options.push(
           <option key={"option_" + name} value={name}>

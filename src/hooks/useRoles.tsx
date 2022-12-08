@@ -3,10 +3,14 @@ import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 
 export default function useRoles(
   client: GatehousePromiseClient,
-  setErrorMsg?: Function
+  params: { setErrorMsg?: Function }
 ) {
-  const [roles, setRoles]: [string[], any] = useState([]);
+  const [roles, setRoles]: [Map<string, proto.roles.Role>, any] = useState(
+    new Map<string, proto.roles.Role>()
+  );
+  const [rolesAbbr, setRolesAbbr]: [string[], any] = useState([]);
   const [rolesIsError, setRolesIsError]: [null | string, any] = useState(null);
+
   useEffect(() => {
     let request = new proto.roles.GetRolesRequest();
 
@@ -14,19 +18,23 @@ export default function useRoles(
     client
       .getRoles(request, null)
       .then((response: proto.roles.MultiRoleResponse) => {
-        console.log("Loading roles...");
+        let roles = new Map<string, proto.roles.Role>();
         let role_names: string[] = [];
         response.getRolesList().forEach((role: proto.roles.Role) => {
+          roles.set(role.getName(), role);
           role_names.push(role.getName());
         });
-        setRoles(role_names);
+        setRoles(roles);
+        setRolesAbbr(role_names);
+
         console.log("Loaded " + role_names.length + " roles");
       })
       .catch((err: Error) => {
+        console.error(err.message);
         setRolesIsError(err.message);
-        setErrorMsg?.(err.message);
+        params.setErrorMsg?.(err.message);
       });
   }, []);
 
-  return { roles, setRoles, rolesIsError };
+  return { roles, setRoles, rolesAbbr, setRolesAbbr, rolesIsError };
 }

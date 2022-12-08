@@ -59,7 +59,6 @@ export default function useActors(
           known_actors_map.get(typestr)?.set(name, entity);
 
           if (!active_map.get(typestr)?.has(name)) {
-            console.log("No " + typestr + ":" + name);
             if (!inactive_map.has(typestr)) {
               inactive_map.set(typestr, new Set());
             }
@@ -71,6 +70,7 @@ export default function useActors(
         setInactiveMembers(new Map(inactive_map));
       })
       .catch((err) => {
+        console.error(err.message);
         setIsError(err.message);
         params.setErrorMsg?.(err.message);
       });

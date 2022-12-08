@@ -5,6 +5,7 @@ import { Alert, CloseButton, Col, Container, Row } from "react-bootstrap";
 import { useOutletContext } from "react-router";
 import { Link, Outlet } from "react-router-dom";
 import { useAppContext } from "../App";
+import useRoles from "../hooks/useRoles";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 
 type ContextType = {
@@ -20,26 +21,7 @@ export default function RolesPage() {
   const [errorMsg, setErrorMsg]: [string | null, any] = useState(null);
   const [statusMsg, setStatusMsg]: [string | null, any] = useState(null);
 
-  const [roles, setRoles] = useState(new Map<string, proto.roles.Role>());
-
-  // load data from API on first render
-  useEffect(() => {
-    let request = new proto.roles.GetRolesRequest();
-
-    client
-      .getRoles(request, null)
-      .then((response) => {
-        let roles = new Map<string, proto.roles.Role>();
-        response.getRolesList().forEach((role: proto.roles.Role) => {
-          roles.set(role.getName(), role);
-        });
-
-        setRoles(roles);
-      })
-      .catch((err) => {
-        setErrorMsg(err.message);
-      });
-  }, []);
+  const { roles, setRoles } = useRoles(client, { setErrorMsg });
 
   /// Prints the nav
   const rolesNav = () => {
