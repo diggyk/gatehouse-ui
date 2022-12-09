@@ -25,6 +25,7 @@ import EditRole from "./pages/EditRole";
 import AddRole from "./pages/AddRole";
 import EditGroup from "./pages/EditGroup";
 import { GatehousePromiseClient } from "./protos/gatehouse_grpc_web_pb";
+import AddGroup from "./pages/AddGroup";
 
 type ContextType = {
   client: GatehousePromiseClient;
@@ -47,6 +48,7 @@ export default function App() {
         <Route path="groups" element={<GroupsPage />}>
           <Route path="view/:name" element={<Group />} />
           <Route path="edit/:name" element={<EditGroup />} />
+          <Route path="add" element={<AddGroup />} />
         </Route>
         <Route path="roles" element={<RolesPage />}>
           <Route path="view/:name" element={<Role />} />

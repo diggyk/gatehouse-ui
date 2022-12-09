@@ -20,7 +20,7 @@ export default function Role() {
   const { client, setErrorMsg, setStatusMsg, roles, setRoles } =
     usePageContext();
 
-  const { groupsAbbr, setGroups } = useGroups(client, { setErrorMsg });
+  const { groupsAbbr } = useGroups(client, { setErrorMsg });
   const [addGranted, setAddGranted]: [string[], any] = useState([]);
 
   // update the role
@@ -130,7 +130,7 @@ export default function Role() {
               id="name"
               placeholder="Role name"
               {...register("name", {
-                required: false,
+                required: true,
                 pattern: {
                   value: /^[a-z0-9-_@]+$/i,
                   message:

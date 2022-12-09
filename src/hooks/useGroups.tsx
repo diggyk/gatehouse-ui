@@ -30,7 +30,7 @@ export default function useGroups(
         setError(err.message);
         params.setErrorMsg?.(err.message);
       });
-  });
+  }, []);
 
   return {
     groups,
