@@ -216,77 +216,168 @@ html {
 }
 
 .expando {
-    .expando-header {
-        display: block;
-        padding: 5px 0px 5px 10px;
-        margin: 0px 10px;
-        white-space: nowrap;
-        cursor: pointer;
-
-        svg {
-            @extend .default-icon-btn;
-            float: right;
-            margin: 0px 0px 0px 10px;
-        }
-    }
-
-    .expando-body {
-        border-top: darken($color: $body-bg, $amount: 60) 1px dashed;
-        display: block;
-        margin: 0px 10px;
-        white-space: nowrap;
-    }
-
-    .expando-item {
-        &.clickable {
+    &.default {
+        .expando-header {
+            display: block;
+            padding: 5px 0px 5px 10px;
+            margin: 0px 10px;
+            white-space: nowrap;
             cursor: pointer;
-        }
 
-        &.right-button {
-            display: block;
-            padding: 5px 0px 5px 10px;
-            margin: 0px 0px 0px 10px;
-            white-space: nowrap;
-
-            select {
-                padding: 0px 20px;
-                margin-bottom: 10px;
+            svg {
+                @extend .default-icon-btn;
+                float: right;
+                margin: 0px 0px 0px 10px;
             }
         }
 
-        &.left-button {
+        .expando-body {
+            border-top: darken($color: $body-bg, $amount: 60) 1px dashed;
             display: block;
-            padding: 5px 0px 5px 10px;
-            margin: 0px 0px 0px 0px;
+            margin: 0px 10px;
             white-space: nowrap;
+        }
 
-            select {
-                padding: 0px 20px;
-                margin-bottom: 10px;
+        .expando-item {
+            &.clickable {
+                cursor: pointer;
+            }
+
+            &.right-button {
+                display: block;
+                padding: 5px 0px 5px 10px;
+                margin: 0px 0px 0px 10px;
+                white-space: nowrap;
+
+                select {
+                    padding: 0px 20px;
+                    margin-bottom: 10px;
+                }
+            }
+
+            &.left-button {
+                display: block;
+                padding: 5px 0px 5px 10px;
+                margin: 0px 0px 0px 0px;
+                white-space: nowrap;
+
+                select {
+                    padding: 0px 20px;
+                    margin-bottom: 10px;
+                }
+            }
+
+            .red-right-btn {
+                @extend .default-icon-btn;
+                float: right;
+                color: $brite-light;
+                margin: 0px 0px 0px 10px;
+            }
+
+            &:hover .red-right-btn {
+                color: #dd1111;
+            }
+
+            .green-left-btn {
+                @extend .default-icon-btn;
+                float: left;
+                position: relative;
+                color: $brite-light;
+                margin: 0px 10px 0px 0px;
+            }
+
+            &:hover .green-left-btn {
+                color: #11dd11;
+            }
+        }
+    }
+
+    &.sidenav {
+        .expando-header {
+            display: block;
+            white-space: nowrap;
+            cursor: pointer;
+
+            color: $brite-light;
+            padding: 10px 10px 6px 10px;
+            border-bottom: $highlight-color 2px solid;
+
+            svg {
+                @extend .default-icon-btn;
+                float: right;
+                margin: 0px 0px 0px 10px;
             }
         }
 
-        .red-right-btn {
-            @extend .default-icon-btn;
-            float: right;
+        .expando-body {
+            display: block;
+            white-space: nowrap;
+            padding-bottom: 10px;
+            padding-top: 10px;
+        }
+
+        .expando-item {
             color: $brite-light;
-            margin: 0px 0px 0px 10px;
-        }
+            text-decoration: none;
+            background-color: none;
+            border-radius: 0.25em;
+            padding: 4px 10px;
+            margin: 2px;
 
-        &:hover .red-right-btn {
-            color: #dd1111;
-        }
+            &.clickable {
+                cursor: pointer;
+            }
 
-        .green-left-btn {
-            @extend .default-icon-btn;
-            float: left;
-            position: relative;
-            color: $brite-light;
-            margin: 0px 10px 0px 0px;
-        }
+            &.clickable:hover {
+                background-color: darken($color: $body-bg, $amount: 60);
+            }
 
-        &:hover .green-left-btn {
-            color: #11dd11;
+            &.right-button {
+                display: block;
+                padding: 5px 0px 5px 10px;
+                margin: 0px 0px 0px 10px;
+                white-space: nowrap;
+
+                select {
+                    padding: 0px 20px;
+                    margin-bottom: 10px;
+                }
+            }
+
+            &.left-button {
+                display: block;
+                padding: 5px 0px 5px 10px;
+                margin: 0px 0px 0px 0px;
+                white-space: nowrap;
+
+                select {
+                    padding: 0px 20px;
+                    margin-bottom: 10px;
+                }
+            }
+
+            .red-right-btn {
+                @extend .default-icon-btn;
+                float: right;
+                color: $brite-light;
+                margin: 0px 0px 0px 10px;
+            }
+
+            &:hover .red-right-btn {
+                color: #dd1111;
+            }
+
+            .green-left-btn {
+                @extend .default-icon-btn;
+                float: left;
+                position: relative;
+                color: $brite-light;
+                margin: 0px 10px 0px 0px;
+            }
+
+            &:hover .green-left-btn {
+                color: #11dd11;
+            }
         }
     }
 }

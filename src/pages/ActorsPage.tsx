@@ -1,8 +1,12 @@
+import { faSquarePlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { Alert, CloseButton, Col, Container, Row } from "react-bootstrap";
-import { useOutletContext } from "react-router";
+import { useNavigate, useOutletContext } from "react-router";
 import { Link, Outlet } from "react-router-dom";
 import { useAppContext } from "../App";
+import Expando from "../elements/Expando";
+import ExpandoItem from "../elements/ExpandoItem";
 import useActors from "../hooks/useActors";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 
@@ -15,6 +19,7 @@ type ContextType = {
 };
 
 export default function ActorsPage() {
+  const navigate = useNavigate();
   const { client } = useAppContext();
   const [loading, setLoading]: [boolean, Function] = useState(true);
   const [errorMsg, setErrorMsg]: [string | null, any] = useState(null);
@@ -23,42 +28,54 @@ export default function ActorsPage() {
   const { actors, setActors } = useActors(client, { setErrorMsg, setLoading });
 
   /// Prints the nav for keys, organized by types
-  const entityNav = () => {
+  const actorNav = () => {
     let type_sections: JSX.Element[] = [];
+    type_sections.push(
+      <Container className="header" key={"add_header"}>
+        <span>Actors</span>
+        <span style={{ float: "right" }}>
+          <Link key="addbutton" to="add">
+            <FontAwesomeIcon
+              icon={faSquarePlus}
+              className="plusButton"
+              inverse
+            />
+          </Link>
+        </span>
+      </Container>
+    );
+
     const typed_actors = new Map(
       [...actors.entries()].sort(([a], [b]) => String(a).localeCompare(b))
     );
     typed_actors.forEach((vals, key) => {
-      let entity_items: JSX.Element[] = [];
+      let actor_items: JSX.Element[] = [];
       [...vals.keys()].sort().forEach((val) => {
         let uid = key + "/" + val;
-        entity_items.push(
-          <Link key={uid} className="item" to={"view/" + uid}>
-            <li key={uid}>{val}</li>
-          </Link>
+        actor_items.push(
+          <ExpandoItem
+            className="item"
+            key={uid}
+            onClick={() => navigate("view/" + uid)}
+          >
+            {val}
+          </ExpandoItem>
         );
       });
 
       type_sections.push(
-        <Container className="header" key={key + "_header"}>
-          {key}
-        </Container>
+        <Expando variant="sidenav" key={key + "_expando"} title={key} expand>
+          {actor_items}
+        </Expando>
       );
-
-      let item = (
-        <Container className="itemList" key={key + "_list"}>
-          <ul>{entity_items}</ul>
-        </Container>
-      );
-      type_sections.push(item);
     });
-    return <Container>{type_sections}</Container>;
+    return <>{type_sections}</>;
   };
 
   return (
     <Row className="h-100">
       <Col lg="2" className="sidePickerNav p-0">
-        {entityNav()}
+        <Container>{actorNav()}</Container>
       </Col>
       <Col className="mainContent">
         <Alert variant="danger" show={errorMsg !== null}>

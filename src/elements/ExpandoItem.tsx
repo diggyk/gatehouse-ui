@@ -3,6 +3,7 @@ import { MouseEventHandler, PropsWithChildren } from "react";
 interface Props {
   leftButton?: boolean;
   onClick?: MouseEventHandler<HTMLSpanElement>;
+  className?: string;
 }
 
 export default function ExpandoItem(props: PropsWithChildren<Props>) {
@@ -14,8 +15,13 @@ export default function ExpandoItem(props: PropsWithChildren<Props>) {
 
   const onClick = props.onClick ? props.onClick : () => {};
 
+  let classNamesStr = classnames.join(" ");
+  if (props.className) {
+    classNamesStr += " " + props.className;
+  }
+
   return (
-    <span className={classnames.join(" ")} onClick={onClick}>
+    <span className={classNamesStr} onClick={onClick}>
       {props.children}
     </span>
   );
