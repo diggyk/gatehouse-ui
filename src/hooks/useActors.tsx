@@ -3,9 +3,10 @@ import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 
 export default function useActors(
   client: GatehousePromiseClient,
-  params: {
+  params?: {
     setErrorMsg?: Function;
     group?: proto.groups.Group;
+    setLoading?: Function;
   }
 ) {
   const [actors, setActors]: [
@@ -22,7 +23,7 @@ export default function useActors(
   useEffect(() => {
     // if a group is given, sort actors into active and inactive buckets
     let active_map = new Map<string, Set<string>>();
-    params.group?.getMembersList().forEach((member) => {
+    params?.group?.getMembersList().forEach((member) => {
       let typestr = member.getTypestr();
       let name = member.getName();
 
@@ -68,17 +69,20 @@ export default function useActors(
         setActors(known_actors_map);
         setActorsAbbr(known_actors_set);
         setInactiveMembers(new Map(inactive_map));
+        params?.setLoading?.(false);
       })
       .catch((err) => {
         console.error(err.message);
         setIsError(err.message);
-        params.setErrorMsg?.(err.message);
+        params?.setErrorMsg?.(err.message);
       });
   }, []);
 
   return {
     actors,
+    setActors,
     actorsAbbr,
+    setActorsAbbr,
     activeMembers,
     setActiveMembers,
     inactiveMembers,

@@ -37,12 +37,12 @@ html {
     margin: 0;
     height: 50px;
 
-    :not(.navbar-brand)>.nav-link {
+    :not(.navbar-brand) > .nav-link {
         border-radius: 0.25rem;
         padding: 2px 20px 2px 20px;
     }
 
-    :not(.navbar-brand)>.nav-link.active {
+    :not(.navbar-brand) > .nav-link.active {
         border-radius: 0.25rem;
         background-color: lighten($color: $navbar-light-color, $amount: 30);
         padding: 2px 20px 2px 20px;
@@ -51,11 +51,10 @@ html {
 
 // GENERAL STUFF
 .errorNote {
-    border-radius: .35rem;
+    border-radius: 0.35rem;
     background-color: rgb(152, 38, 7);
     padding: 5px 10px;
     color: antiquewhite;
-
 }
 
 // SIDEBAR
@@ -86,12 +85,11 @@ html {
 
         li {
             display: block;
-            border-radius: .25em;
+            border-radius: 0.25em;
             padding: 4px 10px;
             margin: 2px;
         }
     }
-
 }
 
 .sidePickerNav .itemList li:hover {
@@ -101,7 +99,7 @@ html {
 
 .mainContent {
     background-color: darken($color: $body-bg, $amount: 25);
-    padding-top: .8em;
+    padding-top: 0.8em;
 }
 
 .default-icon-btn {
@@ -117,7 +115,7 @@ html {
 }
 
 .delete-icon-btn:hover {
-    color: #dd1111
+    color: #dd1111;
 }
 
 .plusButton {
@@ -139,7 +137,7 @@ html {
     width: fit-content;
     min-width: 20rem;
     border: none;
-    box-shadow: .3rem .3rem .3rem #0005;
+    box-shadow: 0.3rem 0.3rem 0.3rem #0005;
     margin-bottom: 10px;
 
     .col {
@@ -156,7 +154,6 @@ html {
             background-color: $highlight-color;
             border-top-left-radius: 0.375rem;
             border-top-right-radius: 0.375rem;
-            ;
         }
 
         .card-subtitle {
@@ -171,7 +168,7 @@ html {
             border-color: #dd1111;
         }
 
-        .remove-switch:checked+.remove-switch-label {
+        .remove-switch:checked + .remove-switch-label {
             text-decoration: line-through;
         }
 
@@ -194,12 +191,26 @@ html {
                 padding: 0px 20px;
                 margin-bottom: 10px;
             }
+
+            th {
+                padding: 5px;
+                white-space: nowrap;
+            }
+
+            td {
+                padding: 5px;
+                white-space: nowrap;
+            }
+        }
+
+        .skinny-footnote {
+            font-size: small;
+            color: adjust-color($color: $body-color, $alpha: -0.5);
         }
 
         .footnote {
+            @extend .skinny-footnote;
             padding: 20px 30px;
-            font-size: small;
-            color: adjust-color($color: $body-color, $alpha: -0.5);
         }
     }
 }
@@ -263,7 +274,7 @@ html {
         }
 
         &:hover .red-right-btn {
-            color: #dd1111
+            color: #dd1111;
         }
 
         .green-left-btn {
@@ -275,7 +286,7 @@ html {
         }
 
         &:hover .green-left-btn {
-            color: #11dd11
+            color: #11dd11;
         }
     }
 }
@@ -285,22 +296,62 @@ html {
     border-radius: 0px !important;
 
     th {
-        padding: 5px 20px 5px 20px;
+        padding: 5px 20px;
         white-space: nowrap;
     }
 
     td {
-        padding: 5px 20px 5px 30px;
+        padding: 5px 20px;
         white-space: nowrap;
     }
 
     .subheading {
         font-size: smaller;
-        color: gray;
     }
-
 }
 
 .left-column-item {
     display: block;
+}
+
+.clickable-item {
+    display: inline-flex;
+    float: left;
+    align-items: center;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    border-radius: 5px;
+    background-color: $brite-light;
+    border: 1px #0000 solid;
+    cursor: pointer;
+
+    .content {
+        margin: 4px 8px;
+    }
+
+    .icon {
+        color: $highlight-color;
+        &.left {
+            float: left;
+            margin: 4px 8px;
+        }
+
+        &.right {
+            float: right;
+            margin: 4px 8px;
+        }
+    }
+
+    &:hover {
+        border: 1px $highlight-color solid;
+
+        .icon {
+            color: $subtle-highlight;
+        }
+    }
+}
+
+.inline-input {
+    width: auto;
+    overflow: hidden;
 }

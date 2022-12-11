@@ -1,11 +1,11 @@
 import { Button, Card, Container, Table } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import SectionHeader from "../elements/SectionHeader";
 import SectionItem from "../elements/SectionItem";
-import { useActors } from "./ActorsPage";
+import { usePageContext } from "./ActorsPage";
 
 export default function Actor() {
-  const { actors } = useActors();
+  const { actors } = usePageContext();
   const { typestr, name } = useParams();
 
   if (!typestr || !name) {
@@ -27,7 +27,7 @@ export default function Actor() {
   let headers: JSX.Element[] = [];
   if (attributes.getLength() > 0) {
     headers.push(
-      <tr className="subheading">
+      <tr className="subheading" key="subheading">
         <th>Key</th>
         <th>Value(s)</th>
       </tr>
@@ -40,7 +40,7 @@ export default function Actor() {
       attrs.push(
         <tr key={key}>
           <td>{key}</td>
-          <td>{val.getValuesList().join(", ")}</td>
+          <td>{val.getValuesList().sort().join(", ")}</td>
         </tr>
       );
     });
@@ -65,7 +65,9 @@ export default function Actor() {
           </Table>
         </SectionItem>
         <Card.Footer>
-          <Button disabled>Edit</Button>
+          <Link to={"../edit/" + typestr + "/" + name}>
+            <Button>Edit</Button>
+          </Link>
         </Card.Footer>
       </Card.Body>
     </Card>

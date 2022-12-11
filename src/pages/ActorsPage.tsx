@@ -1,47 +1,26 @@
 import { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Alert, CloseButton, Col, Container, Row } from "react-bootstrap";
 import { useOutletContext } from "react-router";
 import { Link, Outlet } from "react-router-dom";
+import { useAppContext } from "../App";
+import useActors from "../hooks/useActors";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 
 type ContextType = {
+  client: GatehousePromiseClient;
+  setErrorMsg: Function;
+  setStatusMsg: Function;
   actors: Map<string, Map<string, proto.actors.Actor>>;
+  setActors: Function;
 };
 
 export default function ActorsPage() {
-  let nullMap = new Map<string, Map<string, proto.actors.Actor>>();
-  const [actors, setActors] = useState(nullMap);
-  const [error, setError] = useState(null);
+  const { client } = useAppContext();
+  const [loading, setLoading]: [boolean, Function] = useState(true);
+  const [errorMsg, setErrorMsg]: [string | null, any] = useState(null);
+  const [statusMsg, setStatusMsg]: [string | null, any] = useState(null);
 
-  // load data from API on first render
-  useEffect(() => {
-    let request = new proto.actors.GetActorsRequest();
-    let gatehouseSvc = new GatehousePromiseClient(
-      "http://localhost:6174",
-      null,
-      null
-    );
-    let ent_map = new Map<string, Map<string, proto.actors.Actor>>();
-    gatehouseSvc
-      .getActors(request, null)
-      .then((response) => {
-        let actors = response.getActorsList();
-        actors.forEach((entity: proto.actors.Actor) => {
-          let typestr = entity.getTypestr();
-          if (!ent_map.has(typestr)) {
-            ent_map.set(typestr, new Map<string, proto.actors.Actor>());
-          }
-          let typed_actors = ent_map.get(typestr);
-          if (typed_actors !== undefined) {
-            typed_actors.set(entity.getName(), entity);
-          }
-        });
-        setActors(ent_map);
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
-  }, []);
+  const { actors, setActors } = useActors(client, { setErrorMsg, setLoading });
 
   /// Prints the nav for keys, organized by types
   const entityNav = () => {
@@ -54,7 +33,7 @@ export default function ActorsPage() {
       [...vals.keys()].sort().forEach((val) => {
         let uid = key + "/" + val;
         entity_items.push(
-          <Link key={uid} className="item" to={uid}>
+          <Link key={uid} className="item" to={"view/" + uid}>
             <li key={uid}>{val}</li>
           </Link>
         );
@@ -76,23 +55,36 @@ export default function ActorsPage() {
     return <Container>{type_sections}</Container>;
   };
 
-  let mainContent;
-  if (error == null) {
-    mainContent = <Outlet context={{ actors }} />;
-  } else {
-    mainContent = <Container className="errorNote">{error}</Container>;
-  }
-
   return (
     <Row className="h-100">
       <Col lg="2" className="sidePickerNav p-0">
         {entityNav()}
       </Col>
-      <Col className="mainContent">{mainContent}</Col>
+      <Col className="mainContent">
+        <Alert variant="danger" show={errorMsg !== null}>
+          {errorMsg}
+          <CloseButton
+            style={{ float: "right" }}
+            onClick={() => setErrorMsg(null)}
+          />
+        </Alert>
+        <Alert variant="success" show={statusMsg !== null}>
+          {statusMsg}
+          <CloseButton
+            style={{ float: "right" }}
+            onClick={() => setStatusMsg(null)}
+          />
+        </Alert>
+        {!loading && (
+          <Outlet
+            context={{ client, setErrorMsg, setStatusMsg, actors, setActors }}
+          />
+        )}
+      </Col>
     </Row>
   );
 }
 
-export function useActors() {
+export function usePageContext() {
   return useOutletContext<ContextType>();
 }
