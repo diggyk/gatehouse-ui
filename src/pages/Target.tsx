@@ -27,7 +27,7 @@ export default function Actor() {
   let headers: JSX.Element[] = [];
   if (attributes.getLength() > 0) {
     headers.push(
-      <tr className="subheading">
+      <tr className="subheading" key="subheading">
         <th>Key</th>
         <th>Value(s)</th>
       </tr>
@@ -56,18 +56,10 @@ export default function Actor() {
   let actions_list = target.getActionsList().sort();
   if (actions_list.length > 0) {
     actions_list.forEach((action) => {
-      actions.push(
-        <SectionItem>
-          <td>{action}</td>
-        </SectionItem>
-      );
+      actions.push(<SectionItem key={action + "_item"}>{action}</SectionItem>);
     });
   } else {
-    actions.push(
-      <SectionItem>
-        <td>No actions</td>
-      </SectionItem>
-    );
+    actions.push(<SectionItem key={"noactions"}>No actions</SectionItem>);
   }
 
   return (

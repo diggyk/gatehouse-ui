@@ -1,7 +1,11 @@
+import { faSquarePlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import { Outlet, useOutletContext } from "react-router";
+import { Alert, CloseButton, Col, Container, Row } from "react-bootstrap";
+import { Outlet, useNavigate, useOutletContext } from "react-router";
 import { Link } from "react-router-dom";
+import Expando from "../elements/Expando";
+import ExpandoItem from "../elements/ExpandoItem";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 
 type ContextType = {
@@ -9,9 +13,15 @@ type ContextType = {
 };
 
 export default function TargetsPage() {
-  let nullMap = new Map<string, Map<string, proto.targets.Target>>();
-  const [targets, setTargets] = useState(nullMap);
-  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const [targets, setTargets]: [
+    Map<string, Map<string, proto.targets.Target>>,
+    any
+  ] = useState(new Map());
+
+  const [loading, setLoading]: [boolean, Function] = useState(true);
+  const [errorMsg, setErrorMsg]: [string | null, any] = useState(null);
+  const [statusMsg, setStatusMsg]: [string | null, any] = useState(null);
 
   useEffect(() => {
     let request = new proto.targets.GetTargetsRequest();
@@ -38,12 +48,27 @@ export default function TargetsPage() {
         });
       })
       .catch((err) => {
-        setError(err.message);
+        setErrorMsg(err.message);
       });
   }, []);
 
   const targetNav = () => {
     let type_sections: JSX.Element[] = [];
+    type_sections.push(
+      <Container className="header" key={"add_header"}>
+        <span>Targets</span>
+        <span style={{ float: "right" }}>
+          <Link key="addbutton" to="add">
+            <FontAwesomeIcon
+              icon={faSquarePlus}
+              className="plusButton"
+              inverse
+            />
+          </Link>
+        </span>
+      </Container>
+    );
+
     const typed_targets = new Map(
       [...targets.entries()].sort(([a], [b]) => String(a).localeCompare(b))
     );
@@ -52,41 +77,48 @@ export default function TargetsPage() {
       [...vals.keys()].sort().forEach((val) => {
         let uid = key + "/" + val;
         target_items.push(
-          <Link key={uid} className="item" to={uid}>
-            <li key={uid}>{val}</li>
-          </Link>
+          <ExpandoItem
+            className="item"
+            key={uid}
+            onClick={() => navigate("view/" + uid)}
+          >
+            {val}
+          </ExpandoItem>
         );
       });
 
-      type_sections.push(
-        <Container className="header" key={key + "_header"}>
-          {key}
-        </Container>
-      );
-
       let item = (
-        <Container className="itemList" key={key + "_list"}>
-          <ul>{target_items}</ul>
-        </Container>
+        <Expando variant="sidenav" key={key + "_expando"} title={key} expand>
+          {target_items}
+        </Expando>
       );
       type_sections.push(item);
     });
-    return <Container>{type_sections}</Container>;
+    return <>{type_sections}</>;
   };
-
-  let mainContent;
-  if (error == null) {
-    mainContent = <Outlet context={{ targets }} />;
-  } else {
-    mainContent = <Container className="errorNote">{error}</Container>;
-  }
 
   return (
     <Row className="h-100">
       <Col lg="2" className="sidePickerNav p-0">
-        {targetNav()}
+        <Container>{targetNav()}</Container>
       </Col>
-      <Col className="mainContent">{mainContent}</Col>
+      <Col className="mainContent">
+        <Alert variant="danger" show={errorMsg !== null}>
+          {errorMsg}
+          <CloseButton
+            style={{ float: "right" }}
+            onClick={() => setErrorMsg(null)}
+          />
+        </Alert>
+        <Alert variant="success" show={statusMsg !== null}>
+          {statusMsg}
+          <CloseButton
+            style={{ float: "right" }}
+            onClick={() => setStatusMsg(null)}
+          />
+        </Alert>
+        <Outlet context={{ targets }} />
+      </Col>
     </Row>
   );
 }

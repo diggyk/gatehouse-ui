@@ -38,7 +38,7 @@ export default function Actor() {
   if (attributes.getLength() > 0) {
     attributes.forEach((val: proto.common.AttributeValues, key: string) => {
       attrs.push(
-        <tr key={key}>
+        <tr key={key + "attr"}>
           <td>{key}</td>
           <td>{val.getValuesList().sort().join(", ")}</td>
         </tr>

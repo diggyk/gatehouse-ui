@@ -41,7 +41,7 @@ export default function App() {
           <Route path=":name" element={<PolicyRule />} />
         </Route>
         <Route path="targets" element={<TargetsPage />}>
-          <Route path=":typestr/:name" element={<Target />} />
+          <Route path="view/:typestr/:name" element={<Target />} />
         </Route>
         <Route path="actors" element={<ActorsPage />}>
           <Route path="view/:typestr/:name" element={<Actor />} />

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import ClickableItem from "../elements/ClickableItem";
 import { faSquareXmark } from "@fortawesome/free-solid-svg-icons";
 
-export default function EditActor() {
+export default function Actor() {
   const navigate = useNavigate();
   const { typestr, name } = useParams();
   const { client, actors, setActors, setErrorMsg, setStatusMsg } =
