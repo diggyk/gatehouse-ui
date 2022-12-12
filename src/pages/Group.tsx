@@ -7,7 +7,8 @@ import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 import { usePageContext } from "./GroupsPage";
 
 export default function Group() {
-  const { setErrorMsg, setStatusMsg, groups, setGroups } = usePageContext();
+  const { setErrorMsg, setStatusMsg, groups, setGroups, client } =
+    usePageContext();
   const navigate = useNavigate();
   const { name } = useParams();
 
@@ -16,13 +17,7 @@ export default function Group() {
   const handleDelete = (name: string) => {
     let req = new proto.groups.RemoveGroupRequest().setName(name);
 
-    let gatehouseSvc = new GatehousePromiseClient(
-      "http://localhost:6174",
-      null,
-      null
-    );
-
-    gatehouseSvc
+    client
       .removeGroup(req, null)
       .then((response: proto.groups.GroupResponse) => {
         setStatusMsg("Group " + name + " deleted!");
