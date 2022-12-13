@@ -1,11 +1,12 @@
 import { Button, Card, Container, Table } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import AttributeViewer from "../elements/AttributeViewer";
 import SectionHeader from "../elements/SectionHeader";
 import SectionItem from "../elements/SectionItem";
-import { useTargets } from "./TargetsPage";
+import { usePageContext } from "./TargetsPage";
 
 export default function Actor() {
-  const { targets } = useTargets();
+  const { targets } = usePageContext();
   const { typestr, name } = useParams();
 
   if (!typestr || !name) {
@@ -19,36 +20,6 @@ export default function Actor() {
       <Card>
         <Card.Body>ERROR: Target not found in context</Card.Body>
       </Card>
-    );
-  }
-
-  let attributes = target.getAttributesMap();
-
-  let headers: JSX.Element[] = [];
-  if (attributes.getLength() > 0) {
-    headers.push(
-      <tr className="subheading" key="subheading">
-        <th>Key</th>
-        <th>Value(s)</th>
-      </tr>
-    );
-  }
-
-  let attrs: JSX.Element[] = [];
-  if (attributes.getLength() > 0) {
-    attributes.forEach((val: proto.common.AttributeValues, key: string) => {
-      attrs.push(
-        <tr key={key}>
-          <td>{key}</td>
-          <td>{val.getValuesList().join(", ")}</td>
-        </tr>
-      );
-    });
-  } else {
-    attrs.push(
-      <tr key="emptyattributes">
-        <td colSpan={2}>No attributes</td>
-      </tr>
     );
   }
 
@@ -69,15 +40,14 @@ export default function Actor() {
         <Card.Subtitle>{target.getTypestr()}</Card.Subtitle>
         <SectionHeader>Attributes</SectionHeader>
         <SectionItem>
-          <Table className="showEntryTable">
-            <thead>{headers}</thead>
-            <tbody>{attrs}</tbody>
-          </Table>
+          <AttributeViewer attribs={target.getAttributesMap()} />
         </SectionItem>
         <SectionHeader>Actions</SectionHeader>
         {actions}
         <Card.Footer>
-          <Button disabled>Edit</Button>
+          <Link to={"../edit/" + target.getTypestr() + "/" + target.getName()}>
+            <Button>Edit</Button>
+          </Link>
         </Card.Footer>
       </Card.Body>
     </Card>

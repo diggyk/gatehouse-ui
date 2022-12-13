@@ -9,7 +9,11 @@ import ExpandoItem from "../elements/ExpandoItem";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 
 type ContextType = {
+  client: GatehousePromiseClient;
+  setErrorMsg: Function;
+  setStatusMsg: Function;
   targets: Map<string, Map<string, proto.targets.Target>>;
+  setTargets: Function;
 };
 
 export default function TargetsPage() {
@@ -123,6 +127,6 @@ export default function TargetsPage() {
   );
 }
 
-export function useTargets() {
+export function usePageContext() {
   return useOutletContext<ContextType>();
 }

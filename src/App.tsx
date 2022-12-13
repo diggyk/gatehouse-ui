@@ -28,6 +28,7 @@ import { GatehousePromiseClient } from "./protos/gatehouse_grpc_web_pb";
 import AddGroup from "./pages/AddGroup";
 import EditActor from "./pages/EditActor";
 import AddActor from "./pages/AddActor";
+import EditTarget from "./pages/EditTarget";
 
 type ContextType = {
   client: GatehousePromiseClient;
@@ -43,6 +44,7 @@ export default function App() {
         </Route>
         <Route path="targets" element={<TargetsPage />}>
           <Route path="view/:typestr/:name" element={<Target />} />
+          <Route path="edit/:typestr/:name" element={<EditTarget />} />
         </Route>
         <Route path="actors" element={<ActorsPage />}>
           <Route path="view/:typestr/:name" element={<Actor />} />

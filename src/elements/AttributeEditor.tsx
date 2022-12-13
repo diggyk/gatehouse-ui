@@ -1,11 +1,13 @@
+import * as jspb from "google-protobuf";
 import { faSquareXmark } from "@fortawesome/free-solid-svg-icons";
-import { PropsWithChildren, useState } from "react";
-import { Form, Table } from "react-bootstrap";
+import { PropsWithChildren, useEffect, useState } from "react";
+import { Alert, Form, Table } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import ClickableItem from "./ClickableItem";
 
 interface Props {
   attribs: Map<string, Set<string>>;
+  attribsPbMap?: jspb.Map<string, proto.common.AttributeValues>;
   setAttribs: Function;
 }
 
@@ -14,6 +16,18 @@ export default function AttributeEditor(props: PropsWithChildren<Props>) {
     register,
     formState: { errors },
   } = useForm({ mode: "all" });
+
+  useEffect(() => {
+    if (props.attribsPbMap) {
+      let new_attribs = new Map<string, Set<string>>();
+      props.attribsPbMap.forEach(
+        (vals: proto.common.AttributeValues, key: string) => {
+          new_attribs.set(key, new Set(vals.getValuesList()));
+        }
+      );
+      props.setAttribs(new_attribs);
+    }
+  }, [props.attribsPbMap]);
 
   const newAttrValEvent = (
     event: React.KeyboardEvent<HTMLInputElement>,

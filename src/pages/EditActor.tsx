@@ -16,7 +16,6 @@ export default function EditActor() {
   const { client, actors, setActors, setErrorMsg, setStatusMsg } =
     usePageContext();
   const {
-    register,
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: "all" });
@@ -35,19 +34,6 @@ export default function EditActor() {
 
     return msg;
   };
-
-  useEffect(() => {
-    if (!typestr || !name) return;
-    let new_attribs = new Map<string, Set<string>>();
-    actors
-      .get(typestr)
-      ?.get(name)
-      ?.getAttributesMap()
-      .forEach((vals: proto.common.AttributeValues, key: string) => {
-        new_attribs.set(key, new Set(vals.getValuesList()));
-      });
-    setAttribs(new_attribs);
-  }, [typestr, name]);
 
   const handleUpdate = (data: any) => {
     let current_attribs: jspb.Map<string, proto.common.AttributeValues> =
@@ -175,7 +161,11 @@ export default function EditActor() {
           <Card.Subtitle>{actor.getTypestr()}</Card.Subtitle>
           <SectionHeader>Attributes</SectionHeader>
           <SectionItem>
-            <AttributeEditor attribs={attribs} setAttribs={setAttribs} />
+            <AttributeEditor
+              attribs={attribs}
+              setAttribs={setAttribs}
+              attribsPbMap={actor.getAttributesMap()}
+            />
           </SectionItem>
           <Card.Footer>
             <Button type="submit">Save</Button>
