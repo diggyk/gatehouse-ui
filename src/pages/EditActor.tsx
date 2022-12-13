@@ -1,3 +1,4 @@
+import * as jspb from "google-protobuf";
 import { Button, Card, Container, Form, Table } from "react-bootstrap";
 import SectionHeader from "../elements/SectionHeader";
 import SectionItem from "../elements/SectionItem";
@@ -49,7 +50,7 @@ export default function EditActor() {
   }, [typestr, name]);
 
   const handleUpdate = (data: any) => {
-    let current_attribs: Map<string, proto.common.AttributeValues> =
+    let current_attribs: jspb.Map<string, proto.common.AttributeValues> =
       actor!.getAttributesMap();
     let add_attributes = new Map<string, proto.common.AttributeValues>();
     let remove_attributes = new Map<string, proto.common.AttributeValues>();
