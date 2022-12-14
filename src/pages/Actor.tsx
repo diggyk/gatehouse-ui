@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button, Card, Container, Modal, Table } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import AttributeViewer from "../elements/AttributeViewer";
+import ConfirmModal from "../elements/ConfirmModal";
 import SectionHeader from "../elements/SectionHeader";
 import SectionItem from "../elements/SectionItem";
 import { usePageContext } from "./ActorsPage";
@@ -49,22 +50,11 @@ export default function Actor() {
 
   return (
     <>
-      <Modal show={deleteConfirm} onHide={() => setDeleteConfirm(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Confirm delete</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          Deleting cannot be undone. Are you sure you want to delete?
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setDeleteConfirm(false)}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={() => handleDelete(typestr, name)}>
-            Delete
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <ConfirmModal
+        show={deleteConfirm}
+        setShow={setDeleteConfirm}
+        confirmCallback={() => handleDelete(typestr, name)}
+      />
       <Card className="showEntryCard">
         <Card.Body>
           <Card.Title>{actor.getName()}</Card.Title>
