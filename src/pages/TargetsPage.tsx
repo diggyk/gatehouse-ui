@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Alert, CloseButton, Col, Container, Row } from "react-bootstrap";
 import { Outlet, useNavigate, useOutletContext } from "react-router";
 import { Link } from "react-router-dom";
+import { useAppContext } from "../App";
 import Expando from "../elements/Expando";
 import ExpandoItem from "../elements/ExpandoItem";
 import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
@@ -17,6 +18,7 @@ type ContextType = {
 };
 
 export default function TargetsPage() {
+  const { client } = useAppContext();
   const navigate = useNavigate();
   const [targets, setTargets]: [
     Map<string, Map<string, proto.targets.Target>>,
@@ -121,7 +123,15 @@ export default function TargetsPage() {
             onClick={() => setStatusMsg(null)}
           />
         </Alert>
-        <Outlet context={{ targets }} />
+        <Outlet
+          context={{
+            targets,
+            client,
+            setErrorMsg,
+            setStatusMsg,
+            setTargets,
+          }}
+        />
       </Col>
     </Row>
   );
