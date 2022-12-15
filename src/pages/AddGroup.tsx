@@ -171,7 +171,6 @@ export default function AddGroup() {
 
   // remove an added role
   const removeAddedRole = (role_name: string) => {
-    console.log("remove: " + role_name);
     let new_list = [...addRolesList].filter((item) => item !== role_name);
     setAddRolesList(new_list);
   };

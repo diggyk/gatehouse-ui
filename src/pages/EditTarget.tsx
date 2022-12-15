@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Container, Form, Table } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
@@ -25,14 +25,20 @@ export default function EditActor() {
   const [attribs, setAttribs]: [Map<string, Set<string>>, any] = useState(
     new Map()
   );
+
+  const [origActions, setOrigActions]: [string[], any] = useState([]);
   const [actions, setActions]: [Set<string>, Function] = useState(new Set());
   const { added: actionsAdded, removed: actionsRemoved } = useSetDiff(
-    targets
-      .get(typestr || "")
-      ?.get(name || "")
-      ?.getActionsList() || [],
+    origActions,
     actions
   );
+
+  useEffect(() => {
+    if (typestr && name) {
+      let list = targets.get(typestr)?.get(name)?.getActionsList();
+      setOrigActions(list);
+    }
+  }, [typestr, name]);
 
   const attribsToMessage = (attrs: Map<string, AttributeValues>): string => {
     let msg: string = "";

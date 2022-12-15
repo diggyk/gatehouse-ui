@@ -179,7 +179,6 @@ export default function EditGroup() {
 
     // user has chosen to add a new grant
     if (event.target.id === "add_new" && event.target.value !== "--remove--") {
-      console.log("Add " + event.target.value + " to list of granted roles");
       let new_grant = event.target.value;
       event.target.value = "--remove--";
       setAddRolesList([...addRolesList, new_grant]);
@@ -188,7 +187,6 @@ export default function EditGroup() {
 
   // remove an added role
   const removeAddedRole = (role_name: string) => {
-    console.log("remove: " + role_name);
     let new_list = [...addRolesList].filter((item) => item !== role_name);
     setAddRolesList(new_list);
   };

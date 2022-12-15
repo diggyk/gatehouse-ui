@@ -1,13 +1,10 @@
-import { faSquareXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Container, Form, Table } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import SectionHeader from "../elements/SectionHeader";
-import SectionItem from "../elements/SectionItem";
+import SetListEditor from "../elements/SetListEditor";
 import useGroups from "../hooks/useGroups";
-import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
+import useSetDiff from "../hooks/useSetDiff";
 import { usePageContext } from "./RolesPage";
 
 export default function EditRole() {
@@ -18,16 +15,26 @@ export default function EditRole() {
   const { register, handleSubmit } = useForm({ mode: "all" });
   const onError = (errors: any) => {};
 
-  const { groupsAbbr } = useGroups(client, { setErrorMsg });
-  const [addGranted, setAddGranted]: [string[], any] = useState([]);
-  const [removeGranted, setRemoveGranted]: [string[], any] = useState([]);
+  const { groupsAbbr } = useGroups(client);
+  const [currentGrants, setCurrentGrants]: [string[], any] = useState([]);
+  const [grants, setGrants]: [Set<string>, Function] = useState(new Set());
+  const { added: grantsAdded, removed: grantsRemoved } = useSetDiff(
+    currentGrants,
+    grants
+  );
+
+  useEffect(() => {
+    if (name) {
+      let list = roles.get(name)?.getGrantedToList();
+      setCurrentGrants(list);
+    }
+  }, [name]);
 
   // update the role
   const handleUpdate = (data: any) => {
-    console.log("Updating...");
     let req = new proto.roles.ModifyRoleRequest()
-      .setAddGrantedToList(addGranted)
-      .setRemoveGrantedToList(removeGranted)
+      .setAddGrantedToList(grantsAdded)
+      .setRemoveGrantedToList(grantsRemoved)
       .setDesc(data.desc)
       .setName(name || "");
 
@@ -41,11 +48,8 @@ export default function EditRole() {
           return;
         }
 
-        console.log("Updated!");
         setStatusMsg("Role " + updated_role.getName() + " updated!");
         setRoles(roles.set(updated_role.getName(), updated_role));
-        setAddGranted([]);
-        setRemoveGranted([]);
         navigate("/roles/view/" + updated_role.getName());
       })
       .catch((err: Error) => {
@@ -67,118 +71,6 @@ export default function EditRole() {
     );
   }
 
-  // called when the selectors are changed for the adding of new granted groups
-  const handleAddGrantedChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    event.preventDefault();
-
-    // user has chosen to add a new grant
-    if (event.target.id === "add_new" && event.target.value !== "--remove--") {
-      console.log("Add " + event.target.value + " to list of granted groups");
-      let new_grant = event.target.value;
-      event.target.value = "--remove--";
-      setAddGranted([...addGranted, new_grant]);
-    }
-  };
-
-  // toggle to remove an added grant
-  const handleRemoveAddedGrant = (grant_name: string) => {
-    console.log("remove: " + grant_name);
-    let new_list = [...addGranted].filter((item) => item !== grant_name);
-    setAddGranted(new_list);
-  };
-
-  // toggle to remove an existing grant
-  const toggleExistingGrant = (grant_name: string) => {
-    if (removeGranted.includes(grant_name)) {
-      setRemoveGranted(
-        [...removeGranted].filter((item) => item !== grant_name)
-      );
-    } else {
-      setRemoveGranted([...removeGranted, grant_name]);
-    }
-  };
-
-  const existing_grants = () => {
-    /// All our elements for managing group removals
-    let elements: JSX.Element[] = [];
-    role
-      .getGrantedToList()
-      .sort()
-      .forEach((granted_name: string, index) => {
-        elements.push(
-          <SectionItem key={granted_name + "_del"}>
-            <Form.Switch
-              type="switch"
-              id={granted_name + "_del"}
-              key={granted_name + "_del"}
-            >
-              <Form.Switch.Input
-                className="remove-switch"
-                checked={removeGranted.includes(granted_name)}
-                onChange={() => toggleExistingGrant(granted_name)}
-              ></Form.Switch.Input>
-              <Form.Switch.Label className="remove-switch-label">
-                {granted_name}
-              </Form.Switch.Label>
-            </Form.Switch>
-          </SectionItem>
-        );
-      });
-
-    return elements;
-  };
-
-  let new_grants = () => {
-    let elements: JSX.Element[] = [];
-    let group_options: JSX.Element[] = [];
-    group_options.push(
-      <option key="option_remove" value="--remove--">
-        ---
-      </option>
-    );
-    groupsAbbr.sort().forEach((name) => {
-      if (
-        !role.getGrantedToList().includes(name) &&
-        !addGranted.includes(name)
-      ) {
-        group_options.push(
-          <option key={"option_" + name} value={name}>
-            {name}
-          </option>
-        );
-      }
-    });
-
-    [...addGranted].sort().forEach((granted_name, index) => {
-      elements.push(
-        <SectionItem key={"add_" + index}>
-          <FontAwesomeIcon
-            icon={faSquareXmark}
-            className="delete-icon-btn"
-            inverse
-            onClick={() => handleRemoveAddedGrant(granted_name)}
-          />
-          {granted_name}
-        </SectionItem>
-      );
-    });
-
-    elements.push(
-      <SectionItem key={"add_new"}>
-        <Form.Select
-          style={{ padding: "0px 20px" }}
-          key={"add_new"}
-          id={"add_new"}
-          onChange={handleAddGrantedChange}
-        >
-          {group_options}
-        </Form.Select>
-      </SectionItem>
-    );
-
-    return elements;
-  };
-
   return (
     <Form onSubmit={handleSubmit(handleUpdate, onError)}>
       <Card className="showEntryCard">
@@ -196,10 +88,13 @@ export default function EditRole() {
               })}
             />
           </Card.Subtitle>
-          <SectionHeader>Granted to</SectionHeader>
-          {existing_grants()}
-          <SectionHeader>Grant to</SectionHeader>
-          {new_grants()}
+          <SetListEditor
+            list={grants}
+            setList={setGrants}
+            initialVals={role.getGrantedToList()}
+            sectionHeader="Granted to"
+            optionsList={groupsAbbr}
+          />
           <Card.Footer>
             <Button type="submit">Save</Button>
           </Card.Footer>

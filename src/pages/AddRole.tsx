@@ -25,7 +25,6 @@ export default function Role() {
 
   // update the role
   const handleAdd = (data: any) => {
-    console.log("Adding...");
     let req = new proto.roles.AddRoleRequest()
       .setGrantedToList(addGranted)
       .setDesc(data.desc)
@@ -41,7 +40,6 @@ export default function Role() {
           return;
         }
 
-        console.log("Added!");
         setStatusMsg("Role " + added_role.getName() + " added!");
 
         setRoles(roles.set(added_role.getName(), added_role));
@@ -59,7 +57,6 @@ export default function Role() {
 
     // user has chosen to add a new grant
     if (event.target.id === "add_new" && event.target.value !== "--remove--") {
-      console.log("Add " + event.target.value + " to list of granted groups");
       let new_grant = event.target.value;
       event.target.value = "--remove--";
       setAddGranted([...addGranted, new_grant]);
@@ -68,7 +65,6 @@ export default function Role() {
 
   // toggle to remove an added grant
   const handleRemoveAddedGrant = (grant_name: string) => {
-    console.log("remove: " + grant_name);
     let new_list = [...addGranted].filter((item) => item !== grant_name);
     setAddGranted(new_list);
   };

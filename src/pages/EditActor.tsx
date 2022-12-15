@@ -88,14 +88,6 @@ export default function EditActor() {
       }
     });
 
-    if (add_attributes.size > 0) {
-      console.log("add:");
-      console.log(attribsToMessage(add_attributes));
-    }
-    if (remove_attributes.size > 0) {
-      console.log("remove:");
-      console.log(attribsToMessage(remove_attributes));
-    }
     let req = new proto.actors.ModifyActorRequest()
       .setName(name!)
       .setTypestr(typestr!);

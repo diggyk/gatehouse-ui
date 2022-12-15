@@ -5,6 +5,10 @@ export default function useSetDiff(orig: string[], working: Set<string>) {
   const [removed, setRemoved]: [string[], any] = useState([]);
 
   useEffect(() => {
+    if (!orig || !working) {
+      return;
+    }
+
     let temp_added: string[] = [];
     let temp_removed: string[] = [];
 

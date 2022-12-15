@@ -3,7 +3,7 @@ import { GatehousePromiseClient } from "../protos/gatehouse_grpc_web_pb";
 
 export default function useGroups(
   client: GatehousePromiseClient,
-  params: { setErrorMsg?: Function; setLoading?: Function }
+  params?: { setErrorMsg?: Function; setLoading?: Function }
 ) {
   const [groups, setGroups] = useState(new Map<string, proto.groups.Group>());
   const [groupsAbbr, setGroupsAbbr]: [string[], any] = useState([]);
@@ -23,12 +23,12 @@ export default function useGroups(
         });
         setGroups(grp_map);
         setGroupsAbbr(grps);
-        params.setLoading?.(false);
+        params?.setLoading?.(false);
       })
       .catch((err) => {
         console.error(err.message);
         setError(err.message);
-        params.setErrorMsg?.(err.message);
+        params?.setErrorMsg?.(err.message);
       });
   }, []);
 

@@ -44,10 +44,6 @@ export default function AddActor() {
       );
     });
 
-    if (add_attributes.size > 0) {
-      console.log("add:");
-      console.log(attribsToMessage(add_attributes));
-    }
     let req = new proto.actors.AddActorRequest()
       .setName(data.name)
       .setTypestr(data.typestr);
@@ -117,7 +113,6 @@ export default function AddActor() {
   };
 
   const removeAttrVal = (attrkey: string, val: string) => {
-    console.log("remove " + attrkey + ": " + val);
     attribs.get(attrkey)?.delete(val);
     setAttribs(new Map(attribs));
   };

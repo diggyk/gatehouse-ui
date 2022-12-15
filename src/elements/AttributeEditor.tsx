@@ -57,7 +57,6 @@ export default function AttributeEditor(props: PropsWithChildren<Props>) {
   };
 
   const removeAttrVal = (attrkey: string, val: string) => {
-    console.log("remove " + attrkey + ": " + val);
     props.attribs.get(attrkey)?.delete(val);
     props.setAttribs(new Map(props.attribs));
   };

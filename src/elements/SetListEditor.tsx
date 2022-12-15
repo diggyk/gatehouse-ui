@@ -34,7 +34,7 @@ export default function SetListEditor(props: PropsWithChildren<Props>) {
   }, [props.initialVals]);
 
   // handle new values added from drop down list
-  const handleAddGrantedChange = (event: ChangeEvent<HTMLSelectElement>) => {
+  const handleAddItemChange = (event: ChangeEvent<HTMLSelectElement>) => {
     event.preventDefault();
     if (event.target.id === "add_new" && event.target.value !== "--remove--") {
       let new_value = event.target.value;
@@ -112,22 +112,31 @@ export default function SetListEditor(props: PropsWithChildren<Props>) {
 
   // if a list of possible options are given for a drop down list, add that now
   if (props.optionsList) {
-    let elements: JSX.Element[] = [];
-    let group_options: JSX.Element[] = [];
-    group_options.push(
-      <option key="option_remove" value="--remove--">
-        ---
-      </option>
-    );
-    props.optionsList?.sort().forEach((name) => {
-      if (!props.list.has(name)) {
-        group_options.push(
+    let remaining_options = props.optionsList
+      ?.sort()
+      .filter((o) => !props.list.has(o));
+
+    let options: JSX.Element[] = [];
+    if (remaining_options.length > 0) {
+      options.push(
+        <option key="option_remove" value="--remove--">
+          ---
+        </option>
+      );
+      remaining_options.forEach((name) => {
+        options.push(
           <option key={"option_" + name} value={name}>
             {name}
           </option>
         );
-      }
-    });
+      });
+    } else {
+      options.push(
+        <option key="option_remove" value="--remove--">
+          No remaining options
+        </option>
+      );
+    }
 
     elements.push(
       <SectionItem key={"add_new"}>
@@ -135,9 +144,10 @@ export default function SetListEditor(props: PropsWithChildren<Props>) {
           style={{ padding: "0px 20px" }}
           key={"add_new"}
           id={"add_new"}
-          onChange={handleAddGrantedChange}
+          onChange={handleAddItemChange}
+          disabled={remaining_options.length === 0}
         >
-          {group_options}
+          {options}
         </Form.Select>
       </SectionItem>
     );
