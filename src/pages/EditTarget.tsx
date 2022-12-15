@@ -6,6 +6,7 @@ import AttributeEditor from "../elements/AttributeEditor";
 import SectionHeader from "../elements/SectionHeader";
 import SectionItem from "../elements/SectionItem";
 import SetListEditor from "../elements/SetListEditor";
+import useSetDiff from "../hooks/useSetDiff";
 import { usePageContext } from "./TargetsPage";
 
 import AttributeValues = proto.common.AttributeValues;
@@ -25,6 +26,13 @@ export default function EditActor() {
     new Map()
   );
   const [actions, setActions]: [Set<string>, Function] = useState(new Set());
+  const { added: actionsAdded, removed: actionsRemoved } = useSetDiff(
+    targets
+      .get(typestr || "")
+      ?.get(name || "")
+      ?.getActionsList() || [],
+    actions
+  );
 
   const attribsToMessage = (attrs: Map<string, AttributeValues>): string => {
     let msg: string = "";
@@ -39,27 +47,10 @@ export default function EditActor() {
   // and attributes and come up with the add/remove actions/attribs values
   // to use in the update request
   const assessChanges = () => {
-    let add_actions: string[] = [];
-    let remove_actions: string[] = [];
     let add_attributes: Map<string, AttributeValues> = new Map();
     let remove_attributes: Map<string, AttributeValues> = new Map();
 
-    const existing_actions = target?.getActionsList();
     const existing_attribs = target?.getAttributesMap();
-
-    // if existing actions aren't in working set, add to remove_actions
-    existing_actions?.forEach((action) => {
-      if (!actions.has(action)) {
-        remove_actions.push(action);
-      }
-    });
-
-    // if working set actions aren't in existing set, add to add_actions
-    actions.forEach((action) => {
-      if (!existing_actions?.includes(action)) {
-        add_actions.push(action);
-      }
-    });
 
     // if existing attribs aren't in working set, add to remove_attributes
     existing_attribs?.forEach((vals: AttributeValues, key: string) => {
@@ -95,26 +86,19 @@ export default function EditActor() {
       }
     });
 
-    console.log(add_actions);
-    console.log(remove_actions);
-
     return {
-      add_actions,
-      remove_actions,
       add_attributes,
       remove_attributes,
     };
   };
 
   const handleUpdate = (data: any) => {
-    let { add_actions, remove_actions, add_attributes, remove_attributes } =
-      assessChanges();
-
+    let { add_attributes, remove_attributes } = assessChanges();
     let req = new proto.targets.ModifyTargetRequest()
       .setName(name!)
       .setTypestr(typestr!)
-      .setAddActionsList(add_actions)
-      .setRemoveActionsList(remove_actions);
+      .setAddActionsList(actionsAdded)
+      .setRemoveActionsList(actionsRemoved);
 
     add_attributes.forEach((val, key) => {
       req.getAddAttributesMap(false).set(key, val);

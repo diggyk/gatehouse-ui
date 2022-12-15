@@ -1,6 +1,6 @@
 import { faSquareXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { PropsWithChildren, useEffect } from "react";
+import { ChangeEvent, PropsWithChildren, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import { useForm, ValidationRule } from "react-hook-form";
 import SectionHeader from "./SectionHeader";
@@ -10,6 +10,7 @@ interface Props {
   list: Set<string>;
   setList: Function;
   initialVals?: string[];
+  optionsList?: string[];
   freeFormAdd?: boolean;
   freeFormPlaceholder?: string;
   freeFormValidation?: ValidationRule<RegExp>;
@@ -32,6 +33,17 @@ export default function SetListEditor(props: PropsWithChildren<Props>) {
     }
   }, [props.initialVals]);
 
+  // handle new values added from drop down list
+  const handleAddGrantedChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    event.preventDefault();
+    if (event.target.id === "add_new" && event.target.value !== "--remove--") {
+      let new_value = event.target.value;
+      event.target.value = "--remove--";
+      props.list.add(new_value);
+      props.setList(new Set(props.list));
+    }
+  };
+
   const removeFromList = (item: string) => {
     props.list.delete(item);
     props.setList(new Set(props.list));
@@ -51,6 +63,7 @@ export default function SetListEditor(props: PropsWithChildren<Props>) {
 
   let elements: JSX.Element[] = [];
 
+  // build display of items in the set
   if (props.list.size > 0)
     [...props.list].sort().forEach((listitem) => {
       elements.push(
@@ -69,6 +82,7 @@ export default function SetListEditor(props: PropsWithChildren<Props>) {
     elements.push(<SectionItem key="noattrib">No attributes</SectionItem>);
   }
 
+  // if a free form field for adding values is desired, add that now
   if (props.freeFormAdd) {
     let freeFormValidation = props.freeFormValidation
       ? props.freeFormValidation
@@ -96,12 +110,46 @@ export default function SetListEditor(props: PropsWithChildren<Props>) {
     );
   }
 
-  return (
-    <>
-      {props.sectionHeader && (
-        <SectionHeader>{props.sectionHeader}</SectionHeader>
-      )}
-      {elements}
-    </>
-  );
+  // if a list of possible options are given for a drop down list, add that now
+  if (props.optionsList) {
+    let elements: JSX.Element[] = [];
+    let group_options: JSX.Element[] = [];
+    group_options.push(
+      <option key="option_remove" value="--remove--">
+        ---
+      </option>
+    );
+    props.optionsList?.sort().forEach((name) => {
+      if (!props.list.has(name)) {
+        group_options.push(
+          <option key={"option_" + name} value={name}>
+            {name}
+          </option>
+        );
+      }
+    });
+
+    elements.push(
+      <SectionItem key={"add_new"}>
+        <Form.Select
+          style={{ padding: "0px 20px" }}
+          key={"add_new"}
+          id={"add_new"}
+          onChange={handleAddGrantedChange}
+        >
+          {group_options}
+        </Form.Select>
+      </SectionItem>
+    );
+  }
+
+  if (props.sectionHeader) {
+    elements.splice(
+      0,
+      0,
+      <SectionHeader key="setlistheader">{props.sectionHeader}</SectionHeader>
+    );
+  }
+
+  return <>{elements}</>;
 }

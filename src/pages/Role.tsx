@@ -47,6 +47,10 @@ export default function Role() {
       groups.push(<SectionItem key={"group_" + group}>{group}</SectionItem>);
     });
 
+  if (groups.length == 0) {
+    groups.push(<SectionItem key="nogroups">None</SectionItem>);
+  }
+
   return (
     <>
       <ConfirmModal
