@@ -6,7 +6,7 @@ import {
   faSquareXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import {
   Alert,
   Button,
@@ -22,9 +22,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import Expando from "../elements/Expando";
 import ExpandoItem from "../elements/ExpandoItem";
 import SectionHeader from "../elements/SectionHeader";
-import SectionItem from "../elements/SectionItem";
+import SetListEditor from "../elements/SetListEditor";
 import useActors from "../hooks/useActors";
 import useRoles from "../hooks/useRoles";
+import useSetDiff from "../hooks/useSetDiff";
 import { usePageContext } from "./GroupsPage";
 
 export default function EditGroup() {
@@ -43,8 +44,12 @@ export default function EditGroup() {
   const onError = (errors: any) => {};
 
   const { rolesAbbr } = useRoles(client, { setErrorMsg });
-  const [addRolesList, setAddRolesList]: [string[], any] = useState([]);
-  const [removeRolesList, setRemoveRolesList]: [string[], any] = useState([]);
+  const [currentRoles, setCurrentRoles]: [string[], any] = useState([]);
+  const [grants, setGrants]: [Set<string>, Function] = useState(new Set());
+  const { added: rolesAdded, removed: rolesRemoved } = useSetDiff(
+    currentRoles,
+    grants
+  );
 
   const {
     actorsAbbr,
@@ -55,6 +60,11 @@ export default function EditGroup() {
   } = useActors(client, { setErrorMsg, group: groups.get(name || "") });
 
   const [showAddMember, setShowAddMember] = useState(false);
+
+  useEffect(() => {
+    if (name && groups.get(name))
+      setCurrentRoles(groups.get(name)!.getRolesList());
+  }, [name, groups]);
 
   // check if a member is in a member map
   const inMap = (
@@ -108,8 +118,8 @@ export default function EditGroup() {
     let req = new proto.groups.ModifyGroupRequest()
       .setName(name || "")
       .setDesc(data.desc)
-      .setAddRolesList(addRolesList)
-      .setRemoveRolesList(removeRolesList)
+      .setAddRolesList(rolesAdded)
+      .setRemoveRolesList(rolesRemoved)
       .setAddMembersList(membersToAdd)
       .setRemoveMembersList(membersToRemove);
 
@@ -125,8 +135,6 @@ export default function EditGroup() {
 
         setStatusMsg("Group " + updated_group.getName() + " updated!");
         setGroups(groups.set(updated_group.getName(), updated_group));
-        setAddRolesList([]);
-        setAddRolesList([]);
         navigate("/groups/view/" + updated_group.getName());
       })
       .catch((error: Error) => {
@@ -134,6 +142,7 @@ export default function EditGroup() {
       });
   };
 
+  // move a member to active list
   const moveToActive = (typestr: string, name: string) => {
     inactiveMembers.get(typestr)?.delete(name);
     if (inactiveMembers.get(typestr)?.size === 0) {
@@ -147,6 +156,7 @@ export default function EditGroup() {
     setInactiveMembers(new Map(inactiveMembers));
   };
 
+  // move a member to the inactive list
   const moveToInactive = (typestr: string, name: string) => {
     activeMembers.get(typestr)?.delete(name);
     if (activeMembers.get(typestr)?.size === 0) {
@@ -172,111 +182,6 @@ export default function EditGroup() {
   if (!group) {
     return <Alert variant="danger">ERROR: Group not found in context</Alert>;
   }
-
-  // called when the selectors are changed for the adding of new roles
-  const addRole = (event: ChangeEvent<HTMLSelectElement>) => {
-    event.preventDefault();
-
-    // user has chosen to add a new grant
-    if (event.target.id === "add_new" && event.target.value !== "--remove--") {
-      let new_grant = event.target.value;
-      event.target.value = "--remove--";
-      setAddRolesList([...addRolesList, new_grant]);
-    }
-  };
-
-  // remove an added role
-  const removeAddedRole = (role_name: string) => {
-    let new_list = [...addRolesList].filter((item) => item !== role_name);
-    setAddRolesList(new_list);
-  };
-
-  // toggle and existing role
-  const toggleExistingRole = (role_name: string) => {
-    if (removeRolesList.includes(role_name)) {
-      setRemoveRolesList(
-        [...removeRolesList].filter((item) => item !== role_name)
-      );
-    } else {
-      setRemoveRolesList([...removeRolesList, role_name]);
-    }
-  };
-
-  const existing_roles = () => {
-    /// All our elements for managing group removals
-    let elements: JSX.Element[] = [];
-    group
-      .getRolesList()
-      .sort()
-      .forEach((role_name: string, index) => {
-        elements.push(
-          <SectionItem key={role_name + "_del"}>
-            <Form.Switch
-              type="switch"
-              id={role_name + "_del"}
-              key={role_name + "_del"}
-            >
-              <Form.Switch.Input
-                className="remove-switch"
-                checked={removeRolesList.includes(role_name)}
-                onChange={() => toggleExistingRole(role_name)}
-              ></Form.Switch.Input>
-              <Form.Switch.Label className="remove-switch-label">
-                {role_name}
-              </Form.Switch.Label>
-            </Form.Switch>
-          </SectionItem>
-        );
-      });
-
-    return elements;
-  };
-
-  let new_roles_section = () => {
-    let elements: JSX.Element[] = [];
-    let role_options: JSX.Element[] = [];
-    role_options.push(
-      <option key="option_remove" value="--remove--">
-        ---
-      </option>
-    );
-    rolesAbbr.sort().forEach((name) => {
-      if (
-        !group.getRolesList().includes(name) &&
-        !addRolesList.includes(name)
-      ) {
-        role_options.push(
-          <option key={"option_" + name} value={name}>
-            {name}
-          </option>
-        );
-      }
-    });
-
-    [...addRolesList].sort().forEach((granted_name, index) => {
-      elements.push(
-        <SectionItem key={"add_" + index}>
-          <FontAwesomeIcon
-            icon={faSquareXmark}
-            className="delete-icon-btn"
-            inverse
-            onClick={() => removeAddedRole(granted_name)}
-          />
-          {granted_name}
-        </SectionItem>
-      );
-    });
-
-    elements.push(
-      <SectionItem key={"add_new"}>
-        <Form.Select key={"add_new"} id={"add_new"} onChange={addRole}>
-          {role_options}
-        </Form.Select>
-      </SectionItem>
-    );
-
-    return elements;
-  };
 
   let members_sections = () => {
     let elements: JSX.Element[] = [];
@@ -431,10 +336,13 @@ export default function EditGroup() {
             </Card.Subtitle>
             <Row lg="auto">
               <Col>
-                <SectionHeader>Granted roles</SectionHeader>
-                {existing_roles()}
-                <SectionHeader>Grant roles</SectionHeader>
-                {new_roles_section()}
+                <SetListEditor
+                  list={grants}
+                  setList={setGrants}
+                  initialVals={group.getRolesList()}
+                  sectionHeader="Roles granted"
+                  optionsList={rolesAbbr}
+                />
               </Col>
               <Col>
                 <Row>

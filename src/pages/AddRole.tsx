@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import SectionHeader from "../elements/SectionHeader";
 import SectionItem from "../elements/SectionItem";
+import SetListEditor from "../elements/SetListEditor";
 import useGroups from "../hooks/useGroups";
 import { usePageContext } from "./RolesPage";
 
@@ -21,12 +22,12 @@ export default function Role() {
     usePageContext();
 
   const { groupsAbbr } = useGroups(client, { setErrorMsg });
-  const [addGranted, setAddGranted]: [string[], any] = useState([]);
+  const [addGranted, setAddGranted]: [Set<string>, any] = useState(new Set());
 
   // update the role
   const handleAdd = (data: any) => {
     let req = new proto.roles.AddRoleRequest()
-      .setGrantedToList(addGranted)
+      .setGrantedToList([...addGranted])
       .setDesc(data.desc)
       .setName(data.name);
 
@@ -49,71 +50,6 @@ export default function Role() {
       .catch((err: Error) => {
         setErrorMsg(err.message);
       });
-  };
-
-  // called when the selectors are changed for the adding of new granted groups
-  const handleAddGrantedChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    event.preventDefault();
-
-    // user has chosen to add a new grant
-    if (event.target.id === "add_new" && event.target.value !== "--remove--") {
-      let new_grant = event.target.value;
-      event.target.value = "--remove--";
-      setAddGranted([...addGranted, new_grant]);
-    }
-  };
-
-  // toggle to remove an added grant
-  const handleRemoveAddedGrant = (grant_name: string) => {
-    let new_list = [...addGranted].filter((item) => item !== grant_name);
-    setAddGranted(new_list);
-  };
-
-  let new_grants = () => {
-    let elements: JSX.Element[] = [];
-    let group_options: JSX.Element[] = [];
-    group_options.push(
-      <option key="option_remove" value="--remove--">
-        ---
-      </option>
-    );
-    groupsAbbr.sort().forEach((name) => {
-      if (!addGranted.includes(name)) {
-        group_options.push(
-          <option key={"option_" + name} value={name}>
-            {name}
-          </option>
-        );
-      }
-    });
-
-    [...addGranted].sort().forEach((granted_name, index) => {
-      elements.push(
-        <SectionItem key={"add_" + index}>
-          <FontAwesomeIcon
-            icon={faSquareXmark}
-            className="delete-icon-btn"
-            inverse
-            onClick={() => handleRemoveAddedGrant(granted_name)}
-          />
-          {granted_name}
-        </SectionItem>
-      );
-    });
-
-    elements.push(
-      <SectionItem key={"add_new"}>
-        <Form.Select
-          key={"add_new"}
-          id={"add_new"}
-          onChange={handleAddGrantedChange}
-        >
-          {group_options}
-        </Form.Select>
-      </SectionItem>
-    );
-
-    return elements;
   };
 
   return (
@@ -150,7 +86,11 @@ export default function Role() {
             />
           </Card.Subtitle>
           <SectionHeader>Grant to</SectionHeader>
-          {new_grants()}
+          <SetListEditor
+            list={addGranted}
+            setList={setAddGranted}
+            optionsList={groupsAbbr}
+          />
           <Card.Footer>
             <Button type="submit">Save</Button>
           </Card.Footer>

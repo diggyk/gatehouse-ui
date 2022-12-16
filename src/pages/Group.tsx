@@ -68,6 +68,10 @@ export default function Group() {
       );
     });
 
+  if (members.length == 0) {
+    members.push(<SectionItem key={"nomembers"}>No members</SectionItem>);
+  }
+
   return (
     <>
       <ConfirmModal

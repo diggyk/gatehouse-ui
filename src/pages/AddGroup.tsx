@@ -24,6 +24,7 @@ import Expando from "../elements/Expando";
 import ExpandoItem from "../elements/ExpandoItem";
 import SectionHeader from "../elements/SectionHeader";
 import SectionItem from "../elements/SectionItem";
+import SetListEditor from "../elements/SetListEditor";
 import useActors from "../hooks/useActors";
 import useRoles from "../hooks/useRoles";
 import { usePageContext } from "./GroupsPage";
@@ -47,8 +48,9 @@ export default function AddGroup() {
   const onError = (errors: any) => {};
 
   const { rolesAbbr } = useRoles(client, { setErrorMsg });
-  const [addRolesList, setAddRolesList]: [string[], any] = useState([]);
-  const [removeRolesList, setRemoveRolesList]: [string[], any] = useState([]);
+  const [addRolesList, setAddRolesList]: [Set<string>, any] = useState(
+    new Set()
+  );
 
   const {
     actorsAbbr,
@@ -103,7 +105,7 @@ export default function AddGroup() {
     let req = new proto.groups.AddGroupRequest()
       .setName(data.name)
       .setDesc(data.desc)
-      .setRolesList(addRolesList)
+      .setRolesList([...addRolesList])
       .setMembersList(membersToAdd);
 
     client
@@ -118,8 +120,6 @@ export default function AddGroup() {
 
         setStatusMsg("Group " + new_group.getName() + " added!");
         setGroups(groups.set(new_group.getName(), new_group));
-        setAddRolesList([]);
-        setRemoveRolesList([]);
         navigate("/groups/view/" + new_group.getName());
       })
       .catch((error: Error) => {
@@ -175,17 +175,6 @@ export default function AddGroup() {
     setAddRolesList(new_list);
   };
 
-  // toggle and existing role
-  const toggleExistingRole = (role_name: string) => {
-    if (removeRolesList.includes(role_name)) {
-      setRemoveRolesList(
-        [...removeRolesList].filter((item) => item !== role_name)
-      );
-    } else {
-      setRemoveRolesList([...removeRolesList, role_name]);
-    }
-  };
-
   let new_roles_section = () => {
     let elements: JSX.Element[] = [];
     let role_options: JSX.Element[] = [];
@@ -195,7 +184,7 @@ export default function AddGroup() {
       </option>
     );
     rolesAbbr.sort().forEach((name) => {
-      if (!addRolesList.includes(name)) {
+      if (!addRolesList.has(name)) {
         role_options.push(
           <option key={"option_" + name} value={name}>
             {name}
@@ -399,7 +388,11 @@ export default function AddGroup() {
             <Row lg="auto">
               <Col>
                 <SectionHeader>Grant roles</SectionHeader>
-                {new_roles_section()}
+                <SetListEditor
+                  list={addRolesList}
+                  setList={setAddRolesList}
+                  optionsList={rolesAbbr}
+                />
               </Col>
               <Col>
                 <Row>
