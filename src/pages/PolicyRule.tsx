@@ -74,30 +74,30 @@ export default function PolicyRule() {
     }
   };
 
-  const entityCheckToTable = () => {
+  const actorCheckToTable = () => {
     if (!rule.hasActorCheck()) {
       return (
         <tr>
-          <td colSpan={3}>Match any entity</td>
+          <td colSpan={3}>Match any actor</td>
         </tr>
       );
     } else {
-      let entityName = stringCheckToTable(
+      let actorName = stringCheckToTable(
         "name",
         rule.getActorCheck()!.getName()
       );
-      let entityType = stringCheckToTable(
+      let actorType = stringCheckToTable(
         "type",
         rule.getActorCheck()!.getTypestr()
       );
-      let entityAttribs = attrCheckToTable(
+      let actorAttribs = attrCheckToTable(
         rule.getActorCheck()!.getAttributesList()
       );
       return (
         <>
-          {entityName}
-          {entityType}
-          {entityAttribs}
+          {actorName}
+          {actorType}
+          {actorAttribs}
           {numCheckToTable("bucket", rule.getActorCheck()!.getBucket())}
         </>
       );
@@ -132,7 +132,7 @@ export default function PolicyRule() {
           matchAttrs.push(
             <tr key={"match_ent_" + attr}>
               <td>attr:{attr}</td>
-              <td colSpan={2}>MATCHS IN ENTITY</td>
+              <td colSpan={2}>MATCHS IN ACTOR</td>
             </tr>
           );
         });
@@ -246,10 +246,10 @@ export default function PolicyRule() {
         <Table className="showEntryTable">
           <thead>
             <tr>
-              <th colSpan={3}>When entity matches...</th>
+              <th colSpan={3}>When actor matches...</th>
             </tr>
           </thead>
-          <tbody>{entityCheckToTable()}</tbody>
+          <tbody>{actorCheckToTable()}</tbody>
           <thead>
             <tr>
               <th colSpan={3}>When environment matches...</th>

@@ -49,15 +49,15 @@ export default function useActors(
 
         console.log("Loaded " + actors.length + " actors");
 
-        actors.forEach((entity: proto.actors.Actor) => {
-          let typestr = entity.getTypestr();
-          let name = entity.getName();
+        actors.forEach((actor: proto.actors.Actor) => {
+          let typestr = actor.getTypestr();
+          let name = actor.getName();
 
           known_actors_set.add(typestr + ":" + name);
           if (!known_actors_map.has(typestr)) {
             known_actors_map.set(typestr, new Map());
           }
-          known_actors_map.get(typestr)?.set(name, entity);
+          known_actors_map.get(typestr)?.set(name, actor);
 
           if (!active_map.get(typestr)?.has(name)) {
             if (!inactive_map.has(typestr)) {

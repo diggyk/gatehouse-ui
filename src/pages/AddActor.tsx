@@ -36,7 +36,7 @@ export default function AddActor() {
   const handleUpdate = (data: any) => {
     let add_attributes = new Map<string, proto.common.AttributeValues>();
 
-    // find all attributes not in the entity so we can add them
+    // find all attributes not in the actor so we can add them
     attribs.forEach((vals, key) => {
       add_attributes.set(
         key,

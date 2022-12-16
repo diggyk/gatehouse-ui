@@ -41,7 +41,7 @@ export default function EditActor() {
     let add_attributes = new Map<string, proto.common.AttributeValues>();
     let remove_attributes = new Map<string, proto.common.AttributeValues>();
 
-    // find all attributes not in the entity so we can add them
+    // find all attributes not in the actor so we can add them
     attribs.forEach((vals, key) => {
       if (!current_attribs.has(key)) {
         add_attributes.set(
