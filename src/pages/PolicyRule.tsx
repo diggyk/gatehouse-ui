@@ -1,6 +1,6 @@
 import { Button, Card, Container, Table } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import { useRules } from "./PolicyRulesPage";
+import { usePageContext } from "./PolicyRulesPage";
 
 type DECIDE = proto.policies.DECIDE;
 type KvCheck = proto.policies.KvCheck;
@@ -45,7 +45,7 @@ const numOpToString = (numOp: NUM): string => {
 };
 
 export default function PolicyRule() {
-  const { rules } = useRules();
+  const { rules } = usePageContext();
   const { name } = useParams();
 
   if (!name) {
@@ -273,7 +273,9 @@ export default function PolicyRule() {
             </tr>
           </tbody>
         </Table>
-        <Button disabled>Edit</Button>
+        <Card.Footer>
+          <Button disabled>Edit</Button>
+        </Card.Footer>
       </Card.Body>
     </Card>
   );

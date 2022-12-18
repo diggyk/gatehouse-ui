@@ -24,6 +24,9 @@ export default function Expando(props: PropsWithChildren<Props>) {
 
   let mainClasses = ["expando"];
   switch (props.variant) {
+    case "cardsections":
+      mainClasses.push("cardsections");
+      break;
     case "sidenav":
       mainClasses.push("sidenav");
       break;

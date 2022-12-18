@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChangeEvent, PropsWithChildren, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import { useForm, ValidationRule } from "react-hook-form";
+import ClickableItem from "./ClickableItem";
 import SectionHeader from "./SectionHeader";
 import SectionItem from "./SectionItem";
 
@@ -15,6 +16,9 @@ interface Props {
   freeFormPlaceholder?: string;
   freeFormValidation?: ValidationRule<RegExp>;
   sectionHeader?: string;
+  hideEmptyMessage?: boolean;
+  emptyMessage?: string;
+  floatingItems?: boolean;
 }
 
 export default function SetListEditor(props: PropsWithChildren<Props>) {
@@ -66,20 +70,43 @@ export default function SetListEditor(props: PropsWithChildren<Props>) {
   // build display of items in the set
   if (props.list.size > 0)
     [...props.list].sort().forEach((listitem) => {
-      elements.push(
-        <SectionItem key={"item_" + listitem}>
-          <FontAwesomeIcon
-            icon={faSquareXmark}
-            className="delete-icon-btn"
-            inverse
+      if (!props.floatingItems)
+        elements.push(
+          <SectionItem key={"item_" + listitem}>
+            <FontAwesomeIcon
+              icon={faSquareXmark}
+              className="delete-icon-btn"
+              inverse
+              onClick={() => removeFromList(listitem)}
+            />
+            {listitem}
+          </SectionItem>
+        );
+      else
+        elements.push(
+          <ClickableItem
+            key={"item_" + listitem}
             onClick={() => removeFromList(listitem)}
-          />
-          {listitem}
-        </SectionItem>
-      );
+            leftIcon={faSquareXmark}
+          >
+            {listitem}
+          </ClickableItem>
+        );
     });
   else {
-    elements.push(<SectionItem key="noattrib">No attributes</SectionItem>);
+    if (!props.hideEmptyMessage)
+      if (!props.floatingItems)
+        elements.push(
+          <SectionItem key="noattrib">
+            {props.emptyMessage ? props.emptyMessage : "No attributes"}
+          </SectionItem>
+        );
+      else
+        elements.push(
+          <ClickableItem key="noattrib" onClick={() => {}}>
+            {props.emptyMessage ? props.emptyMessage : "No attributes"}
+          </ClickableItem>
+        );
   }
 
   // if a free form field for adding values is desired, add that now
@@ -90,8 +117,8 @@ export default function SetListEditor(props: PropsWithChildren<Props>) {
           value: /^.*$/i,
           message: "",
         };
-    elements.push(
-      <SectionItem key={"add_new"}>
+    let form = (
+      <div key="input">
         <Form.Control
           className="inline-input"
           placeholder={props.freeFormPlaceholder}
@@ -106,8 +133,11 @@ export default function SetListEditor(props: PropsWithChildren<Props>) {
         {errors && errors.newitem && errors.newitem.message && (
           <p className="formError">{errors.newitem.message.toString()}</p>
         )}
-      </SectionItem>
+      </div>
     );
+
+    if (props.floatingItems) elements.push(form);
+    else elements.push(<SectionItem key={"add_new"}>{form}</SectionItem>);
   }
 
   // if a list of possible options are given for a drop down list, add that now

@@ -140,8 +140,12 @@ html {
     box-shadow: 0.3rem 0.3rem 0.3rem #0005;
     margin-bottom: 10px;
 
+    &.wide {
+        min-width: 100%;
+    }
+
     .col {
-        width: fit-content;
+        width: max-content;
     }
 
     .card-body {
@@ -172,37 +176,6 @@ html {
             text-decoration: line-through;
         }
 
-        .section-header {
-            display: block;
-            padding: 5px 10px 5px 10px;
-            margin: 0px 10px;
-            white-space: nowrap;
-            font-weight: bold;
-            border-bottom: darken($color: $body-bg, $amount: 60) 1px solid;
-        }
-
-        .section-item {
-            display: block;
-            padding: 5px 10px 5px 10px;
-            margin: 0px 0px 0px 10px;
-            white-space: nowrap;
-
-            select {
-                padding: 0px 20px;
-                margin-bottom: 10px;
-            }
-
-            th {
-                padding: 5px;
-                white-space: nowrap;
-            }
-
-            td {
-                padding: 5px;
-                white-space: nowrap;
-            }
-        }
-
         .skinny-footnote {
             font-size: small;
             color: adjust-color($color: $body-color, $alpha: -0.5);
@@ -212,6 +185,56 @@ html {
             @extend .skinny-footnote;
             padding: 20px 30px;
         }
+    }
+}
+
+.scrollsection {
+    display: block;
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: none;
+}
+
+.section {
+    border-radius: 5px;
+    margin: -4px -4px 8px -4px;
+    padding: 4px;
+    &.invalid {
+        background-color: #dd111111;
+        color: #901c1c;
+    }
+}
+
+.section-header {
+    display: block;
+    padding: 5px 10px 5px 10px;
+    margin: 0px 10px;
+    white-space: nowrap;
+    font-weight: bold;
+    border-bottom: darken($color: $body-bg, $amount: 60) 1px solid;
+}
+
+.section-item {
+    display: block;
+    padding: 5px 10px 5px 10px;
+    margin: 0px 0px 0px 10px;
+    white-space: nowrap;
+    border-radius: 5px;
+
+    th {
+        white-space: nowrap;
+    }
+
+    td {
+        white-space: nowrap;
+    }
+
+    select {
+        display: inline-block;
+        width: min-content;
+        margin: 0px 5px;
+        margin-bottom: 10px;
+        padding: 0px 30px 0px 10px;
     }
 }
 
@@ -380,6 +403,95 @@ html {
             }
         }
     }
+
+    &.cardsections {
+        .expando-header {
+            display: block;
+            white-space: nowrap;
+            cursor: pointer;
+            font-weight: bold;
+
+            padding: 10px 10px 6px 10px;
+            border-bottom: $highlight-color 2px solid;
+
+            svg {
+                @extend .default-icon-btn;
+                float: right;
+                margin: 0px 0px 0px 10px;
+            }
+        }
+
+        .expando-body {
+            display: block;
+            white-space: nowrap;
+            padding-bottom: 10px;
+            padding-top: 10px;
+        }
+
+        .expando-item {
+            color: $brite-light;
+            text-decoration: none;
+            background-color: none;
+            border-radius: 0.25em;
+            padding: 4px 10px;
+            margin: 2px;
+
+            &.clickable {
+                cursor: pointer;
+            }
+
+            &.clickable:hover {
+                background-color: darken($color: $body-bg, $amount: 60);
+            }
+
+            &.right-button {
+                display: block;
+                padding: 5px 0px 5px 10px;
+                margin: 0px 0px 0px 10px;
+                white-space: nowrap;
+
+                select {
+                    padding: 0px 20px;
+                    margin-bottom: 10px;
+                }
+            }
+
+            &.left-button {
+                display: block;
+                padding: 5px 0px 5px 10px;
+                margin: 0px 0px 0px 0px;
+                white-space: nowrap;
+
+                select {
+                    padding: 0px 20px;
+                    margin-bottom: 10px;
+                }
+            }
+
+            .red-right-btn {
+                @extend .default-icon-btn;
+                float: right;
+                color: $brite-light;
+                margin: 0px 0px 0px 10px;
+            }
+
+            &:hover .red-right-btn {
+                color: #dd1111;
+            }
+
+            .green-left-btn {
+                @extend .default-icon-btn;
+                float: left;
+                position: relative;
+                color: $brite-light;
+                margin: 0px 10px 0px 0px;
+            }
+
+            &:hover .green-left-btn {
+                color: #11dd11;
+            }
+        }
+    }
 }
 
 .showEntryTable {
@@ -409,8 +521,7 @@ html {
     display: inline-flex;
     float: left;
     align-items: center;
-    margin-right: 4px;
-    margin-bottom: 4px;
+    margin: 0px 8px 8px 0px;
     border-radius: 5px;
     background-color: $brite-light;
     border: 1px #0000 solid;
@@ -445,4 +556,15 @@ html {
 .inline-input {
     width: auto;
     overflow: hidden;
+}
+
+.stringcheckeditor {
+    select {
+        line-height: 24px;
+        padding: 4px 30px 4px 10px;
+    }
+
+    input {
+        padding: 4px 10px;
+    }
 }

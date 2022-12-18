@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Card, Container, Table } from "react-bootstrap";
+import { Button, Card, Container } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import AttributeViewer from "../elements/AttributeViewer";
 import ConfirmModal from "../elements/ConfirmModal";

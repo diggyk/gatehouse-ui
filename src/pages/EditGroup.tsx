@@ -345,27 +345,23 @@ export default function EditGroup() {
                 />
               </Col>
               <Col>
-                <Row>
-                  <Col>
-                    <SectionHeader
-                      rightIcon={
-                        <FontAwesomeIcon
-                          icon={faSquarePlus}
-                          className="plusButton"
-                          inverse
-                          onClick={() => setShowAddMember(true)}
-                        />
-                      }
-                    >
-                      Members
-                    </SectionHeader>
-                    {members_sections()}
-                  </Col>
-                  <Col>
-                    <SectionHeader>Available actors</SectionHeader>
-                    {possible_members_sections()}
-                  </Col>
-                </Row>
+                <SectionHeader
+                  rightIcon={
+                    <FontAwesomeIcon
+                      icon={faSquarePlus}
+                      className="plusButton"
+                      inverse
+                      onClick={() => setShowAddMember(true)}
+                    />
+                  }
+                >
+                  Members
+                </SectionHeader>
+                {members_sections()}
+              </Col>
+              <Col>
+                <SectionHeader>Available actors</SectionHeader>
+                {possible_members_sections()}
               </Col>
             </Row>
             <Row>

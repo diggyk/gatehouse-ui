@@ -30,6 +30,7 @@ import EditActor from "./pages/EditActor";
 import AddActor from "./pages/AddActor";
 import EditTarget from "./pages/EditTarget";
 import AddTarget from "./pages/AddTarget";
+import AddPolicyRule from "./pages/AddPolicyRule";
 
 type ContextType = {
   client: GatehousePromiseClient;
@@ -42,6 +43,7 @@ export default function App() {
         <Route index element={<Home />} />
         <Route path="policyrules" element={<PolicyRulesPage />}>
           <Route path=":name" element={<PolicyRule />} />
+          <Route path="add" element={<AddPolicyRule />} />
         </Route>
         <Route path="targets" element={<TargetsPage />}>
           <Route path="view/:typestr/:name" element={<Target />} />

@@ -229,9 +229,9 @@ export default function AddActor() {
               {...register("name", {
                 required: true,
                 pattern: {
-                  value: /^[a-z0-9-_@]+$/i,
+                  value: /^[a-z0-9-_@.]+$/i,
                   message:
-                    "Invalid characters (alphanum, dashes, underscores, and at-sign only)",
+                    "Invalid characters (alphanum, dashes, underscores, periods, and at-sign only)",
                 },
               })}
             />
